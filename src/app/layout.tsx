@@ -71,6 +71,13 @@ export default function RootLayout({
             __html: `(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.className=t;})();`,
           }}
         />
+        {/* Google AdSense */}
+        <meta name="google-adsense-account" content="ca-pub-7151553772512263" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7151553772512263"
+          crossOrigin="anonymous"
+        />
         <WebSiteJsonLd />
         <OrganizationJsonLd />
       </head>
