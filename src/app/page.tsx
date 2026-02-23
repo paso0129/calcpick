@@ -1,101 +1,113 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { CALCULATORS, SITE_NAME } from '@/lib/constants';
+import AdSense from '@/components/ads/AdSense';
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div>
+      {/* Hero Section */}
+      <section className="bg-gradient-to-b from-accent-500/10 to-transparent border-b border-dark-border">
+        <div className="container mx-auto px-4 py-16 md:py-24 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
+            Free Financial Calculators
+          </h1>
+          <p className="text-lg text-text-secondary max-w-2xl mx-auto mb-8">
+            Make smarter money decisions with our accurate, easy-to-use calculators.
+            From mortgages to investments, we&apos;ve got you covered.
+          </p>
+          <div className="flex items-center justify-center gap-4">
+            <Link
+              href="#calculators"
+              className="inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white font-medium px-6 py-3 rounded-lg transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              Explore Calculators
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      <AdSense slot="header" variant="banner" />
+
+      {/* Calculator Grid */}
+      <section id="calculators" className="container mx-auto px-4 py-12">
+        <h2 className="text-2xl font-bold text-text-primary mb-2">Finance Calculators</h2>
+        <p className="text-text-secondary mb-8">
+          Powerful tools to help you plan loans, investments, and debt repayment.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {CALCULATORS.map((calc) => (
+            <Link
+              key={calc.slug}
+              href={`/calculator/${calc.slug}`}
+              className="group bg-dark-surface border border-dark-border rounded-xl p-6 hover:border-accent-500/50 hover:shadow-lg hover:shadow-accent-500/5 transition-all"
+            >
+              <div className="text-3xl mb-3">{calc.icon}</div>
+              <h3 className="text-lg font-semibold text-text-primary group-hover:text-accent-500 transition-colors mb-2">
+                {calc.title}
+              </h3>
+              <p className="text-text-secondary text-sm leading-relaxed">
+                {calc.description}
+              </p>
+              <div className="mt-4 flex items-center text-accent-500 text-sm font-medium">
+                Try Calculator
+                <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <AdSense slot="in-article" variant="in-feed" />
+
+      {/* Why CalcPick */}
+      <section className="container mx-auto px-4 py-12">
+        <h2 className="text-2xl font-bold text-text-primary mb-8 text-center">
+          Why Use {SITE_NAME}?
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="text-center">
+            <div className="w-12 h-12 bg-accent-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 className="text-text-primary font-semibold mb-2">Instant Results</h3>
+            <p className="text-text-secondary text-sm">
+              Get real-time calculations as you adjust inputs. No page reloads or waiting.
+            </p>
+          </div>
+          <div className="text-center">
+            <div className="w-12 h-12 bg-accent-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-text-primary font-semibold mb-2">Accurate Formulas</h3>
+            <p className="text-text-secondary text-sm">
+              Industry-standard financial formulas used by banks and financial institutions.
+            </p>
+          </div>
+          <div className="text-center">
+            <div className="w-12 h-12 bg-accent-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h3 className="text-text-primary font-semibold mb-2">100% Private</h3>
+            <p className="text-text-secondary text-sm">
+              All calculations happen in your browser. Your financial data never leaves your device.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <AdSense slot="footer" variant="banner" />
     </div>
   );
 }
