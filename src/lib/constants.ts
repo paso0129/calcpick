@@ -6,6 +6,14 @@ export const SITE_DESCRIPTION = 'Free online financial calculators. Calculate mo
 
 export const CALCULATORS: CalculatorMeta[] = [
   {
+    slug: 'basic',
+    title: 'Professional Calculator',
+    shortTitle: 'Calculator',
+    description: 'High-precision arithmetic calculator with scientific functions, history log, and unit converter.',
+    icon: '🔢',
+    category: 'Utility',
+  },
+  {
     slug: 'mortgage',
     title: 'Mortgage Calculator',
     shortTitle: 'Mortgage',
