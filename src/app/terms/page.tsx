@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { SITE_NAME, SITE_URL } from '@/lib/constants';
 
 export const metadata: Metadata = {
@@ -9,74 +10,201 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-3xl">
-      <h1 className="text-3xl font-bold text-text-primary mb-2">Terms of Service</h1>
-      <p className="text-text-tertiary text-sm mb-8">Last updated: February 2026</p>
+      <nav className="text-sm text-dark-secondary mb-6">
+        <Link href="/" className="hover:text-blue-400">Home</Link>
+        <span className="mx-2">/</span>
+        <span className="text-dark-primary">Terms of Service</span>
+      </nav>
+
+      <h1 className="text-3xl font-bold text-dark-primary mb-2">Terms of Service</h1>
+      <p className="text-dark-secondary text-sm mb-8">Effective Date: February 23, 2026</p>
 
       <div className="space-y-8">
-        <section className="bg-dark-surface border border-dark-border rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-text-primary mb-3">Acceptance of Terms</h2>
-          <p className="text-text-secondary leading-relaxed">
-            By accessing and using {SITE_NAME} ({SITE_URL}), you accept and agree to be bound by these
-            Terms of Service. If you do not agree to these terms, please do not use our website.
+        {/* 1. Acceptance of Terms */}
+        <section className="bg-dark-card border border-dark-border rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-dark-primary mb-3">1. Acceptance of Terms</h2>
+          <p className="text-dark-secondary leading-relaxed">
+            By accessing and using {SITE_NAME} (<a href={SITE_URL} className="text-accent-500 hover:text-accent-600 underline">{SITE_URL}</a>),
+            you acknowledge that you have read, understood, and agree to be bound by these Terms of Service
+            and all applicable laws and regulations. If you do not agree with any part of these terms,
+            you must immediately discontinue use of the website. Your continued use of {SITE_NAME} constitutes
+            your acceptance of these Terms of Service.
           </p>
         </section>
 
-        <section className="bg-dark-surface border border-dark-border rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-text-primary mb-3">Calculator Disclaimer</h2>
-          <p className="text-text-secondary leading-relaxed mb-3">
-            Our calculators are provided for informational and educational purposes only. Results are
-            estimates based on the information you provide and standard financial formulas.
+        {/* 2. Description of Service */}
+        <section className="bg-dark-card border border-dark-border rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-dark-primary mb-3">2. Description of Service</h2>
+          <p className="text-dark-secondary leading-relaxed mb-3">
+            {SITE_NAME} provides free, web-based financial calculators designed to help users perform
+            various financial computations, including but not limited to:
           </p>
-          <p className="text-text-secondary leading-relaxed">
-            <strong className="text-text-primary">Important:</strong> Calculator results should NOT be considered
-            as financial advice, tax advice, or a guarantee of actual loan terms. Actual results may vary
-            significantly based on your credit score, lender policies, fees, taxes, and other factors not
-            accounted for in our calculations. Always consult with a qualified financial professional before
-            making financial decisions.
+          <ul className="list-disc list-inside space-y-2 text-dark-secondary text-sm mb-3">
+            <li>Mortgage payment calculations</li>
+            <li>Auto loan and personal loan estimates</li>
+            <li>Student loan repayment planning</li>
+            <li>Compound interest projections</li>
+            <li>Debt payoff strategy comparisons</li>
+            <li>General arithmetic and scientific calculations</li>
+          </ul>
+          <p className="text-dark-secondary leading-relaxed">
+            All calculator computations are performed entirely client-side within your browser.
+            We do not collect, store, or transmit any financial data you enter into our calculators.
+            The service is provided free of charge and may be supported by third-party advertising.
           </p>
         </section>
 
-        <section className="bg-dark-surface border border-dark-border rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-text-primary mb-3">Use of Service</h2>
-          <p className="text-text-secondary leading-relaxed">You agree to:</p>
-          <ul className="list-disc list-inside space-y-2 text-text-secondary text-sm mt-3">
-            <li>Use the calculators only for lawful purposes</li>
-            <li>Not attempt to reverse-engineer, modify, or redistribute our tools</li>
-            <li>Not use automated systems to access our website in a manner that overloads our servers</li>
-            <li>Verify all calculator results independently before making financial decisions</li>
+        {/* 3. Disclaimer / No Financial Advice */}
+        <section className="bg-dark-card border border-dark-border rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-dark-primary mb-3">3. Disclaimer &mdash; No Financial Advice</h2>
+          <div className="bg-dark-base border border-dark-border rounded-lg p-4 mb-4">
+            <p className="text-dark-primary font-semibold text-sm">
+              IMPORTANT: The calculators and content provided on {SITE_NAME} are for educational and
+              informational purposes only. Nothing on this website constitutes financial advice, tax advice,
+              investment advice, legal advice, or any other form of professional advice.
+            </p>
+          </div>
+          <p className="text-dark-secondary leading-relaxed mb-3">
+            You should not make any financial decisions based solely on the output of our calculators.
+            The results generated by our tools are intended to serve as general reference points and
+            starting estimates only.
+          </p>
+          <p className="text-dark-secondary leading-relaxed">
+            We strongly recommend that you consult with a qualified financial advisor, accountant,
+            tax professional, or other appropriate expert before making any financial decisions.
+            {SITE_NAME} is not a financial institution and does not provide personalized financial
+            recommendations.
+          </p>
+        </section>
+
+        {/* 4. Accuracy Disclaimer */}
+        <section className="bg-dark-card border border-dark-border rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-dark-primary mb-3">4. Accuracy Disclaimer</h2>
+          <p className="text-dark-secondary leading-relaxed mb-3">
+            While we strive to ensure that our calculators produce accurate results based on standard
+            financial formulas, all outputs are <strong className="text-dark-primary">estimates only</strong> and
+            should not be treated as guarantees of actual financial outcomes.
+          </p>
+          <p className="text-dark-secondary leading-relaxed mb-3">
+            Actual results may vary significantly due to factors including but not limited to:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-dark-secondary text-sm mb-3">
+            <li>Your individual credit score and credit history</li>
+            <li>Specific lender policies, fees, and qualification criteria</li>
+            <li>Applicable taxes, insurance, and additional costs</li>
+            <li>Changes in interest rates and market conditions</li>
+            <li>Rounding differences and varying compounding methods</li>
+          </ul>
+          <p className="text-dark-secondary leading-relaxed">
+            {SITE_NAME} makes no warranties, express or implied, regarding the accuracy, completeness,
+            reliability, or suitability of calculator outputs for any particular purpose. Users are
+            solely responsible for verifying all results independently.
+          </p>
+        </section>
+
+        {/* 5. Intellectual Property */}
+        <section className="bg-dark-card border border-dark-border rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-dark-primary mb-3">5. Intellectual Property</h2>
+          <p className="text-dark-secondary leading-relaxed mb-3">
+            All content, design, graphics, logos, icons, source code, and software on {SITE_NAME} are
+            the intellectual property of {SITE_NAME} and are protected by applicable copyright,
+            trademark, and other intellectual property laws.
+          </p>
+          <p className="text-dark-secondary leading-relaxed">
+            You may not reproduce, distribute, modify, create derivative works from, publicly display,
+            or otherwise exploit any content from this website without prior written permission from
+            {SITE_NAME}. Limited personal, non-commercial use of the calculators as intended is permitted.
+          </p>
+        </section>
+
+        {/* 6. User Conduct */}
+        <section className="bg-dark-card border border-dark-border rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-dark-primary mb-3">6. User Conduct</h2>
+          <p className="text-dark-secondary leading-relaxed mb-3">
+            By using {SITE_NAME}, you agree to the following:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-dark-secondary text-sm">
+            <li>Use the calculators and website only for lawful purposes</li>
+            <li>Not attempt to reverse-engineer, decompile, modify, or redistribute our tools or source code</li>
+            <li>Not use automated bots, scrapers, or other systems to access our website in a manner that could overload, damage, or impair our servers</li>
+            <li>Not attempt to gain unauthorized access to any part of the website or its underlying systems</li>
+            <li>Not introduce viruses, malware, or other harmful code to the website</li>
+            <li>Verify all calculator results independently before making any financial decisions</li>
+            <li>Not misrepresent the output of our calculators as professional financial advice to any third party</li>
           </ul>
         </section>
 
-        <section className="bg-dark-surface border border-dark-border rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-text-primary mb-3">Limitation of Liability</h2>
-          <p className="text-text-secondary leading-relaxed">
-            {SITE_NAME} shall not be liable for any direct, indirect, incidental, consequential, or
-            punitive damages arising from your use of our calculators or reliance on their results.
-            We make no warranties, express or implied, regarding the accuracy, completeness, or
-            reliability of calculator outputs.
+        {/* 7. Third-Party Links */}
+        <section className="bg-dark-card border border-dark-border rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-dark-primary mb-3">7. Third-Party Links</h2>
+          <p className="text-dark-secondary leading-relaxed mb-3">
+            {SITE_NAME} may contain links to third-party websites, services, or advertisements that
+            are not owned or controlled by us. These links are provided for your convenience and
+            informational purposes only.
+          </p>
+          <p className="text-dark-secondary leading-relaxed">
+            We have no control over, and assume no responsibility for, the content, privacy policies,
+            or practices of any third-party websites or services. Visiting third-party links is at
+            your own risk, and we encourage you to review the terms and privacy policies of any
+            third-party sites you visit.
           </p>
         </section>
 
-        <section className="bg-dark-surface border border-dark-border rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-text-primary mb-3">Intellectual Property</h2>
-          <p className="text-text-secondary leading-relaxed">
-            All content, design, and code on {SITE_NAME} are protected by intellectual property laws.
-            You may not reproduce, distribute, or create derivative works without our written permission.
+        {/* 8. Limitation of Liability */}
+        <section className="bg-dark-card border border-dark-border rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-dark-primary mb-3">8. Limitation of Liability</h2>
+          <p className="text-dark-secondary leading-relaxed mb-3">
+            To the fullest extent permitted by applicable law, {SITE_NAME}, its owners, operators,
+            affiliates, and contributors shall not be liable for any direct, indirect, incidental,
+            special, consequential, or punitive damages arising out of or related to:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-dark-secondary text-sm mb-3">
+            <li>Your use of, or inability to use, the website or calculators</li>
+            <li>Any reliance placed on calculator results or content on this website</li>
+            <li>Any errors, inaccuracies, or omissions in calculator outputs</li>
+            <li>Any financial decisions made based on information obtained through our service</li>
+            <li>Unauthorized access to or alteration of your data</li>
+            <li>Any third-party content, products, or services accessed through our website</li>
+          </ul>
+          <p className="text-dark-secondary leading-relaxed">
+            This limitation applies regardless of the legal theory under which damages are sought,
+            whether in contract, tort, negligence, strict liability, or otherwise, even if {SITE_NAME} has
+            been advised of the possibility of such damages.
           </p>
         </section>
 
-        <section className="bg-dark-surface border border-dark-border rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-text-primary mb-3">Changes to Terms</h2>
-          <p className="text-text-secondary leading-relaxed">
-            We reserve the right to modify these Terms of Service at any time. Changes take effect
-            immediately upon posting. Continued use of the website constitutes acceptance of the revised terms.
+        {/* 9. Changes to Terms */}
+        <section className="bg-dark-card border border-dark-border rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-dark-primary mb-3">9. Changes to Terms</h2>
+          <p className="text-dark-secondary leading-relaxed">
+            We reserve the right to modify, update, or replace these Terms of Service at any time
+            at our sole discretion. Changes will take effect immediately upon posting the updated
+            terms on this page with a revised effective date. It is your responsibility to review
+            these Terms of Service periodically. Your continued use of {SITE_NAME} after any changes
+            are posted constitutes your acceptance of the revised terms.
           </p>
         </section>
 
-        <section className="bg-dark-surface border border-dark-border rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-text-primary mb-3">Contact</h2>
-          <p className="text-text-secondary leading-relaxed">
-            Questions about these Terms? Contact us at{' '}
+        {/* 10. Governing Law */}
+        <section className="bg-dark-card border border-dark-border rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-dark-primary mb-3">10. Governing Law</h2>
+          <p className="text-dark-secondary leading-relaxed">
+            These Terms of Service shall be governed by and construed in accordance with the laws
+            of the United States, without regard to its conflict of law provisions. Any disputes
+            arising under or in connection with these terms shall be subject to the exclusive
+            jurisdiction of the courts in the applicable jurisdiction. If any provision of these
+            terms is found to be unenforceable or invalid, that provision shall be limited or
+            eliminated to the minimum extent necessary so that these Terms of Service shall
+            otherwise remain in full force and effect.
+          </p>
+        </section>
+
+        {/* 11. Contact Information */}
+        <section className="bg-dark-card border border-dark-border rounded-xl p-6">
+          <h2 className="text-xl font-semibold text-dark-primary mb-3">11. Contact Information</h2>
+          <p className="text-dark-secondary leading-relaxed">
+            If you have any questions, concerns, or feedback regarding these Terms of Service,
+            please contact us at{' '}
             <a href="mailto:contact@calcpick.com" className="text-accent-500 hover:text-accent-600 underline">
               contact@calcpick.com
             </a>.
