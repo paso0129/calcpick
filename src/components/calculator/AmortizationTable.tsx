@@ -84,13 +84,13 @@ export default function AmortizationTable({ schedule, showYearly = false }: Amor
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[420px] text-xs sm:text-sm tabular-nums">
+        <table className="w-full text-xs sm:text-sm tabular-nums">
           <thead>
             <tr className="border-b border-dark-border">
-              <th className="text-left text-text-tertiary font-medium px-2 sm:px-4 py-2.5 sm:py-3 w-10 sm:w-16">
-                {view === 'yearly' ? 'Year' : '#'}
+              <th className="text-left text-text-tertiary font-medium px-2 sm:px-4 py-2.5 sm:py-3 w-8 sm:w-16">
+                {view === 'yearly' ? 'Yr' : '#'}
               </th>
-              <th className="text-right text-text-tertiary font-medium px-1.5 sm:px-4 py-2.5 sm:py-3">Payment</th>
+              <th className="hidden sm:table-cell text-right text-text-tertiary font-medium px-4 py-2.5 sm:py-3">Payment</th>
               <th className="text-right text-text-tertiary font-medium px-1.5 sm:px-4 py-2.5 sm:py-3">Principal</th>
               <th className="text-right text-text-tertiary font-medium px-1.5 sm:px-4 py-2.5 sm:py-3">Interest</th>
               <th className="text-right text-text-tertiary font-medium px-2 sm:px-4 py-2.5 sm:py-3">Balance</th>
@@ -100,9 +100,8 @@ export default function AmortizationTable({ schedule, showYearly = false }: Amor
             {displayData.map((row, index) => (
               <tr key={index} className="border-b border-dark-border/50 hover:bg-dark-elevated/50">
                 <td className="px-2 sm:px-4 py-2 sm:py-2.5 text-text-primary">{row.month}</td>
-                <td className="px-1.5 sm:px-4 py-2 sm:py-2.5 text-right text-text-secondary">
-                  <span className="hidden sm:inline">{formatCurrency(row.payment)}</span>
-                  <span className="sm:hidden">{formatCompact(row.payment)}</span>
+                <td className="hidden sm:table-cell px-4 py-2 sm:py-2.5 text-right text-text-secondary">
+                  {formatCurrency(row.payment)}
                 </td>
                 <td className="px-1.5 sm:px-4 py-2 sm:py-2.5 text-right text-success-500">
                   <span className="hidden sm:inline">{formatCurrency(row.principal)}</span>
