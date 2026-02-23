@@ -482,32 +482,34 @@ export default function DebtPayoffCalculatorPage() {
                         <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgb(51 65 85)" opacity={0.5} />
                     <XAxis
                       dataKey="month"
-                      stroke="#6b7280"
-                      tick={{ fill: '#9ca3af', fontSize: 12 }}
+                      stroke="rgb(51 65 85)"
+                      tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
                       label={{
                         value: 'Month',
                         position: 'insideBottomRight',
                         offset: -5,
-                        fill: '#9ca3af',
+                        fill: 'rgb(148 163 184)',
                         fontSize: 12,
                       }}
                     />
                     <YAxis
-                      stroke="#6b7280"
-                      tick={{ fill: '#9ca3af', fontSize: 12 }}
+                      stroke="rgb(51 65 85)"
+                      tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
                       tickFormatter={(value) =>
                         `$${(Number(value) / 1000).toFixed(0)}k`
                       }
                     />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#1f2937',
-                        border: '1px solid #374151',
-                        borderRadius: '8px',
+                        backgroundColor: 'rgb(15 23 42)',
+                        border: '1px solid rgb(51 65 85)',
+                        borderRadius: '10px',
+                        padding: '10px 14px',
                         color: '#f9fafb',
+                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.4)',
                       }}
                       formatter={(value, name) => [
                         formatCurrency(Number(value)),

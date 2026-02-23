@@ -9,6 +9,12 @@ interface AmortizationTableProps {
   showYearly?: boolean;
 }
 
+function formatCompact(value: number): string {
+  if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
+  if (value >= 100000) return `$${(value / 1000).toFixed(0)}k`;
+  return formatCurrency(value);
+}
+
 export default function AmortizationTable({ schedule, showYearly = false }: AmortizationTableProps) {
   const [view, setView] = useState<'monthly' | 'yearly'>(showYearly ? 'yearly' : 'monthly');
   const [expanded, setExpanded] = useState(false);
@@ -47,13 +53,13 @@ export default function AmortizationTable({ schedule, showYearly = false }: Amor
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-xl overflow-hidden">
-      <div className="flex items-center justify-between p-4 border-b border-dark-border">
-        <h3 className="text-lg font-semibold text-text-primary">Amortization Schedule</h3>
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between p-3 sm:p-4 border-b border-dark-border">
+        <h3 className="text-base sm:text-lg font-semibold text-text-primary">Amortization Schedule</h3>
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <div className="flex bg-dark-elevated rounded-lg p-0.5">
             <button
               onClick={() => setView('monthly')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+              className={`px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 view === 'monthly' ? 'bg-accent-500 text-white' : 'text-text-secondary hover:text-text-primary'
               }`}
             >
@@ -61,7 +67,7 @@ export default function AmortizationTable({ schedule, showYearly = false }: Amor
             </button>
             <button
               onClick={() => setView('yearly')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+              className={`px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 view === 'yearly' ? 'bg-accent-500 text-white' : 'text-text-secondary hover:text-text-primary'
               }`}
             >
@@ -70,7 +76,7 @@ export default function AmortizationTable({ schedule, showYearly = false }: Amor
           </div>
           <button
             onClick={handleDownloadCSV}
-            className="px-3 py-1.5 text-xs font-medium text-text-secondary border border-dark-border rounded-lg hover:bg-dark-elevated transition-colors"
+            className="px-2.5 sm:px-3 py-1.5 text-xs font-medium text-text-secondary border border-dark-border rounded-lg hover:bg-dark-elevated transition-colors"
           >
             CSV
           </button>
@@ -78,26 +84,38 @@ export default function AmortizationTable({ schedule, showYearly = false }: Amor
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full min-w-[420px] text-xs sm:text-sm tabular-nums">
           <thead>
             <tr className="border-b border-dark-border">
-              <th className="text-left text-text-tertiary font-medium px-4 py-3">
-                {view === 'yearly' ? 'Year' : 'Month'}
+              <th className="text-left text-text-tertiary font-medium px-2 sm:px-4 py-2.5 sm:py-3 w-10 sm:w-16">
+                {view === 'yearly' ? 'Year' : '#'}
               </th>
-              <th className="text-right text-text-tertiary font-medium px-4 py-3">Payment</th>
-              <th className="text-right text-text-tertiary font-medium px-4 py-3">Principal</th>
-              <th className="text-right text-text-tertiary font-medium px-4 py-3">Interest</th>
-              <th className="text-right text-text-tertiary font-medium px-4 py-3">Balance</th>
+              <th className="text-right text-text-tertiary font-medium px-1.5 sm:px-4 py-2.5 sm:py-3">Payment</th>
+              <th className="text-right text-text-tertiary font-medium px-1.5 sm:px-4 py-2.5 sm:py-3">Principal</th>
+              <th className="text-right text-text-tertiary font-medium px-1.5 sm:px-4 py-2.5 sm:py-3">Interest</th>
+              <th className="text-right text-text-tertiary font-medium px-2 sm:px-4 py-2.5 sm:py-3">Balance</th>
             </tr>
           </thead>
           <tbody>
             {displayData.map((row, index) => (
               <tr key={index} className="border-b border-dark-border/50 hover:bg-dark-elevated/50">
-                <td className="px-4 py-2.5 text-text-primary">{row.month}</td>
-                <td className="px-4 py-2.5 text-right text-text-secondary">{formatCurrency(row.payment)}</td>
-                <td className="px-4 py-2.5 text-right text-success-500">{formatCurrency(row.principal)}</td>
-                <td className="px-4 py-2.5 text-right text-red-400">{formatCurrency(row.interest)}</td>
-                <td className="px-4 py-2.5 text-right text-text-primary font-medium">{formatCurrency(row.balance)}</td>
+                <td className="px-2 sm:px-4 py-2 sm:py-2.5 text-text-primary">{row.month}</td>
+                <td className="px-1.5 sm:px-4 py-2 sm:py-2.5 text-right text-text-secondary">
+                  <span className="hidden sm:inline">{formatCurrency(row.payment)}</span>
+                  <span className="sm:hidden">{formatCompact(row.payment)}</span>
+                </td>
+                <td className="px-1.5 sm:px-4 py-2 sm:py-2.5 text-right text-success-500">
+                  <span className="hidden sm:inline">{formatCurrency(row.principal)}</span>
+                  <span className="sm:hidden">{formatCompact(row.principal)}</span>
+                </td>
+                <td className="px-1.5 sm:px-4 py-2 sm:py-2.5 text-right text-red-400">
+                  <span className="hidden sm:inline">{formatCurrency(row.interest)}</span>
+                  <span className="sm:hidden">{formatCompact(row.interest)}</span>
+                </td>
+                <td className="px-2 sm:px-4 py-2 sm:py-2.5 text-right text-text-primary font-medium">
+                  <span className="hidden sm:inline">{formatCurrency(row.balance)}</span>
+                  <span className="sm:hidden">{formatCompact(row.balance)}</span>
+                </td>
               </tr>
             ))}
           </tbody>

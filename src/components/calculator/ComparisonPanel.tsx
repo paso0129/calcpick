@@ -22,9 +22,9 @@ export default function ComparisonPanel({ headers, items, title }: ComparisonPan
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-dark-border">
-              <th className="text-left text-text-tertiary font-medium px-4 py-3" />
+              <th className="text-left text-text-tertiary font-medium px-2 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm" />
               {headers.map((header, i) => (
-                <th key={i} className="text-right text-text-tertiary font-medium px-4 py-3">
+                <th key={i} className="text-right text-text-tertiary font-medium px-2 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm">
                   {header}
                 </th>
               ))}
@@ -33,11 +33,11 @@ export default function ComparisonPanel({ headers, items, title }: ComparisonPan
           <tbody>
             {items.map((item, index) => (
               <tr key={index} className="border-b border-dark-border/50">
-                <td className="px-4 py-3 text-text-secondary font-medium">{item.label}</td>
+                <td className="px-2 sm:px-4 py-2.5 sm:py-3 text-text-secondary font-medium text-xs sm:text-sm">{item.label}</td>
                 {item.values.map((value, i) => (
                   <td
                     key={i}
-                    className={`px-4 py-3 text-right ${
+                    className={`px-2 sm:px-4 py-2.5 sm:py-3 text-right text-xs sm:text-sm ${
                       item.highlight === i ? 'text-success-500 font-semibold' : 'text-text-primary'
                     }`}
                   >

@@ -54,10 +54,12 @@ const FAQ_ITEMS = [
 ];
 
 const tooltipStyle = {
-  backgroundColor: 'rgb(30 41 59)',
-  border: '1px solid rgb(71 85 105)',
-  borderRadius: '8px',
+  backgroundColor: 'rgb(15 23 42)',
+  border: '1px solid rgb(51 65 85)',
+  borderRadius: '10px',
+  padding: '10px 14px',
   color: 'rgb(241 245 249)',
+  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.4)',
 };
 
 export default function CompoundInterestCalculator() {
@@ -267,7 +269,7 @@ export default function CompoundInterestCalculator() {
             <div className="h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgb(71 85 105)" opacity={0.3} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgb(51 65 85)" opacity={0.5} />
                   <XAxis
                     dataKey="year"
                     tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
@@ -329,7 +331,7 @@ export default function CompoundInterestCalculator() {
                   data={interestPerYearData}
                   margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgb(71 85 105)" opacity={0.3} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgb(51 65 85)" opacity={0.5} />
                   <XAxis
                     dataKey="year"
                     tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
