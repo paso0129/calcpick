@@ -29,9 +29,9 @@ export default function ResultCard({ items, title }: ResultCardProps) {
             <p className="text-text-tertiary text-[10px] sm:text-xs uppercase tracking-wider mb-1">
               {item.label}
             </p>
-            <p className={`font-bold ${
+            <p className={`text-base sm:text-lg font-bold ${
               item.highlight ? 'text-accent-500' : 'text-text-primary'
-            } ${item.value.length > 10 ? 'text-base sm:text-xl' : 'text-lg sm:text-2xl'}`}>
+            }`}>
               {item.value}
             </p>
             {item.subtext && (
