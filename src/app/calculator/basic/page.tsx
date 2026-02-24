@@ -668,57 +668,6 @@ export default function BasicCalculatorPage() {
               </div>
             </div>
 
-            {/* ── History Panel ─────────────────────────────────────── */}
-            {showHistory && (
-              <div className="mt-4 bg-dark-surface border border-dark-border rounded-2xl overflow-hidden shadow-lg animate-fade-in">
-                <div className="p-4 border-b border-dark-border flex items-center justify-between">
-                  <h2 className="text-sm font-semibold text-text-primary">Calculation History</h2>
-                  {history.length > 0 && (
-                    <button
-                      onClick={() => setHistory([])}
-                      className="text-xs text-red-400 hover:text-red-300 transition-colors"
-                    >
-                      Clear History
-                    </button>
-                  )}
-                </div>
-                <div className="max-h-64 overflow-y-auto">
-                  {history.length === 0 ? (
-                    <div className="p-6 text-center text-text-tertiary text-sm">
-                      No calculations yet. Start computing to see your history here.
-                    </div>
-                  ) : (
-                    <ul className="divide-y divide-dark-border">
-                      {history.map((entry, idx) => (
-                        <li key={idx} className="px-4 py-3 flex items-center justify-between hover:bg-dark-elevated/50 transition-colors">
-                          <div className="min-w-0 flex-1">
-                            <p className="text-xs text-text-tertiary truncate" style={{ fontFamily: "'Roboto Mono', monospace" }}>
-                              {entry.equation}
-                            </p>
-                            <p className="text-sm font-semibold text-text-primary" style={{ fontFamily: "'Roboto Mono', monospace" }}>
-                              = {formatDisplayNumber(entry.result)}
-                            </p>
-                          </div>
-                          <button
-                            onClick={() => {
-                              setDisplay(entry.result);
-                              setWaitingForOperand(true);
-                              setEquation('');
-                              setPreviousValue(null);
-                              setOperator(null);
-                            }}
-                            className="ml-3 px-2.5 py-1 text-xs font-medium rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 transition-colors flex-shrink-0"
-                          >
-                            Re-use
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-            )}
-
             {/* ── Unit Converter ────────────────────────────────────── */}
             <div className="mt-6 bg-dark-surface border border-dark-border rounded-2xl overflow-hidden shadow-lg">
               <div className="p-4 border-b border-dark-border">
@@ -780,9 +729,61 @@ export default function BasicCalculatorPage() {
             </div>
           </div>
 
-          {/* Sidebar Ad Column */}
+          {/* Sidebar Column */}
           <div className="lg:col-span-4">
-            <div className="sticky top-24">
+            <div className="sticky top-24 space-y-4">
+              {/* ── History Panel ─────────────────────────────────── */}
+              {showHistory && (
+                <div className="bg-dark-surface border border-dark-border rounded-2xl overflow-hidden shadow-lg">
+                  <div className="p-4 border-b border-dark-border flex items-center justify-between">
+                    <h2 className="text-sm font-semibold text-text-primary">Calculation History</h2>
+                    {history.length > 0 && (
+                      <button
+                        onClick={() => setHistory([])}
+                        className="text-xs text-red-400 hover:text-red-300 transition-colors"
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
+                  <div className="max-h-[400px] overflow-y-auto">
+                    {history.length === 0 ? (
+                      <div className="p-6 text-center text-text-tertiary text-sm">
+                        No calculations yet.
+                      </div>
+                    ) : (
+                      <ul className="divide-y divide-dark-border">
+                        {history.map((entry, idx) => (
+                          <li key={idx} className="px-4 py-3 hover:bg-dark-elevated/50 transition-colors">
+                            <div className="flex items-center justify-between">
+                              <div className="min-w-0 flex-1">
+                                <p className="text-xs text-text-tertiary truncate" style={{ fontFamily: "'Roboto Mono', monospace" }}>
+                                  {entry.equation}
+                                </p>
+                                <p className="text-sm font-semibold text-text-primary" style={{ fontFamily: "'Roboto Mono', monospace" }}>
+                                  = {formatDisplayNumber(entry.result)}
+                                </p>
+                              </div>
+                              <button
+                                onClick={() => {
+                                  setDisplay(entry.result);
+                                  setWaitingForOperand(true);
+                                  setEquation('');
+                                  setPreviousValue(null);
+                                  setOperator(null);
+                                }}
+                                className="ml-3 px-2.5 py-1 text-xs font-medium rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 transition-colors flex-shrink-0"
+                              >
+                                Re-use
+                              </button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              )}
               <AdSense slot="sidebar" variant="sidebar" />
             </div>
           </div>
