@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import NumberInput from '@/components/calculator/NumberInput';
 import ResultCard from '@/components/calculator/ResultCard';
 import CalculatorForm from '@/components/calculator/CalculatorForm';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
 import { calculateCompoundInterest } from '@/lib/calculators/compound-interest';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
+import { buildShareUrl, getParamNumber } from '@/lib/share';
 import {
   AreaChart,
   Area,
@@ -71,7 +73,25 @@ export default function CompoundInterestCalculator() {
 
   useEffect(() => {
     document.title = 'Compound Interest Calculator - Investment Growth | CalcPick';
+    const params = new URLSearchParams(window.location.search);
+    const ii = getParamNumber(params, 'ii');
+    const mc = getParamNumber(params, 'mc');
+    const ar = getParamNumber(params, 'ar');
+    const y = getParamNumber(params, 'y');
+    const cf = getParamNumber(params, 'cf');
+    if (ii !== null) setInitialInvestment(ii);
+    if (mc !== null) setMonthlyContribution(mc);
+    if (ar !== null) setAnnualRate(ar);
+    if (y !== null) setYears(y);
+    if (cf !== null) setCompoundFrequency(cf);
   }, []);
+
+  const getShareUrl = useCallback(
+    () => buildShareUrl('/calculator/compound-interest', {
+      ii: initialInvestment, mc: monthlyContribution, ar: annualRate, y: years, cf: compoundFrequency,
+    }),
+    [initialInvestment, monthlyContribution, annualRate, years, compoundFrequency]
+  );
 
   const result = useMemo(
     () =>
@@ -143,11 +163,14 @@ export default function CompoundInterestCalculator() {
 
         {/* Page Header */}
         <div className="mt-6 mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-2">
-            Compound Interest Calculator
-          </h1>
+          <div className="flex items-start justify-between gap-4 mb-2">
+            <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
+              Compound Interest Calculator
+            </h1>
+            <ShareButton getShareUrl={getShareUrl} />
+          </div>
           <p className="text-text-secondary text-lg">
-            See how your investments grow over time with the power of compound interest.
+            See how your investments grow over time with compound interest.
           </p>
         </div>
 
@@ -201,7 +224,6 @@ export default function CompoundInterestCalculator() {
                 step={1}
                 suffix="years"
                 showSlider
-                helpText="How long you plan to invest"
               />
 
               {/* Compound Frequency Buttons */}
@@ -243,14 +265,13 @@ export default function CompoundInterestCalculator() {
                   value: formatCurrency(result.totalContributions),
                 },
                 {
-                  label: 'Total Interest Earned',
+                  label: 'Interest Earned',
                   value: formatCurrency(result.totalInterest),
-                  subtext: `${((result.totalInterest / result.totalContributions) * 100).toFixed(1)}% return on contributions`,
+                  subtext: `${((result.totalInterest / result.totalContributions) * 100).toFixed(1)}% return`,
                 },
                 {
-                  label: 'Effective Annual Rate',
+                  label: 'Effective Rate',
                   value: `${effectiveAnnualRate}%`,
-                  subtext: `With ${FREQUENCY_OPTIONS.find((o) => o.value === compoundFrequency)?.label?.toLowerCase()} compounding`,
                 },
               ]}
             />

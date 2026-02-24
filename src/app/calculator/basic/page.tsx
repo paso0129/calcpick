@@ -2,9 +2,11 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
 import { SITE_URL } from '@/lib/constants';
+import { buildShareUrl, getParamString, getParamNumber } from '@/lib/share';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -136,7 +138,18 @@ export default function BasicCalculatorPage() {
       link.href = 'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&display=swap';
       document.head.appendChild(link);
     }
+
+    const params = new URLSearchParams(window.location.search);
+    const eq = getParamString(params, 'eq');
+    const d = getParamNumber(params, 'd');
+    if (eq !== null) setEquation(eq);
+    if (d !== null) setDisplay(String(d));
   }, []);
+
+  const getShareUrl = useCallback(
+    () => buildShareUrl('/calculator/basic', { eq: equation, d: display.replace(/,/g, '') }),
+    [equation, display]
+  );
 
   // ─── Calculator Logic ───────────────────────────────────────────────────
 
@@ -393,6 +406,7 @@ export default function BasicCalculatorPage() {
                 <div className="flex items-center justify-between mb-2">
                   <h1 className="text-lg font-semibold text-text-primary">Professional Calculator</h1>
                   <div className="flex items-center gap-2">
+                    <ShareButton getShareUrl={getShareUrl} size="sm" />
                     <button
                       onClick={() => setShowHistory((prev) => !prev)}
                       className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${

@@ -1,17 +1,19 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import NumberInput from '@/components/calculator/NumberInput';
 import ResultCard from '@/components/calculator/ResultCard';
 import AmortizationTable from '@/components/calculator/AmortizationTable';
 import PaymentChart from '@/components/calculator/PaymentChart';
 import CalculatorForm from '@/components/calculator/CalculatorForm';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
 import { calculatePersonalLoan } from '@/lib/calculators/personal-loan';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
+import { buildShareUrl, getParamNumber } from '@/lib/share';
 
 const TERM_OPTIONS = [12, 24, 36, 48, 60];
 
@@ -57,7 +59,19 @@ export default function PersonalLoanCalculator() {
 
   useEffect(() => {
     document.title = 'Personal Loan Calculator - Estimate Monthly Payments | CalcPick';
+    const params = new URLSearchParams(window.location.search);
+    const la = getParamNumber(params, 'la');
+    const lt = getParamNumber(params, 'lt');
+    const ir = getParamNumber(params, 'ir');
+    if (la !== null) setLoanAmount(la);
+    if (lt !== null) setLoanTerm(lt);
+    if (ir !== null) setInterestRate(ir);
   }, []);
+
+  const getShareUrl = useCallback(
+    () => buildShareUrl('/calculator/personal-loan', { la: loanAmount, lt: loanTerm, ir: interestRate }),
+    [loanAmount, loanTerm, interestRate]
+  );
 
   const result = useMemo(
     () => calculatePersonalLoan({ loanAmount, loanTerm, interestRate }),
@@ -69,22 +83,20 @@ export default function PersonalLoanCalculator() {
       label: 'Monthly Payment',
       value: formatCurrency(result.monthlyPayment),
       highlight: true,
-      subtext: `${loanTerm} monthly payments`,
+      subtext: `${loanTerm}mo / ${interestRate}% APR`,
     },
     {
       label: 'Total Interest',
       value: formatCurrency(result.totalInterest),
-      subtext: `${((result.totalInterest / loanAmount) * 100).toFixed(1)}% of loan amount`,
+      subtext: `${((result.totalInterest / loanAmount) * 100).toFixed(1)}% of loan`,
     },
     {
       label: 'Total Cost',
       value: formatCurrency(result.totalPayment),
-      subtext: 'Principal + Interest',
     },
     {
       label: 'APR',
       value: `${interestRate.toFixed(2)}%`,
-      subtext: 'Annual Percentage Rate',
     },
   ];
 
@@ -106,12 +118,14 @@ export default function PersonalLoanCalculator() {
 
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-3">
-            Personal Loan Calculator
-          </h1>
+          <div className="flex items-start justify-between gap-4 mb-3">
+            <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
+              Personal Loan Calculator
+            </h1>
+            <ShareButton getShareUrl={getShareUrl} />
+          </div>
           <p className="text-text-secondary text-lg max-w-3xl">
-            Estimate your monthly payment, total interest, and total cost for a personal loan. Adjust
-            the loan amount, term, and interest rate to find the right plan for your budget.
+            Calculate monthly payments, total interest, and total cost for your personal loan.
           </p>
         </div>
 
@@ -133,7 +147,6 @@ export default function PersonalLoanCalculator() {
                 step={500}
                 prefix="$"
                 showSlider
-                helpText="How much do you need to borrow?"
               />
 
               {/* Loan Term (button group) */}
@@ -159,9 +172,6 @@ export default function PersonalLoanCalculator() {
                     </button>
                   ))}
                 </div>
-                <p className="text-text-tertiary text-xs mt-1">
-                  Select the repayment period for your loan
-                </p>
               </div>
 
               {/* Interest Rate */}
@@ -174,7 +184,6 @@ export default function PersonalLoanCalculator() {
                 step={0.25}
                 suffix="%"
                 showSlider
-                helpText="Annual percentage rate offered by your lender"
               />
             </CalculatorForm>
 

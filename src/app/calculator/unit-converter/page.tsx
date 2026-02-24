@@ -3,11 +3,13 @@
 import { useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
 import { SITE_URL } from '@/lib/constants';
 import { UNIT_CATEGORIES, convert } from '@/lib/units';
 import { UNIT_SEO } from '@/lib/unit-seo';
+import { buildShareUrl, getParamString, getParamNumber } from '@/lib/share';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -60,7 +62,34 @@ export default function UnitConverterPage() {
 
   useEffect(() => {
     document.title = PAGE_TITLE;
+    const params = new URLSearchParams(window.location.search);
+    const cat = getParamString(params, 'cat');
+    const from = getParamString(params, 'from');
+    const to = getParamString(params, 'to');
+    const v = getParamNumber(params, 'v');
+    if (cat) {
+      const found = UNIT_CATEGORIES.find((c) => c.id === cat);
+      if (found) {
+        setUnitCategoryId(found.id);
+        const fromUnit = from && found.units.find((u) => u.id === from) ? from : found.units[0].id;
+        const toUnit = to && found.units.find((u) => u.id === to) ? to : (found.units.length > 1 ? found.units[1].id : found.units[0].id);
+        setFromUnitId(fromUnit);
+        setToUnitId(toUnit);
+        if (v !== null) {
+          const vStr = String(v);
+          setFromValue(vStr);
+          setToValue(formatConverted(convert(v, fromUnit, toUnit, found.id)));
+        }
+      }
+    }
   }, []);
+
+  const getShareUrl = useCallback(
+    () => buildShareUrl('/calculator/unit-converter', {
+      cat: unitCategoryId, from: fromUnitId, to: toUnitId, v: fromValue,
+    }),
+    [unitCategoryId, fromUnitId, toUnitId, fromValue]
+  );
 
   const currentCategory = UNIT_CATEGORIES.find((c) => c.id === unitCategoryId) ?? UNIT_CATEGORIES[0];
 
@@ -134,10 +163,15 @@ export default function UnitConverterPage() {
             {/* Quick Converter */}
             <div className="bg-dark-surface border border-dark-border rounded-2xl overflow-hidden shadow-lg">
               <div className="p-6 pb-4">
-                <h1 className="text-lg font-semibold text-text-primary">Unit Converter</h1>
-                <p className="text-sm text-text-tertiary mt-1">
-                  Convert between 100+ units across 17 categories
-                </p>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h1 className="text-lg font-semibold text-text-primary">Unit Converter</h1>
+                    <p className="text-sm text-text-tertiary mt-1">
+                      Convert between 100+ units across 17 categories
+                    </p>
+                  </div>
+                  <ShareButton getShareUrl={getShareUrl} size="sm" />
+                </div>
               </div>
 
               {/* Category Tabs */}

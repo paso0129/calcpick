@@ -1,17 +1,19 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import NumberInput from '@/components/calculator/NumberInput';
 import ResultCard from '@/components/calculator/ResultCard';
 import AmortizationTable from '@/components/calculator/AmortizationTable';
 import PaymentChart from '@/components/calculator/PaymentChart';
 import CalculatorForm from '@/components/calculator/CalculatorForm';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
 import { calculateAutoLoan } from '@/lib/calculators/auto-loan';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
+import { buildShareUrl, getParamNumber } from '@/lib/share';
 
 const LOAN_TERMS = [36, 48, 60, 72, 84];
 
@@ -59,7 +61,25 @@ export default function AutoLoanCalculatorPage() {
 
   useEffect(() => {
     document.title = 'Auto Loan Calculator - Calculate Your Car Payment | CalcPick';
+    const params = new URLSearchParams(window.location.search);
+    const vp = getParamNumber(params, 'vp');
+    const dp = getParamNumber(params, 'dp');
+    const tv = getParamNumber(params, 'tv');
+    const lt = getParamNumber(params, 'lt');
+    const ir = getParamNumber(params, 'ir');
+    if (vp !== null) setVehiclePrice(vp);
+    if (dp !== null) setDownPayment(dp);
+    if (tv !== null) setTradeInValue(tv);
+    if (lt !== null) setLoanTerm(lt);
+    if (ir !== null) setInterestRate(ir);
   }, []);
+
+  const getShareUrl = useCallback(
+    () => buildShareUrl('/calculator/auto-loan', {
+      vp: vehiclePrice, dp: downPayment, tv: tradeInValue, lt: loanTerm, ir: interestRate,
+    }),
+    [vehiclePrice, downPayment, tradeInValue, loanTerm, interestRate]
+  );
 
   const result = useMemo(() => {
     return calculateAutoLoan({
@@ -78,22 +98,20 @@ export default function AutoLoanCalculatorPage() {
       label: 'Monthly Payment',
       value: formatCurrency(result.monthlyPayment),
       highlight: true,
-      subtext: `${loanTerm} months at ${interestRate}% APR`,
+      subtext: `${loanTerm}mo / ${interestRate}% APR`,
     },
     {
       label: 'Total Interest',
       value: formatCurrency(result.totalInterest),
-      subtext: `${((result.totalInterest / loanAmount) * 100).toFixed(1)}% of loan amount`,
+      subtext: `${((result.totalInterest / loanAmount) * 100).toFixed(1)}% of loan`,
     },
     {
       label: 'Total Cost',
       value: formatCurrency(result.totalPayment + downPayment + tradeInValue),
-      subtext: 'Including down payment & trade-in',
     },
     {
       label: 'Loan Amount',
       value: formatCurrency(loanAmount),
-      subtext: `${formatCurrency(vehiclePrice)} - ${formatCurrency(downPayment)} - ${formatCurrency(tradeInValue)}`,
     },
   ];
 
@@ -115,12 +133,14 @@ export default function AutoLoanCalculatorPage() {
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-3">
-            Auto Loan Calculator
-          </h1>
+          <div className="flex items-start justify-between gap-4 mb-3">
+            <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
+              Auto Loan Calculator
+            </h1>
+            <ShareButton getShareUrl={getShareUrl} />
+          </div>
           <p className="text-text-secondary text-lg max-w-3xl">
-            Estimate your monthly car payment with trade-in value, down payment, and loan terms.
-            See the total interest and a full amortization schedule.
+            Estimate your monthly car payment with trade-in, down payment, and loan terms.
           </p>
         </div>
 
@@ -141,7 +161,6 @@ export default function AutoLoanCalculatorPage() {
                 step={500}
                 prefix="$"
                 showSlider
-                helpText="The full purchase price of the vehicle"
               />
               <NumberInput
                 label="Down Payment"
@@ -152,7 +171,6 @@ export default function AutoLoanCalculatorPage() {
                 step={500}
                 prefix="$"
                 showSlider
-                helpText="The amount you pay upfront"
               />
               <NumberInput
                 label="Trade-In Value"
@@ -163,7 +181,6 @@ export default function AutoLoanCalculatorPage() {
                 step={500}
                 prefix="$"
                 showSlider
-                helpText="The value of your current vehicle as trade-in"
               />
               <NumberInput
                 label="Interest Rate (APR)"
@@ -174,7 +191,6 @@ export default function AutoLoanCalculatorPage() {
                 step={0.1}
                 suffix="%"
                 showSlider
-                helpText="Annual percentage rate"
               />
               <NumberInput
                 label="Loan Term"
@@ -185,12 +201,10 @@ export default function AutoLoanCalculatorPage() {
                 step={12}
                 suffix="mo"
                 showSlider
-                helpText="Length of loan in months"
               />
 
               {/* Quick Term Buttons */}
               <div className="mt-2">
-                <p className="text-sm font-medium text-text-secondary mb-2">Common Loan Terms</p>
                 <div className="flex flex-wrap gap-2">
                   {LOAN_TERMS.map((term) => (
                     <button

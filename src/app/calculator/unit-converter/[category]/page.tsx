@@ -1,14 +1,16 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
 import { SITE_URL } from '@/lib/constants';
 import { UNIT_CATEGORIES, convert } from '@/lib/units';
 import { UNIT_SEO } from '@/lib/unit-seo';
+import { buildShareUrl, getParamString, getParamNumber } from '@/lib/share';
 
 export default function UnitCategoryPage() {
   const params = useParams();
@@ -21,10 +23,11 @@ export default function UnitCategoryPage() {
   const [toUnitId, setToUnitId] = useState('');
   const [fromValue, setFromValue] = useState('');
   const [toValue, setToValue] = useState('');
+  const loadedFromUrl = useRef(false);
 
   // Initialize units when category loads
   useEffect(() => {
-    if (category) {
+    if (category && !loadedFromUrl.current) {
       setFromUnitId(category.units[0].id);
       setToUnitId(category.units.length > 1 ? category.units[1].id : category.units[0].id);
       setFromValue('');
@@ -43,7 +46,33 @@ export default function UnitCategoryPage() {
       link.href = 'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&display=swap';
       document.head.appendChild(link);
     }
-  }, [seo]);
+
+    if (category) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const from = getParamString(urlParams, 'from');
+      const to = getParamString(urlParams, 'to');
+      const v = getParamNumber(urlParams, 'v');
+      if (from || to || v !== null) {
+        loadedFromUrl.current = true;
+        const fromUnit = from && category.units.find((u) => u.id === from) ? from : category.units[0].id;
+        const toUnit = to && category.units.find((u) => u.id === to) ? to : (category.units.length > 1 ? category.units[1].id : category.units[0].id);
+        setFromUnitId(fromUnit);
+        setToUnitId(toUnit);
+        if (v !== null) {
+          const vStr = String(v);
+          setFromValue(vStr);
+          setToValue(formatConverted(convert(v, fromUnit, toUnit, categorySlug)));
+        }
+      }
+    }
+  }, [seo, category, categorySlug]);
+
+  const getShareUrl = useCallback(
+    () => buildShareUrl(`/calculator/unit-converter/${categorySlug}`, {
+      from: fromUnitId, to: toUnitId, v: fromValue,
+    }),
+    [categorySlug, fromUnitId, toUnitId, fromValue]
+  );
 
   const formatConverted = (n: number): string => {
     if (isNaN(n) || !isFinite(n)) return '';
@@ -148,11 +177,16 @@ export default function UnitCategoryPage() {
             <div className="bg-dark-surface border border-dark-border rounded-2xl overflow-hidden shadow-lg">
               {/* Header */}
               <div className="p-6 pb-4">
-                <div className="flex items-center gap-3 mb-1">
-                  <span className="text-2xl">{category.icon}</span>
-                  <h1 className="text-lg font-semibold text-text-primary">{seo.h1}</h1>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="text-2xl">{category.icon}</span>
+                      <h1 className="text-lg font-semibold text-text-primary">{seo.h1}</h1>
+                    </div>
+                    <p className="text-sm text-text-tertiary">{seo.subtitle}</p>
+                  </div>
+                  <ShareButton getShareUrl={getShareUrl} size="sm" />
                 </div>
-                <p className="text-sm text-text-tertiary">{seo.subtitle}</p>
               </div>
 
               {/* Converter */}

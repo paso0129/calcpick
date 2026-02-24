@@ -1,17 +1,19 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import NumberInput from '@/components/calculator/NumberInput';
 import ResultCard from '@/components/calculator/ResultCard';
 import AmortizationTable from '@/components/calculator/AmortizationTable';
 import PaymentChart from '@/components/calculator/PaymentChart';
 import CalculatorForm from '@/components/calculator/CalculatorForm';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
 import { calculateMortgage } from '@/lib/calculators/mortgage';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
+import { buildShareUrl, getParamNumber } from '@/lib/share';
 
 const PAGE_TITLE = 'Mortgage Calculator - Calculate Your Monthly Payment | CalcPick';
 const PAGE_URL = `${SITE_URL}/calculator/mortgage`;
@@ -61,7 +63,27 @@ export default function MortgageCalculatorPage() {
 
   useEffect(() => {
     document.title = PAGE_TITLE;
+    const params = new URLSearchParams(window.location.search);
+    const hp = getParamNumber(params, 'hp');
+    const dp = getParamNumber(params, 'dp');
+    const lt = getParamNumber(params, 'lt');
+    const ir = getParamNumber(params, 'ir');
+    const pt = getParamNumber(params, 'pt');
+    const hi = getParamNumber(params, 'hi');
+    if (hp !== null) setHomePrice(hp);
+    if (dp !== null) setDownPayment(dp);
+    if (lt !== null) setLoanTerm(lt);
+    if (ir !== null) setInterestRate(ir);
+    if (pt !== null) setPropertyTax(pt);
+    if (hi !== null) setHomeInsurance(hi);
   }, []);
+
+  const getShareUrl = useCallback(
+    () => buildShareUrl('/calculator/mortgage', {
+      hp: homePrice, dp: downPayment, lt: loanTerm, ir: interestRate, pt: propertyTax, hi: homeInsurance,
+    }),
+    [homePrice, downPayment, loanTerm, interestRate, propertyTax, homeInsurance]
+  );
 
   const result = useMemo(
     () =>
@@ -83,7 +105,6 @@ export default function MortgageCalculatorPage() {
       label: 'Monthly Payment',
       value: formatCurrency(result.monthlyPayment),
       highlight: true,
-      subtext: 'Principal, interest, tax & insurance',
     },
     {
       label: 'Principal & Interest',
@@ -100,12 +121,11 @@ export default function MortgageCalculatorPage() {
     {
       label: 'Total Interest',
       value: formatCurrency(result.totalInterest),
-      subtext: `Over ${loanTerm} years`,
+      subtext: `${loanTerm}yr term`,
     },
     {
       label: 'Total Cost',
       value: formatCurrency(result.totalPayment),
-      subtext: 'All payments combined',
     },
   ];
 
@@ -129,12 +149,14 @@ export default function MortgageCalculatorPage() {
 
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-2">
-            Mortgage Calculator
-          </h1>
+          <div className="flex items-start justify-between gap-4 mb-2">
+            <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
+              Mortgage Calculator
+            </h1>
+            <ShareButton getShareUrl={getShareUrl} />
+          </div>
           <p className="text-text-secondary text-lg">
-            Estimate your monthly mortgage payment including principal, interest, taxes, and
-            insurance.
+            Calculate your monthly mortgage payment with taxes and insurance included.
           </p>
         </div>
 

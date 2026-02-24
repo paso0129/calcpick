@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import ResultCard from '@/components/calculator/ResultCard';
 import ComparisonPanel from '@/components/calculator/ComparisonPanel';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
 import { calculateDebtPayoff } from '@/lib/calculators/debt-payoff';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { DebtItem } from '@/types/calculator';
+import { buildShareUrl, getParamNumber, getParamString, getParamJson } from '@/lib/share';
 import {
   AreaChart,
   Area,
@@ -68,7 +70,33 @@ export default function DebtPayoffCalculatorPage() {
 
   useEffect(() => {
     document.title = 'Debt Payoff Calculator - Snowball vs Avalanche | CalcPick';
+    const params = new URLSearchParams(window.location.search);
+    const ep = getParamNumber(params, 'ep');
+    const s = getParamString(params, 's');
+    const d = getParamJson<{ n: string; b: number; r: number; m: number }[]>(params, 'debts');
+    if (ep !== null) setExtraPayment(ep);
+    if (s === 'avalanche' || s === 'snowball') setStrategy(s);
+    if (d && Array.isArray(d) && d.length > 0) {
+      const loaded = d.map((item, i) => ({
+        id: String(i + 1),
+        name: item.n || '',
+        balance: item.b || 0,
+        rate: item.r || 0,
+        minPayment: item.m || 0,
+      }));
+      setDebts(loaded);
+      nextId = loaded.length + 1;
+    }
   }, []);
+
+  const getShareUrl = useCallback(() => {
+    const compactDebts = debts.map((d) => ({ n: d.name, b: d.balance, r: d.rate, m: d.minPayment }));
+    return buildShareUrl('/calculator/debt-payoff', {
+      debts: JSON.stringify(compactDebts),
+      ep: extraPayment,
+      s: strategy,
+    });
+  }, [debts, extraPayment, strategy]);
 
   const avalancheResult = useMemo(() => {
     if (debts.length === 0) return null;
@@ -191,25 +219,21 @@ export default function DebtPayoffCalculatorPage() {
         label: 'Monthly Payment',
         value: formatCurrency(totalMinPayments + extraPayment),
         highlight: true,
-        subtext: `${formatCurrency(totalMinPayments)} minimums + ${formatCurrency(extraPayment)} extra`,
+        subtext: `Min ${formatCurrency(totalMinPayments)} + ${formatCurrency(extraPayment)} extra`,
       },
       {
         label: 'Debt-Free Date',
         value: selectedResult.payoffDate,
-        subtext: `${selectedResult.payoffMonths} months from now`,
+        subtext: `${selectedResult.payoffMonths} months`,
       },
       {
         label: 'Total Interest',
         value: formatCurrency(selectedResult.totalInterest),
-        subtext: `On ${formatCurrency(debts.reduce((s, d) => s + d.balance, 0))} total debt`,
       },
       {
-        label: `Savings vs ${otherLabel}`,
+        label: `vs ${otherLabel}`,
         value: savings > 0 ? formatCurrency(savings) : '$0.00',
-        subtext:
-          savings > 0
-            ? `You save ${formatCurrency(savings)} in interest`
-            : 'Both strategies cost the same',
+        subtext: savings > 0 ? 'saved' : 'Same cost',
       },
     ];
   }, [selectedResult, otherResult, debts, extraPayment, strategy]);
@@ -232,13 +256,14 @@ export default function DebtPayoffCalculatorPage() {
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-3">
-            Debt Payoff Calculator
-          </h1>
+          <div className="flex items-start justify-between gap-4 mb-3">
+            <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
+              Debt Payoff Calculator
+            </h1>
+            <ShareButton getShareUrl={getShareUrl} />
+          </div>
           <p className="text-text-secondary text-lg max-w-3xl">
-            Compare snowball vs avalanche strategies to find the fastest way to become
-            debt-free. Add your debts below and see how extra payments accelerate your
-            payoff.
+            Compare snowball vs avalanche strategies to find the fastest way to become debt-free.
           </p>
         </div>
 
@@ -411,9 +436,7 @@ export default function DebtPayoffCalculatorPage() {
                     Avalanche
                   </span>
                 </div>
-                <p className="text-text-tertiary text-xs leading-relaxed">
-                  Pay highest interest rate first. Saves the most money overall.
-                </p>
+                <p className="text-text-tertiary text-xs">Highest rate first</p>
               </button>
               <button
                 onClick={() => setStrategy('snowball')}
@@ -433,9 +456,7 @@ export default function DebtPayoffCalculatorPage() {
                     Snowball
                   </span>
                 </div>
-                <p className="text-text-tertiary text-xs leading-relaxed">
-                  Pay smallest balance first. Builds momentum with quick wins.
-                </p>
+                <p className="text-text-tertiary text-xs">Smallest balance first</p>
               </button>
             </div>
           </div>

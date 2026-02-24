@@ -29,13 +29,13 @@ export default function ResultCard({ items, title }: ResultCardProps) {
             <p className="text-text-tertiary text-[10px] sm:text-xs uppercase tracking-wider mb-1">
               {item.label}
             </p>
-            <p className={`text-lg sm:text-2xl font-bold truncate ${
+            <p className={`text-lg sm:text-2xl font-bold ${
               item.highlight ? 'text-accent-500' : 'text-text-primary'
             }`}>
               {item.value}
             </p>
             {item.subtext && (
-              <p className="text-text-tertiary text-[10px] sm:text-xs mt-1 truncate">{item.subtext}</p>
+              <p className="text-text-tertiary text-[10px] sm:text-xs mt-1">{item.subtext}</p>
             )}
           </div>
         ))}

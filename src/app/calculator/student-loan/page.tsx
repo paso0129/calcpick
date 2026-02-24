@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import NumberInput from '@/components/calculator/NumberInput';
 import ResultCard from '@/components/calculator/ResultCard';
 import ComparisonPanel from '@/components/calculator/ComparisonPanel';
@@ -8,11 +8,13 @@ import AmortizationTable from '@/components/calculator/AmortizationTable';
 import PaymentChart from '@/components/calculator/PaymentChart';
 import CalculatorForm from '@/components/calculator/CalculatorForm';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
 import { calculateStudentLoan, compareStudentLoanPlans } from '@/lib/calculators/student-loan';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
+import { buildShareUrl, getParamNumber, getParamString } from '@/lib/share';
 
 type RepaymentPlan = 'standard' | 'extended' | 'graduated';
 
@@ -64,7 +66,19 @@ export default function StudentLoanCalculatorPage() {
 
   useEffect(() => {
     document.title = 'Student Loan Calculator - Compare Repayment Plans | CalcPick';
+    const params = new URLSearchParams(window.location.search);
+    const la = getParamNumber(params, 'la');
+    const ir = getParamNumber(params, 'ir');
+    const p = getParamString(params, 'plan');
+    if (la !== null) setLoanAmount(la);
+    if (ir !== null) setInterestRate(ir);
+    if (p === 'standard' || p === 'extended' || p === 'graduated') setPlan(p);
   }, []);
+
+  const getShareUrl = useCallback(
+    () => buildShareUrl('/calculator/student-loan', { la: loanAmount, ir: interestRate, plan }),
+    [loanAmount, interestRate, plan]
+  );
 
   const result = useMemo(
     () => calculateStudentLoan({ loanAmount, interestRate, plan }),
@@ -96,10 +110,12 @@ export default function StudentLoanCalculatorPage() {
 
         {/* Page Header */}
         <div className="mt-6 mb-8">
-          <h1 className="text-3xl font-bold text-text-primary">Student Loan Calculator</h1>
-          <p className="text-text-secondary mt-2">
-            Compare repayment plans and calculate your monthly student loan payments, total interest,
-            and overall cost.
+          <div className="flex items-start justify-between gap-4 mb-2">
+            <h1 className="text-3xl font-bold text-text-primary">Student Loan Calculator</h1>
+            <ShareButton getShareUrl={getShareUrl} />
+          </div>
+          <p className="text-text-secondary">
+            Compare repayment plans and calculate your monthly student loan payments.
           </p>
         </div>
 
@@ -163,7 +179,7 @@ export default function StudentLoanCalculatorPage() {
                   label: 'Monthly Payment',
                   value: formatCurrency(result.monthlyPayment),
                   highlight: true,
-                  subtext: plan === 'graduated' ? 'Starting payment (increases over time)' : undefined,
+                  subtext: plan === 'graduated' ? 'Starting payment' : undefined,
                 },
                 {
                   label: 'Total Interest',
