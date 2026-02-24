@@ -20,7 +20,7 @@ export default function ResultCard({ items, title }: ResultCardProps) {
         {items.map((item, index) => (
           <div
             key={index}
-            className={`p-3 sm:p-4 rounded-lg ${
+            className={`p-3 sm:p-4 rounded-lg overflow-hidden ${
               item.highlight
                 ? 'bg-accent-500/10 border border-accent-500/20'
                 : 'bg-dark-elevated'
@@ -29,9 +29,9 @@ export default function ResultCard({ items, title }: ResultCardProps) {
             <p className="text-text-tertiary text-[10px] sm:text-xs uppercase tracking-wider mb-1">
               {item.label}
             </p>
-            <p className={`text-lg sm:text-2xl font-bold ${
+            <p className={`font-bold ${
               item.highlight ? 'text-accent-500' : 'text-text-primary'
-            }`}>
+            } ${item.value.length > 10 ? 'text-base sm:text-xl' : 'text-lg sm:text-2xl'}`}>
               {item.value}
             </p>
             {item.subtext && (
