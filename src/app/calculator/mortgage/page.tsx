@@ -234,9 +234,9 @@ export default function MortgageCalculatorPage() {
 
           {/* Right column - Results + Sidebar Ad */}
           <div className="lg:col-span-7 space-y-6">
-            <AdSense slot="sidebar" variant="sidebar" format="auto" />
-
             <ResultCard title="Your Mortgage Summary" items={resultItems} />
+
+            <AdSense slot="sidebar" variant="sidebar" format="auto" />
 
             {/* Loan details summary */}
             <div className="bg-dark-surface border border-dark-border rounded-xl p-6">

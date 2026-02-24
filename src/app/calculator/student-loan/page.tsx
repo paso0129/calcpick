@@ -154,10 +154,8 @@ export default function StudentLoanCalculatorPage() {
             </CalculatorForm>
           </div>
 
-          {/* Right: AdSense + Result Card */}
+          {/* Right: Result Card + AdSense */}
           <div className="lg:col-span-1 space-y-6">
-            <AdSense slot="sidebar" variant="sidebar" />
-
             <ResultCard
               title="Your Results"
               items={[
@@ -181,6 +179,8 @@ export default function StudentLoanCalculatorPage() {
                 },
               ]}
             />
+
+            <AdSense slot="sidebar" variant="sidebar" />
           </div>
         </div>
 

@@ -449,7 +449,11 @@ export default function BasicCalculatorPage() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setShowHistory((prev) => !prev)}
-                      className="px-3 py-1.5 text-xs font-medium rounded-lg bg-dark-elevated hover:bg-dark-border text-text-secondary transition-colors"
+                      className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+                        showHistory
+                          ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
+                          : 'bg-dark-elevated hover:bg-dark-border text-text-secondary'
+                      }`}
                       title="Toggle history"
                     >
                       <span className="flex items-center gap-1.5">
@@ -746,7 +750,7 @@ export default function BasicCalculatorPage() {
                       </button>
                     )}
                   </div>
-                  <div className="max-h-[400px] overflow-y-auto">
+                  <div className="max-h-[250px] lg:max-h-[400px] overflow-y-auto">
                     {history.length === 0 ? (
                       <div className="p-6 text-center text-text-tertiary text-sm">
                         No calculations yet.

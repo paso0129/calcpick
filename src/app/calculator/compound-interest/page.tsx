@@ -230,8 +230,6 @@ export default function CompoundInterestCalculator() {
 
           {/* Right Column - Results & Ad */}
           <div className="space-y-6">
-            <AdSense slot="sidebar" variant="sidebar" />
-
             <ResultCard
               title="Investment Summary"
               items={[
@@ -256,6 +254,8 @@ export default function CompoundInterestCalculator() {
                 },
               ]}
             />
+
+            <AdSense slot="sidebar" variant="sidebar" />
           </div>
         </div>
 

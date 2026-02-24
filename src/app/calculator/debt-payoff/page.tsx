@@ -395,7 +395,7 @@ export default function DebtPayoffCalculatorPage() {
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={() => setStrategy('avalanche')}
-                className={`p-4 rounded-lg border-2 transition-all text-left ${
+                className={`p-4 rounded-lg border-2 transition-all text-left active:scale-95 ${
                   strategy === 'avalanche'
                     ? 'border-accent-500 bg-accent-500/10'
                     : 'border-dark-border hover:border-accent-500/50'
@@ -417,7 +417,7 @@ export default function DebtPayoffCalculatorPage() {
               </button>
               <button
                 onClick={() => setStrategy('snowball')}
-                className={`p-4 rounded-lg border-2 transition-all text-left ${
+                className={`p-4 rounded-lg border-2 transition-all text-left active:scale-95 ${
                   strategy === 'snowball'
                     ? 'border-accent-500 bg-accent-500/10'
                     : 'border-dark-border hover:border-accent-500/50'
