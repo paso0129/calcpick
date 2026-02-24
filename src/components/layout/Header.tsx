@@ -1,14 +1,29 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useTheme } from '@/components/ui/ThemeProvider';
 import { CALCULATORS } from '@/lib/constants';
 import MobileMenu from './MobileMenu';
 
+const utilityCalcs = CALCULATORS.filter((c) => c.category === 'Utility');
+const financeCalcs = CALCULATORS.filter((c) => c.category === 'Finance');
+
 export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [financeOpen, setFinanceOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setFinanceOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -30,7 +45,7 @@ export default function Header() {
 
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-6">
-              {CALCULATORS.slice(0, 4).map((calc) => (
+              {utilityCalcs.map((calc) => (
                 <Link
                   key={calc.slug}
                   href={`/calculator/${calc.slug}`}
@@ -39,12 +54,41 @@ export default function Header() {
                   {calc.shortTitle}
                 </Link>
               ))}
-              <Link
-                href="/#calculators"
-                className="text-sm text-text-secondary hover:text-accent-500 transition-colors"
-              >
-                All Calculators
-              </Link>
+
+              {/* Finance Dropdown */}
+              <div ref={dropdownRef} className="relative">
+                <button
+                  onClick={() => setFinanceOpen(!financeOpen)}
+                  onMouseEnter={() => setFinanceOpen(true)}
+                  className="flex items-center gap-1 text-sm text-text-secondary hover:text-accent-500 transition-colors"
+                >
+                  Finance
+                  <svg className={`w-3.5 h-3.5 transition-transform ${financeOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {financeOpen && (
+                  <div
+                    onMouseLeave={() => setFinanceOpen(false)}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 bg-dark-surface border border-dark-border rounded-xl shadow-xl overflow-hidden"
+                  >
+                    <div className="py-1">
+                      {financeCalcs.map((calc) => (
+                        <Link
+                          key={calc.slug}
+                          href={`/calculator/${calc.slug}`}
+                          onClick={() => setFinanceOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-text-secondary hover:text-accent-500 hover:bg-dark-elevated transition-colors"
+                        >
+                          <span className="text-base">{calc.icon}</span>
+                          {calc.shortTitle}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </nav>
 
             {/* Actions */}

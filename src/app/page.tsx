@@ -2,6 +2,9 @@ import Link from 'next/link';
 import { CALCULATORS, SITE_NAME } from '@/lib/constants';
 import AdSense from '@/components/ads/AdSense';
 
+const utilityCalcs = CALCULATORS.filter((c) => c.category === 'Utility');
+const financeCalcs = CALCULATORS.filter((c) => c.category === 'Finance');
+
 export default function Home() {
   return (
     <div>
@@ -9,21 +12,21 @@ export default function Home() {
       <section className="bg-gradient-to-b from-accent-500/10 to-transparent border-b border-dark-border">
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
-            Free Financial Calculators
+            Free Online Calculators &amp; Tools
           </h1>
           <p className="text-lg text-text-secondary max-w-2xl mx-auto mb-8">
-            Make smarter money decisions with our accurate, easy-to-use calculators.
-            From mortgages to investments, we&apos;ve got you covered.
+            From unit conversions to mortgage planning &mdash; accurate, instant calculators
+            for everyday math and smarter financial decisions.
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link
-              href="#calculators"
+              href="#tools"
               className="inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white font-medium px-6 py-3 rounded-lg transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
               </svg>
-              Explore Calculators
+              Explore All Tools
             </Link>
           </div>
         </div>
@@ -31,15 +34,47 @@ export default function Home() {
 
       <AdSense slot="header" variant="banner" />
 
-      {/* Calculator Grid */}
-      <section id="calculators" className="container mx-auto px-4 py-12">
+      {/* Utility Tools */}
+      <section id="tools" className="container mx-auto px-4 pt-12 pb-6">
+        <h2 className="text-2xl font-bold text-text-primary mb-2">Utility Tools</h2>
+        <p className="text-text-secondary mb-8">
+          Essential everyday calculators and unit converters for quick, accurate results.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {utilityCalcs.map((calc) => (
+            <Link
+              key={calc.slug}
+              href={`/calculator/${calc.slug}`}
+              className="group bg-dark-surface border border-dark-border rounded-xl p-6 hover:border-accent-500/50 hover:shadow-lg hover:shadow-accent-500/5 transition-all"
+            >
+              <div className="text-3xl mb-3">{calc.icon}</div>
+              <h3 className="text-lg font-semibold text-text-primary group-hover:text-accent-500 transition-colors mb-2">
+                {calc.title}
+              </h3>
+              <p className="text-text-secondary text-sm leading-relaxed">
+                {calc.description}
+              </p>
+              <div className="mt-4 flex items-center text-accent-500 text-sm font-medium">
+                Try it
+                <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Finance Calculators */}
+      <section id="calculators" className="container mx-auto px-4 py-6">
         <h2 className="text-2xl font-bold text-text-primary mb-2">Finance Calculators</h2>
         <p className="text-text-secondary mb-8">
           Powerful tools to help you plan loans, investments, and debt repayment.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {CALCULATORS.map((calc) => (
+          {financeCalcs.map((calc) => (
             <Link
               key={calc.slug}
               href={`/calculator/${calc.slug}`}
@@ -90,7 +125,7 @@ export default function Home() {
             </div>
             <h3 className="text-text-primary font-semibold mb-2">Accurate Formulas</h3>
             <p className="text-text-secondary text-sm">
-              Industry-standard financial formulas used by banks and financial institutions.
+              Industry-standard formulas and precise conversion constants for reliable results.
             </p>
           </div>
           <div className="text-center">
@@ -101,7 +136,7 @@ export default function Home() {
             </div>
             <h3 className="text-text-primary font-semibold mb-2">100% Private</h3>
             <p className="text-text-secondary text-sm">
-              All calculations happen in your browser. Your financial data never leaves your device.
+              All calculations happen in your browser. Your data never leaves your device.
             </p>
           </div>
         </div>

@@ -3,6 +3,9 @@
 import Link from 'next/link';
 import { CALCULATORS } from '@/lib/constants';
 
+const utilityCalcs = CALCULATORS.filter((c) => c.category === 'Utility');
+const financeCalcs = CALCULATORS.filter((c) => c.category === 'Finance');
+
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
@@ -31,9 +34,26 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         <nav className="p-4">
           <div className="mb-4">
             <p className="text-xs font-semibold text-text-tertiary uppercase tracking-wider mb-2">
-              Calculators
+              Utility Tools
             </p>
-            {CALCULATORS.map((calc) => (
+            {utilityCalcs.map((calc) => (
+              <Link
+                key={calc.slug}
+                href={`/calculator/${calc.slug}`}
+                onClick={onClose}
+                className="flex items-center gap-3 px-3 py-2.5 text-text-secondary hover:text-accent-500 hover:bg-dark-elevated rounded-lg transition-colors"
+              >
+                <span className="text-lg">{calc.icon}</span>
+                <span className="text-sm">{calc.shortTitle}</span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mb-4">
+            <p className="text-xs font-semibold text-text-tertiary uppercase tracking-wider mb-2">
+              Finance Calculators
+            </p>
+            {financeCalcs.map((calc) => (
               <Link
                 key={calc.slug}
                 href={`/calculator/${calc.slug}`}

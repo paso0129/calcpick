@@ -2,7 +2,7 @@ import { CalculatorMeta } from '@/types/calculator';
 
 export const SITE_NAME = 'CalcPick';
 export const SITE_URL = 'https://www.calcpick.com';
-export const SITE_DESCRIPTION = 'Free online financial calculators. Calculate mortgage payments, auto loans, compound interest, and more with accurate, easy-to-use tools.';
+export const SITE_DESCRIPTION = 'Free online calculators and unit converters. From mortgage payments to temperature conversions — accurate, instant tools for everyday math and financial planning.';
 
 export const CALCULATORS: CalculatorMeta[] = [
   {
