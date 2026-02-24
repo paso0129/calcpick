@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { SITE_URL, CALCULATORS } from '@/lib/constants';
+import { UNIT_CATEGORIES } from '@/lib/units';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const calculatorPages = CALCULATORS.map((calc) => ({
@@ -7,6 +8,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.9,
+  }));
+
+  const unitConverterPages = UNIT_CATEGORIES.map((cat) => ({
+    url: `${SITE_URL}/calculator/unit-converter/${cat.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
   }));
 
   return [
@@ -17,6 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     ...calculatorPages,
+    ...unitConverterPages,
     {
       url: `${SITE_URL}/about`,
       lastModified: new Date(),

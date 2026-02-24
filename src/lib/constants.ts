@@ -9,8 +9,16 @@ export const CALCULATORS: CalculatorMeta[] = [
     slug: 'basic',
     title: 'Professional Calculator',
     shortTitle: 'Calculator',
-    description: 'High-precision arithmetic calculator with scientific functions, history log, and unit converter.',
+    description: 'High-precision arithmetic calculator with scientific functions and history log.',
     icon: '🔢',
+    category: 'Utility',
+  },
+  {
+    slug: 'unit-converter',
+    title: 'Unit Converter',
+    shortTitle: 'Unit Converter',
+    description: 'Convert 100+ units across 17 categories including radiation, frequency, power, force, data rate, and more.',
+    icon: '🔄',
     category: 'Utility',
   },
   {

@@ -53,7 +53,6 @@ interface HistoryEntry {
   result: string;
 }
 
-type UnitCategory = 'length' | 'weight' | 'temperature';
 
 // ─── Utility Functions ───────────────────────────────────────────────────────
 
@@ -92,26 +91,6 @@ function roundResult(value: number): number {
   return parseFloat(value.toPrecision(15));
 }
 
-function convertUnit(value: number, category: UnitCategory, direction: 'forward' | 'reverse'): number {
-  switch (category) {
-    case 'length':
-      return direction === 'forward' ? value * 1.60934 : value / 1.60934;
-    case 'weight':
-      return direction === 'forward' ? value * 0.453592 : value / 0.453592;
-    case 'temperature':
-      return direction === 'forward'
-        ? (value - 32) * (5 / 9)
-        : value * (9 / 5) + 32;
-    default:
-      return value;
-  }
-}
-
-const unitLabels: Record<UnitCategory, [string, string]> = {
-  length: ['Miles', 'Kilometers'],
-  weight: ['Pounds', 'Kilograms'],
-  temperature: ['°F', '°C'],
-};
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
@@ -134,12 +113,6 @@ export default function BasicCalculatorPage() {
     } catch { return []; }
   });
   const [copied, setCopied] = useState(false);
-
-  // Unit converter state
-  const [unitCategory, setUnitCategory] = useState<UnitCategory>('length');
-  const [unitFrom, setUnitFrom] = useState('');
-  const [unitTo, setUnitTo] = useState('');
-  const [unitReversed, setUnitReversed] = useState(false);
 
   const displayRef = useRef<HTMLDivElement>(null);
 
@@ -373,44 +346,6 @@ export default function BasicCalculatorPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [inputDigit, inputDecimal, handleOperator, handleEquals, clearAll, handleBackspace, handlePercentage]);
 
-  // ─── Unit Converter Logic ──────────────────────────────────────────────
-
-  const handleUnitFromChange = useCallback((value: string) => {
-    setUnitFrom(value);
-    if (value === '' || isNaN(parseFloat(value))) {
-      setUnitTo('');
-      return;
-    }
-    const num = parseFloat(value);
-    const converted = convertUnit(num, unitCategory, unitReversed ? 'reverse' : 'forward');
-    setUnitTo(isNaN(converted) ? '' : converted.toFixed(4).replace(/\.?0+$/, ''));
-  }, [unitCategory, unitReversed]);
-
-  const handleUnitToChange = useCallback((value: string) => {
-    setUnitTo(value);
-    if (value === '' || isNaN(parseFloat(value))) {
-      setUnitFrom('');
-      return;
-    }
-    const num = parseFloat(value);
-    const converted = convertUnit(num, unitCategory, unitReversed ? 'forward' : 'reverse');
-    setUnitFrom(isNaN(converted) ? '' : converted.toFixed(4).replace(/\.?0+$/, ''));
-  }, [unitCategory, unitReversed]);
-
-  const swapUnits = useCallback(() => {
-    setUnitReversed((prev) => !prev);
-    const temp = unitFrom;
-    setUnitFrom(unitTo);
-    setUnitTo(temp);
-  }, [unitFrom, unitTo]);
-
-  const handleCategoryChange = useCallback((cat: UnitCategory) => {
-    setUnitCategory(cat);
-    setUnitFrom('');
-    setUnitTo('');
-    setUnitReversed(false);
-  }, []);
-
   // ─── Derived ────────────────────────────────────────────────────────────
 
   const clearLabel = display === '0' && !operator ? 'AC' : 'C';
@@ -425,8 +360,6 @@ export default function BasicCalculatorPage() {
     ? 'text-4xl'
     : 'text-5xl';
 
-  const fromLabel = unitReversed ? unitLabels[unitCategory][1] : unitLabels[unitCategory][0];
-  const toLabel = unitReversed ? unitLabels[unitCategory][0] : unitLabels[unitCategory][1];
 
   // ─── Render ─────────────────────────────────────────────────────────────
 
@@ -685,65 +618,6 @@ export default function BasicCalculatorPage() {
               </div>
             </div>
 
-            {/* ── Unit Converter ────────────────────────────────────── */}
-            <div className="mt-6 bg-dark-surface border border-dark-border rounded-2xl overflow-hidden shadow-lg">
-              <div className="p-4 border-b border-dark-border">
-                <h2 className="text-sm font-semibold text-text-primary mb-3">Unit Converter</h2>
-                <div className="flex gap-2">
-                  {(['length', 'weight', 'temperature'] as UnitCategory[]).map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => handleCategoryChange(cat)}
-                      className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors capitalize ${
-                        unitCategory === cat
-                          ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
-                          : 'bg-dark-elevated hover:bg-dark-border text-text-secondary'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="p-4">
-                <div className="flex items-center gap-3">
-                  {/* From */}
-                  <div className="flex-1">
-                    <label className="block text-xs text-text-tertiary mb-1.5">{fromLabel}</label>
-                    <input
-                      type="number"
-                      value={unitFrom}
-                      onChange={(e) => handleUnitFromChange(e.target.value)}
-                      placeholder="0"
-                      className="w-full h-12 px-4 rounded-xl bg-dark-base border border-dark-border text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/40 transition-all"
-                      style={{ fontFamily: "'Roboto Mono', monospace" }}
-                    />
-                  </div>
-                  {/* Swap Button */}
-                  <button
-                    onClick={swapUnits}
-                    className="mt-5 p-2.5 rounded-xl bg-dark-elevated hover:bg-dark-border text-text-secondary transition-colors active:scale-[0.95]"
-                    title="Swap units"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                    </svg>
-                  </button>
-                  {/* To */}
-                  <div className="flex-1">
-                    <label className="block text-xs text-text-tertiary mb-1.5">{toLabel}</label>
-                    <input
-                      type="number"
-                      value={unitTo}
-                      onChange={(e) => handleUnitToChange(e.target.value)}
-                      placeholder="0"
-                      className="w-full h-12 px-4 rounded-xl bg-dark-base border border-dark-border text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/40 transition-all"
-                      style={{ fontFamily: "'Roboto Mono', monospace" }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Sidebar Column */}
@@ -865,30 +739,6 @@ export default function BasicCalculatorPage() {
             computation can have serious real-world consequences. By providing a transparent, well-tested
             calculation engine with clear equation history, this tool helps users verify their work and build
             confidence in their results.
-          </p>
-
-          <h2>Common Unit Conversions: Metric vs Imperial</h2>
-          <p>
-            The metric and imperial measurement systems are used across the globe, often creating confusion when
-            converting between them. The United States primarily uses the imperial system for everyday
-            measurements, while most other countries use the metric system. Common conversions such as miles to
-            kilometers (1 mile equals approximately 1.609 km), pounds to kilograms (1 pound equals approximately
-            0.454 kg), and Fahrenheit to Celsius arise frequently in travel, commerce, cooking, and science.
-          </p>
-          <p>
-            The built-in unit converter above provides instant, real-time conversions across three essential
-            categories: length, weight, and temperature. Simply select a category, type a value in either field,
-            and see the converted result update live. The swap button lets you quickly reverse the conversion
-            direction. Whether you are planning an international trip, following a recipe from another country,
-            or working on a cross-border project, having a reliable unit converter alongside your calculator
-            eliminates the need to search for separate conversion tools.
-          </p>
-          <p>
-            Temperature conversion deserves special mention because it uses a non-linear formula. While length and
-            weight conversions involve simple multiplication, converting between Fahrenheit and Celsius requires
-            subtracting 32 and then multiplying by 5/9 (or the reverse). This calculator handles the math
-            correctly in both directions, so you can convert body temperatures, weather readings, or cooking
-            temperatures with complete accuracy.
           </p>
 
           {/* FAQ Section */}
