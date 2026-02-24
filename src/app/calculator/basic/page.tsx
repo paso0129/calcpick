@@ -126,7 +126,13 @@ export default function BasicCalculatorPage() {
   // UI state
   const [scientificMode, setScientificMode] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [history, setHistory] = useState<HistoryEntry[]>(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const saved = localStorage.getItem('calcpick-history');
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
   const [copied, setCopied] = useState(false);
 
   // Unit converter state
@@ -136,6 +142,13 @@ export default function BasicCalculatorPage() {
   const [unitReversed, setUnitReversed] = useState(false);
 
   const displayRef = useRef<HTMLDivElement>(null);
+
+  // ─── Persist history to localStorage ────────────────────────────────────
+
+  useEffect(() => {
+    try { localStorage.setItem('calcpick-history', JSON.stringify(history)); }
+    catch { /* quota exceeded */ }
+  }, [history]);
 
   // ─── Load Roboto Mono & set document title ──────────────────────────────
 
