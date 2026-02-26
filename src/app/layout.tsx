@@ -72,19 +72,15 @@ export default function RootLayout({
           }}
         />
         {/* Google Analytics GA4 */}
-        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');`,
-              }}
-            />
-          </>
-        )}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-4M9GBNY406"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4M9GBNY406');`,
+          }}
+        />
         {/* Google AdSense */}
         <meta name="google-adsense-account" content="ca-pub-7151553772512263" />
         <script
