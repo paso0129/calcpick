@@ -51,7 +51,7 @@ export default function CookieConsent() {
   const [showSettings, setShowSettings] = useState(false);
   const [consent, setConsent] = useState<ConsentState>(DEFAULT_CONSENT);
 
-  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || 'ca-pub-7151553772512263';
 
   const applyConsent = useCallback((c: ConsentState) => {
     if (c.advertising && adsenseId) {

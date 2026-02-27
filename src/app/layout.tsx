@@ -81,13 +81,8 @@ export default function RootLayout({
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4M9GBNY406');`,
           }}
         />
-        {/* Google AdSense */}
+        {/* Google AdSense — script loaded by CookieConsent after user consent */}
         <meta name="google-adsense-account" content="ca-pub-7151553772512263" />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7151553772512263"
-          crossOrigin="anonymous"
-        ></script>
         <WebSiteJsonLd />
         <OrganizationJsonLd />
       </head>
