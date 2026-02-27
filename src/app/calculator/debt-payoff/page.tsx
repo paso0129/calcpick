@@ -49,13 +49,13 @@ const FAQ_ITEMS = [
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
   { label: 'Finance Calculators', href: '/' },
-  { label: 'Debt Payoff Calculator' },
+  { label: 'Debt Avalanche Calculator' },
 ];
 
 const BREADCRUMB_JSON_LD_ITEMS = [
   { name: 'Home', url: SITE_URL },
   { name: 'Finance Calculators', url: SITE_URL },
-  { name: 'Debt Payoff Calculator', url: `${SITE_URL}/calculator/debt-payoff` },
+  { name: 'Debt Avalanche Calculator', url: `${SITE_URL}/calculator/debt-payoff` },
 ];
 
 let nextId = 3;
@@ -69,7 +69,7 @@ export default function DebtPayoffCalculatorPage() {
   const [strategy, setStrategy] = useState<'avalanche' | 'snowball'>('avalanche');
 
   useEffect(() => {
-    document.title = 'Debt Payoff Calculator - Snowball vs Avalanche | CalcPick';
+    document.title = 'Debt Avalanche Calculator - Pay Off Debt Faster | CalcPick';
     const params = new URLSearchParams(window.location.search);
     const ep = getParamNumber(params, 'ep');
     const s = getParamString(params, 's');
@@ -241,8 +241,8 @@ export default function DebtPayoffCalculatorPage() {
   return (
     <>
       <WebApplicationJsonLd
-        name="Debt Payoff Calculator"
-        description="Compare snowball vs avalanche debt payoff strategies. Calculate your payoff timeline, total interest, and find the fastest way to become debt-free."
+        name="Debt Avalanche Calculator"
+        description="Use the debt avalanche calculator to minimize interest charges and pay off debt faster. Compare avalanche vs snowball strategies and find your optimal payoff plan."
         url={`${SITE_URL}/calculator/debt-payoff`}
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
@@ -258,12 +258,12 @@ export default function DebtPayoffCalculatorPage() {
         <div className="mb-8">
           <div className="flex items-start justify-between gap-4 mb-3">
             <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
-              Debt Payoff Calculator
+              Debt Avalanche Calculator
             </h1>
             <ShareButton getShareUrl={getShareUrl} />
           </div>
           <p className="text-text-secondary text-lg max-w-3xl">
-            Compare snowball vs avalanche strategies to find the fastest way to become debt-free.
+            Use the debt avalanche method to minimize total interest and become debt-free faster. Compare with the snowball strategy.
           </p>
         </div>
 
@@ -573,7 +573,7 @@ export default function DebtPayoffCalculatorPage() {
         <div className="bg-dark-surface border border-dark-border rounded-xl p-6 sm:p-8 mb-8">
           <article className="prose prose-invert max-w-none">
             <h2 className="text-2xl font-bold text-text-primary mb-4">
-              How Does Debt Payoff Work?
+              What Is the Debt Avalanche Method?
             </h2>
             <p className="text-text-secondary mb-4">
               Paying off debt faster requires a strategic approach. The two most popular

@@ -43,13 +43,13 @@ const FAQ_ITEMS = [
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
   { label: 'Finance Calculators', href: '/' },
-  { label: 'Auto Loan Calculator' },
+  { label: 'Car Payment Calculator' },
 ];
 
 const BREADCRUMB_JSON_LD_ITEMS = [
   { name: 'Home', url: SITE_URL },
   { name: 'Finance Calculators', url: SITE_URL },
-  { name: 'Auto Loan Calculator', url: `${SITE_URL}/calculator/auto-loan` },
+  { name: 'Car Payment Calculator', url: `${SITE_URL}/calculator/auto-loan` },
 ];
 
 export default function AutoLoanCalculatorPage() {
@@ -60,7 +60,7 @@ export default function AutoLoanCalculatorPage() {
   const [interestRate, setInterestRate] = useState(5.5);
 
   useEffect(() => {
-    document.title = 'Auto Loan Calculator - Calculate Your Car Payment | CalcPick';
+    document.title = 'Car Payment Calculator - Auto Loan Estimator | CalcPick';
     const params = new URLSearchParams(window.location.search);
     const vp = getParamNumber(params, 'vp');
     const dp = getParamNumber(params, 'dp');
@@ -118,8 +118,8 @@ export default function AutoLoanCalculatorPage() {
   return (
     <>
       <WebApplicationJsonLd
-        name="Auto Loan Calculator"
-        description="Calculate your monthly car payment, total interest, and view a detailed amortization schedule with trade-in value and down payment options."
+        name="Car Payment Calculator"
+        description="Calculate your monthly car payment with trade-in value, down payment, and auto loan terms. See total interest and a detailed amortization schedule."
         url={`${SITE_URL}/calculator/auto-loan`}
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
@@ -135,12 +135,12 @@ export default function AutoLoanCalculatorPage() {
         <div className="mb-8">
           <div className="flex items-start justify-between gap-4 mb-3">
             <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
-              Auto Loan Calculator
+              Car Payment Calculator
             </h1>
             <ShareButton getShareUrl={getShareUrl} />
           </div>
           <p className="text-text-secondary text-lg max-w-3xl">
-            Estimate your monthly car payment with trade-in, down payment, and loan terms.
+            Estimate your monthly car payment with trade-in value, down payment, and auto loan terms.
           </p>
         </div>
 

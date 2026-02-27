@@ -5,8 +5,8 @@ export const runtime = 'edge';
 
 export default function Image() {
   return generateOGImage({
-    title: 'Debt Avalanche Calculator',
-    description: 'Minimize interest and pay off debt faster with the avalanche method.',
-    icon: '🎯',
+    title: 'Tip Calculator',
+    description: 'Quickly calculate how much to tip and split the bill.',
+    icon: '💰',
   });
 }
