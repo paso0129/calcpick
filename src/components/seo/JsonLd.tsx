@@ -1,6 +1,8 @@
 import { SITE_URL, SITE_NAME } from '@/lib/constants';
 
 export function WebSiteJsonLd() {
+  // 검색 라우트가 아직 없으므로 SearchAction(potentialAction) 블록 제거.
+  // 검색 라우트 추가 시 복원: { '@type': 'SearchAction', target: ..., 'query-input': 'required name=search_term_string' }
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -8,11 +10,6 @@ export function WebSiteJsonLd() {
     url: SITE_URL,
     description: 'Free online financial calculators for mortgage, auto loans, compound interest, and more.',
     inLanguage: 'en-US',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: { '@type': 'EntryPoint', urlTemplate: `${SITE_URL}/?q={search_term_string}` },
-      'query-input': 'required name=search_term_string',
-    },
     publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
   };
 
