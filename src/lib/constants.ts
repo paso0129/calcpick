@@ -77,4 +77,12 @@ export const CALCULATORS: CalculatorMeta[] = [
     icon: '💰',
     category: 'Utility',
   },
+  {
+    slug: 'percentage',
+    title: 'Percentage Calculator',
+    shortTitle: 'Percentage',
+    description: 'Find a percentage of a number, what percent one number is of another, and percentage change.',
+    icon: '💯',
+    category: 'Utility',
+  },
 ];
