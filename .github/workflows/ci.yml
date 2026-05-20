@@ -25,6 +25,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Type check
+        run: npx tsc --noEmit --pretty false
+
       - name: Build
         env:
           # AdSense slot IDs are read at build time. Use placeholders so the
