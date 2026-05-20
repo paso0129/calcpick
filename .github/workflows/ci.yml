@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        env:
+          # AdSense slot IDs are read at build time. Use placeholders so the
+          # build passes in CI even if Vercel-side env vars aren't replicated.
+          # Real ad slots come from Vercel project env vars at deploy time.
+          NEXT_PUBLIC_ADSENSE_CLIENT_ID: ca-pub-7151553772512263
+          NEXT_PUBLIC_ADSENSE_SLOT_HEADER: '0000000000'
+          NEXT_PUBLIC_ADSENSE_SLOT_IN_ARTICLE: '0000000000'
+          NEXT_PUBLIC_ADSENSE_SLOT_FOOTER: '0000000000'
+          NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR: '0000000000'
+        run: npm run build
+
+      - name: Notify Discord on failure
+        if: failure()
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref_name }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          set -euo pipefail
+          if [ -z "${WEBHOOK:-}" ]; then
+            echo "::warning::DISCORD_WEBHOOK_URL not set — skipping notification"
+            exit 0
+          fi
+          BODY=$(printf 'Branch: `%s`\nActor: %s\n\n[%s · view run](%s)' "$REF" "$ACTOR" "$REPO" "$RUN_URL")
+          PAYLOAD=$(jq -n \
+            --arg title "🛑 CalcPick CI failed" \
+            --arg desc "$BODY" \
+            --argjson color 15158332 \
+            '{embeds: [{title: $title, description: $desc, color: $color}]}')
+          curl -sS -X POST -H "Content-Type: application/json" \
+            --data "$PAYLOAD" "$WEBHOOK" >/dev/null
