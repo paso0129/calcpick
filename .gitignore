@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# omc workflow artifacts (analysis plans, session state)
+.omc/
