@@ -24,9 +24,19 @@ const FAQ_ITEMS = [
       'Your monthly auto loan payment is calculated using the loan amount (vehicle price minus down payment and trade-in value), the annual interest rate divided by 12 for the monthly rate, and the total number of monthly payments. The standard amortization formula ensures each payment covers both principal and interest, with early payments weighted more toward interest.',
   },
   {
+    question: 'How does a down payment affect my car loan?',
+    answer:
+      'Every dollar of down payment is one less dollar you finance, so a larger down payment lowers both your monthly payment and your total interest paid. For example, on a $35,000 vehicle at 6% APR over 60 months, a $5,000 down payment yields a monthly payment of about $580 with $4,400 total interest, while $10,000 down drops it to about $483/month with $3,800 total interest. A bigger down payment also reduces the risk of going underwater on the loan.',
+  },
+  {
+    question: 'Should I take the trade-in or sell my car for cash?',
+    answer:
+      'Trading in is faster and simpler — the dealer handles paperwork and the trade-in value reduces your taxable purchase price in most US states (saving sales tax). Selling privately typically nets 10-20% more, but takes time, requires meeting buyers, and you pay full sales tax on the new car. If your time is worth more than the price gap, trade in. Use this calculator to compare both scenarios by entering different trade-in values.',
+  },
+  {
     question: 'What is a good interest rate for an auto loan?',
     answer:
-      'A good auto loan interest rate depends on your credit score, the loan term, and whether the vehicle is new or used. As of 2024, rates for new cars with excellent credit can range from 3% to 6%, while used car rates tend to be 1-2% higher. Shorter loan terms generally come with lower interest rates.',
+      'A good auto loan interest rate depends on your credit score, the loan term, and whether the vehicle is new or used. As of 2026, rates for new cars with excellent credit can range from 4% to 7%, while used car rates tend to be 1-2% higher. Shorter loan terms generally come with lower interest rates.',
   },
   {
     question: 'Should I make a larger down payment on my car?',
@@ -60,7 +70,6 @@ export default function AutoLoanCalculatorPage() {
   const [interestRate, setInterestRate] = useState(5.5);
 
   useEffect(() => {
-    document.title = 'Car Payment Calculator - Auto Loan Estimator | CalcPick';
     const params = new URLSearchParams(window.location.search);
     const vp = getParamNumber(params, 'vp');
     const dp = getParamNumber(params, 'dp');
@@ -119,7 +128,7 @@ export default function AutoLoanCalculatorPage() {
     <>
       <WebApplicationJsonLd
         name="Car Payment Calculator"
-        description="Calculate your monthly car payment with trade-in value, down payment, and auto loan terms. See total interest and a detailed amortization schedule."
+        description="Free car payment calculator. Estimate monthly auto loan payment with down payment, trade-in value, and interest rate. Instant results for new or used cars, no signup."
         url={`${SITE_URL}/calculator/auto-loan`}
       />
       <FAQJsonLd questions={FAQ_ITEMS} />

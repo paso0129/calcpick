@@ -10,7 +10,6 @@ import { buildShareUrl, getParamString, getParamNumber } from '@/lib/share';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const PAGE_TITLE = 'Professional Calculator - Free Online Scientific Calculator | CalcPick';
 const PAGE_URL = `${SITE_URL}/calculator/basic`;
 
 const BREADCRUMB_ITEMS = [
@@ -125,11 +124,9 @@ export default function BasicCalculatorPage() {
     catch { /* quota exceeded */ }
   }, [history]);
 
-  // ─── Load Roboto Mono & set document title ──────────────────────────────
+  // ─── Load Roboto Mono ────────────────────────────────────────────────────
 
   useEffect(() => {
-    document.title = PAGE_TITLE;
-
     const linkId = 'roboto-mono-font';
     if (!document.getElementById(linkId)) {
       const link = document.createElement('link');

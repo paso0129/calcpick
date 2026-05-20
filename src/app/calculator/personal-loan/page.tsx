@@ -19,14 +19,19 @@ const TERM_OPTIONS = [12, 24, 36, 48, 60];
 
 const FAQ_DATA = [
   {
-    question: 'What is a personal loan?',
-    answer:
-      'A personal loan is an unsecured loan from a bank, credit union, or online lender that you repay in fixed monthly installments over a set term. Because they are unsecured, personal loans typically carry higher interest rates than mortgages or auto loans, but they can be used for almost any purpose including debt consolidation, home improvement, or major purchases.',
-  },
-  {
     question: 'How is the monthly payment on a personal loan calculated?',
     answer:
       'The monthly payment is calculated using the standard amortization formula: M = P * [r(1+r)^n] / [(1+r)^n - 1], where P is the loan principal, r is the monthly interest rate (annual rate divided by 12), and n is the total number of monthly payments. This formula ensures each payment covers both interest and principal so the loan is fully repaid by the end of the term.',
+  },
+  {
+    question: 'What is the difference between APR and interest rate?',
+    answer:
+      'The interest rate is the cost of borrowing the principal, expressed as a percentage. APR (annual percentage rate) includes the interest rate plus origination fees and other lender charges spread across the loan term. APR is always equal to or higher than the interest rate and gives a more accurate picture of the true cost. When comparing personal loan offers, always compare APR, not just the interest rate.',
+  },
+  {
+    question: 'How much will a $50,000 personal loan cost per month?',
+    answer:
+      'A $50,000 personal loan at 10% APR for 60 months costs about $1,062 per month, with total interest of roughly $13,742. At 7% APR over 60 months it drops to about $990/month with $9,400 in interest. Use the calculator above to model exact payments for your rate and term — even a 1-2% rate difference adds up to thousands over the life of the loan.',
   },
   {
     question: 'What factors affect personal loan interest rates?',
@@ -37,6 +42,11 @@ const FAQ_DATA = [
     question: 'Should I choose a shorter or longer loan term?',
     answer:
       'A shorter term means higher monthly payments but significantly less total interest paid. A longer term lowers your monthly payment but increases the total cost of the loan. For example, a $15,000 loan at 8.5% costs about $1,380 in interest over 24 months versus $3,564 over 60 months. Choose a term that balances affordable payments with minimizing total interest.',
+  },
+  {
+    question: 'What is an unsecured personal loan?',
+    answer:
+      'An unsecured personal loan does not require collateral such as a house or car. Approval and rate depend entirely on your creditworthiness — credit score, income, and existing debt. Most personal loans from banks, credit unions, and online lenders are unsecured. Because the lender has no asset to seize on default, rates are higher than secured loans like mortgages or auto loans.',
   },
 ];
 
@@ -58,7 +68,6 @@ export default function PersonalLoanCalculator() {
   const [interestRate, setInterestRate] = useState(8.5);
 
   useEffect(() => {
-    document.title = 'Personal Loan Calculator - Estimate Monthly Payments | CalcPick';
     const params = new URLSearchParams(window.location.search);
     const la = getParamNumber(params, 'la');
     const lt = getParamNumber(params, 'lt');
@@ -104,7 +113,7 @@ export default function PersonalLoanCalculator() {
     <>
       <WebApplicationJsonLd
         name="Personal Loan Calculator"
-        description="Calculate monthly payments and total interest for personal loans. Compare loan terms and interest rates with an interactive amortization schedule."
+        description="Free personal loan calculator. Estimate monthly payments, total interest, and APR for unsecured personal loans from $1,000 to $100,000. Instant results, no signup."
         url={`${SITE_URL}/calculator/personal-loan`}
       />
       <FAQJsonLd questions={FAQ_DATA} />

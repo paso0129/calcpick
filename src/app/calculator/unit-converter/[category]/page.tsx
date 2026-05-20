@@ -36,8 +36,6 @@ export default function UnitCategoryPage() {
   }, [category]);
 
   useEffect(() => {
-    if (seo) document.title = seo.pageTitle;
-
     const linkId = 'roboto-mono-font';
     if (!document.getElementById(linkId)) {
       const link = document.createElement('link');

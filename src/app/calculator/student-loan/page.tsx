@@ -65,7 +65,6 @@ export default function StudentLoanCalculatorPage() {
   const [plan, setPlan] = useState<RepaymentPlan>('standard');
 
   useEffect(() => {
-    document.title = 'Student Loan Calculator - Compare Repayment Plans | CalcPick';
     const params = new URLSearchParams(window.location.search);
     const la = getParamNumber(params, 'la');
     const ir = getParamNumber(params, 'ir');

@@ -15,7 +15,6 @@ import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber } from '@/lib/share';
 
-const PAGE_TITLE = 'Mortgage Calculator - Calculate Your Monthly Payment | CalcPick';
 const PAGE_URL = `${SITE_URL}/calculator/mortgage`;
 
 const FAQ_ITEMS = [
@@ -23,6 +22,16 @@ const FAQ_ITEMS = [
     question: 'How is a monthly mortgage payment calculated?',
     answer:
       'A monthly mortgage payment is calculated using the loan principal (home price minus down payment), the annual interest rate divided by 12, and the total number of monthly payments. The standard formula is M = P[r(1+r)^n]/[(1+r)^n-1], where M is the monthly payment, P is the principal, r is the monthly interest rate, and n is the number of payments. Property tax and homeowners insurance are then added to determine your total monthly housing cost.',
+  },
+  {
+    question: 'What is PITI and why does it matter?',
+    answer:
+      'PITI stands for Principal, Interest, Taxes, and Insurance — the four components of your monthly mortgage payment. Principal and interest pay down the loan itself. Taxes are local property taxes, typically held in escrow by your lender. Insurance is homeowners insurance, also usually escrowed. Lenders qualify you based on PITI (not just principal and interest), so this is the number that actually determines what house you can afford.',
+  },
+  {
+    question: 'How much house can I afford?',
+    answer:
+      'A common rule is the 28/36 rule: your monthly PITI should be at most 28% of gross monthly income, and total debt payments (PITI plus car loans, student loans, credit cards) should be at most 36%. For example, with $8,000/month gross income, target PITI under $2,240. Use this calculator to test different home prices against your budget — and remember to leave room for maintenance, HOA fees, and unexpected costs.',
   },
   {
     question: 'How much down payment do I need for a mortgage?',
@@ -62,7 +71,6 @@ export default function MortgageCalculatorPage() {
   const [homeInsurance, setHomeInsurance] = useState(1200);
 
   useEffect(() => {
-    document.title = PAGE_TITLE;
     const params = new URLSearchParams(window.location.search);
     const hp = getParamNumber(params, 'hp');
     const dp = getParamNumber(params, 'dp');
@@ -136,7 +144,7 @@ export default function MortgageCalculatorPage() {
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_ITEMS} />
       <WebApplicationJsonLd
         name="Mortgage Calculator"
-        description="Calculate your monthly mortgage payment, total interest, and view a detailed amortization schedule. Free online mortgage calculator with property tax and insurance."
+        description="Free mortgage calculator. Estimate monthly PITI payment including principal, interest, property tax, and homeowners insurance. Compare 15-year vs 30-year terms."
         url={PAGE_URL}
       />
       <FAQJsonLd questions={FAQ_ITEMS} />

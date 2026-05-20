@@ -53,7 +53,6 @@ export default function TipCalculatorPage() {
   const [splitCount, setSplitCount] = useState(1);
 
   useEffect(() => {
-    document.title = 'Tip Calculator - Calculate Tip & Split Bill | CalcPick';
     const params = new URLSearchParams(window.location.search);
     const b = getParamNumber(params, 'b');
     const t = getParamNumber(params, 't');

@@ -72,7 +72,6 @@ export default function CompoundInterestCalculator() {
   const [compoundFrequency, setCompoundFrequency] = useState(12);
 
   useEffect(() => {
-    document.title = 'Compound Interest Calculator - Investment Growth | CalcPick';
     const params = new URLSearchParams(window.location.search);
     const ii = getParamNumber(params, 'ii');
     const mc = getParamNumber(params, 'mc');

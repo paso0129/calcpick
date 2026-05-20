@@ -13,7 +13,6 @@ import { buildShareUrl, getParamString, getParamNumber } from '@/lib/share';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const PAGE_TITLE = 'Unit Converter - Free Online Unit Conversion Tool | CalcPick';
 const PAGE_URL = `${SITE_URL}/calculator/unit-converter`;
 
 const BREADCRUMB_ITEMS = [
@@ -61,7 +60,6 @@ export default function UnitConverterPage() {
   const [toValue, setToValue] = useState('');
 
   useEffect(() => {
-    document.title = PAGE_TITLE;
     const params = new URLSearchParams(window.location.search);
     const cat = getParamString(params, 'cat');
     const from = getParamString(params, 'from');

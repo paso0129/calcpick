@@ -30,6 +30,11 @@ const FAQ_ITEMS = [
       'The snowball method pays off debts from smallest balance to largest, giving you quick psychological wins. The avalanche method targets the highest interest rate first, which typically saves you more money in total interest over time. Both methods apply all extra payments to one target debt while making minimum payments on the rest.',
   },
   {
+    question: 'Avalanche vs snowball with extra payments — which is faster?',
+    answer:
+      'With the same extra payment amount, the avalanche method is almost always faster in total time-to-debt-free and saves more on interest, often by hundreds or thousands of dollars on typical debt loads. The snowball method usually closes individual accounts faster, which is why it feels faster — but mathematically, avalanche wins. The calculator above lets you compare both side by side with your actual debts and extra payment.',
+  },
+  {
     question: 'How much extra should I pay toward my debt each month?',
     answer:
       'Any extra amount helps, but even $50-$200 per month can significantly reduce your payoff timeline and total interest paid. Use the calculator above to see how different extra payment amounts affect your results. The key is to choose an amount you can sustain consistently.',
@@ -43,6 +48,11 @@ const FAQ_ITEMS = [
     question: 'Can I switch between snowball and avalanche strategies mid-way?',
     answer:
       'Yes, you can switch strategies at any time. Some people start with the snowball method to build momentum by paying off a few small debts, then switch to avalanche to minimize interest on larger, higher-rate debts. The important thing is to keep making consistent extra payments regardless of the method.',
+  },
+  {
+    question: 'Does the debt avalanche method work with credit cards?',
+    answer:
+      'Yes — credit cards are the most common case where avalanche shines, because credit card APRs (often 18-29%) are far higher than personal loans or student loans. Paying minimums on lower-rate debts while throwing every extra dollar at the highest-rate credit card minimizes the interest you bleed each month. Just be sure to keep making the minimum payment on every account to avoid penalty APRs.',
   },
 ];
 
@@ -69,7 +79,6 @@ export default function DebtPayoffCalculatorPage() {
   const [strategy, setStrategy] = useState<'avalanche' | 'snowball'>('avalanche');
 
   useEffect(() => {
-    document.title = 'Debt Avalanche Calculator - Pay Off Debt Faster | CalcPick';
     const params = new URLSearchParams(window.location.search);
     const ep = getParamNumber(params, 'ep');
     const s = getParamString(params, 's');
@@ -241,8 +250,8 @@ export default function DebtPayoffCalculatorPage() {
   return (
     <>
       <WebApplicationJsonLd
-        name="Debt Avalanche Calculator"
-        description="Use the debt avalanche calculator to minimize interest charges and pay off debt faster. Compare avalanche vs snowball strategies and find your optimal payoff plan."
+        name="Debt Avalanche & Snowball Calculator"
+        description="Free debt payoff calculator. Compare debt avalanche vs snowball methods with extra payments. See exactly when you will be debt-free and how much total interest you save."
         url={`${SITE_URL}/calculator/debt-payoff`}
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
