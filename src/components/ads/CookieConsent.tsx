@@ -42,6 +42,18 @@ function dispatchConsentChange(consent: ConsentState) {
   window.dispatchEvent(new CustomEvent('consent-change', { detail: consent }));
 }
 
+function updateGtagConsent(consent: ConsentState) {
+  if (typeof window === 'undefined') return;
+  const w = window as unknown as { gtag?: (...args: unknown[]) => void };
+  if (typeof w.gtag !== 'function') return;
+  w.gtag('consent', 'update', {
+    analytics_storage: consent.analytics ? 'granted' : 'denied',
+    ad_storage: consent.advertising ? 'granted' : 'denied',
+    ad_user_data: consent.advertising ? 'granted' : 'denied',
+    ad_personalization: consent.advertising ? 'granted' : 'denied',
+  });
+}
+
 export function getConsent(): ConsentState | null {
   return getStoredConsent();
 }
@@ -54,6 +66,7 @@ export default function CookieConsent() {
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || 'ca-pub-7151553772512263';
 
   const applyConsent = useCallback((c: ConsentState) => {
+    updateGtagConsent(c);
     if (c.advertising && adsenseId) {
       loadAdSense(adsenseId);
     }

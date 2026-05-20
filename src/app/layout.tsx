@@ -56,6 +56,11 @@ export const metadata: Metadata = {
     'theme-color': '#3b82f6',
     'color-scheme': 'light dark',
   },
+  // GSC 도메인 등록 후 실제 토큰(content="...")으로 교체.
+  // 메타 태그 방식 검증 시 사용. DNS TXT 방식이면 이 필드 삭제 가능.
+  verification: {
+    google: 'PLACEHOLDER-REPLACE-WITH-GSC-TOKEN',
+  },
 };
 
 export default function RootLayout({
@@ -71,6 +76,12 @@ export default function RootLayout({
             __html: `(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.className=t;})();`,
           }}
         />
+        {/* Google Consent Mode v2 — default denied. CookieConsent UI에서 사용자 동의 시 update. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','wait_for_update':500});`,
+          }}
+        />
         {/* Google Analytics GA4 */}
         <script
           async
@@ -78,7 +89,7 @@ export default function RootLayout({
         />
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4M9GBNY406');`,
+            __html: `gtag('js',new Date());gtag('config','G-4M9GBNY406');`,
           }}
         />
         {/* Google AdSense — script loaded by CookieConsent after user consent */}
