@@ -85,4 +85,12 @@ export const CALCULATORS: CalculatorMeta[] = [
     icon: '💯',
     category: 'Utility',
   },
+  {
+    slug: 'discount',
+    title: 'Discount Calculator',
+    shortTitle: 'Discount',
+    description: 'Calculate sale price, savings, and after-tax total for any percent-off discount.',
+    icon: '🏷️',
+    category: 'Utility',
+  },
 ];
