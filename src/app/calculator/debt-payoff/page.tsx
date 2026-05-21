@@ -12,6 +12,7 @@ import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { DebtItem } from '@/types/calculator';
 import { buildShareUrl, getParamNumber, getParamString, getParamJson } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 import {
   AreaChart,
   Area,
@@ -77,6 +78,7 @@ export default function DebtPayoffCalculatorPage() {
   ]);
   const [extraPayment, setExtraPayment] = useState(200);
   const [strategy, setStrategy] = useState<'avalanche' | 'snowball'>('avalanche');
+  const [tracked, setTracked] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -119,6 +121,18 @@ export default function DebtPayoffCalculatorPage() {
 
   const selectedResult = strategy === 'avalanche' ? avalancheResult : snowballResult;
   const otherResult = strategy === 'avalanche' ? snowballResult : avalancheResult;
+
+  useEffect(() => {
+    if (tracked) return;
+    if (
+      selectedResult &&
+      Number.isFinite(selectedResult.totalInterest) &&
+      selectedResult.payoffMonths > 0
+    ) {
+      trackCalculatorUse('debt-payoff');
+      setTracked(true);
+    }
+  }, [selectedResult, tracked]);
 
   const updateDebt = (id: string, field: keyof DebtItem, value: string | number) => {
     setDebts((prev) =>
@@ -269,7 +283,7 @@ export default function DebtPayoffCalculatorPage() {
             <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
               Debt Avalanche Calculator
             </h1>
-            <ShareButton getShareUrl={getShareUrl} />
+            <ShareButton getShareUrl={getShareUrl} slug="debt-payoff" />
           </div>
           <p className="text-text-secondary text-lg max-w-3xl">
             Use the debt avalanche method to minimize total interest and become debt-free faster. Compare with the snowball strategy.

@@ -14,6 +14,7 @@ import { calculateMortgage } from '@/lib/calculators/mortgage';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 
 const PAGE_URL = `${SITE_URL}/calculator/mortgage`;
 
@@ -69,6 +70,7 @@ export default function MortgageCalculatorPage() {
   const [interestRate, setInterestRate] = useState(6.5);
   const [propertyTax, setPropertyTax] = useState(3600);
   const [homeInsurance, setHomeInsurance] = useState(1200);
+  const [tracked, setTracked] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -107,6 +109,14 @@ export default function MortgageCalculatorPage() {
   );
 
   const loanAmount = homePrice - downPayment;
+
+  useEffect(() => {
+    if (tracked) return;
+    if (Number.isFinite(result.monthlyPayment) && result.monthlyPayment > 0) {
+      trackCalculatorUse('mortgage');
+      setTracked(true);
+    }
+  }, [result.monthlyPayment, tracked]);
 
   const resultItems = [
     {
@@ -161,7 +171,7 @@ export default function MortgageCalculatorPage() {
             <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
               Mortgage Calculator
             </h1>
-            <ShareButton getShareUrl={getShareUrl} />
+            <ShareButton getShareUrl={getShareUrl} slug="mortgage" />
           </div>
           <p className="text-text-secondary text-lg">
             Calculate your monthly mortgage payment with taxes and insurance included.

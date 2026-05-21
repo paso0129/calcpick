@@ -1,24 +1,29 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { trackShare } from '@/lib/analytics';
 
 interface ShareButtonProps {
   getShareUrl: () => string;
+  slug?: string;
   size?: 'sm' | 'md';
 }
 
-export default function ShareButton({ getShareUrl, size = 'md' }: ShareButtonProps) {
+export default function ShareButton({ getShareUrl, slug, size = 'md' }: ShareButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const handleClick = useCallback(() => {
     const url = getShareUrl();
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
+      if (slug) {
+        trackShare('url', slug);
+      }
       setTimeout(() => setCopied(false), 2000);
     }).catch(() => {
       /* silently ignore */
     });
-  }, [getShareUrl]);
+  }, [getShareUrl, slug]);
 
   const iconSize = size === 'sm' ? 'w-4 h-4' : 'w-5 h-5';
   const padding = size === 'sm' ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm';

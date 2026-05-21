@@ -7,6 +7,7 @@ import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/
 import AdSense from '@/components/ads/AdSense';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber, getParamString } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 
 type Mode = 'percent-of' | 'is-what-percent' | 'change';
 
@@ -60,6 +61,7 @@ function formatResult(n: number): string {
 
 export default function PercentageCalculatorPage() {
   const [mode, setMode] = useState<Mode>('percent-of');
+  const [tracked, setTracked] = useState(false);
 
   // percent-of: what is A% of B?
   const [percent, setPercent] = useState(15);
@@ -116,6 +118,20 @@ export default function PercentageCalculatorPage() {
     [fromValue, toValue],
   );
 
+  useEffect(() => {
+    if (tracked) return;
+    const activeResult =
+      mode === 'percent-of'
+        ? percentOfResult
+        : mode === 'is-what-percent'
+          ? isWhatPercentResult
+          : changeResult;
+    if (Number.isFinite(activeResult)) {
+      trackCalculatorUse('percentage');
+      setTracked(true);
+    }
+  }, [mode, percentOfResult, isWhatPercentResult, changeResult, tracked]);
+
   return (
     <>
       <WebApplicationJsonLd
@@ -134,7 +150,7 @@ export default function PercentageCalculatorPage() {
         <div className="mb-8">
           <div className="flex items-start justify-between gap-4 mb-3">
             <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">Percentage Calculator</h1>
-            <ShareButton getShareUrl={getShareUrl} />
+            <ShareButton getShareUrl={getShareUrl} slug="percentage" />
           </div>
           <p className="text-text-secondary text-lg max-w-3xl">
             Three percentage modes in one calculator: find a percentage of a number, work out what

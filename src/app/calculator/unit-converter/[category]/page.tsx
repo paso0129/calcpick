@@ -11,6 +11,7 @@ import { SITE_URL } from '@/lib/constants';
 import { UNIT_CATEGORIES, convert } from '@/lib/units';
 import { UNIT_SEO } from '@/lib/unit-seo';
 import { buildShareUrl, getParamString, getParamNumber } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 
 export default function UnitCategoryPage() {
   const params = useParams();
@@ -23,7 +24,21 @@ export default function UnitCategoryPage() {
   const [toUnitId, setToUnitId] = useState('');
   const [fromValue, setFromValue] = useState('');
   const [toValue, setToValue] = useState('');
+  const [tracked, setTracked] = useState(false);
   const loadedFromUrl = useRef(false);
+
+  useEffect(() => {
+    if (tracked) return;
+    if (
+      fromValue !== '' &&
+      toValue !== '' &&
+      Number.isFinite(parseFloat(fromValue)) &&
+      Number.isFinite(parseFloat(toValue))
+    ) {
+      trackCalculatorUse(`unit-converter/${categorySlug}`);
+      setTracked(true);
+    }
+  }, [fromValue, toValue, categorySlug, tracked]);
 
   // Initialize units when category loads
   useEffect(() => {
@@ -183,7 +198,7 @@ export default function UnitCategoryPage() {
                     </div>
                     <p className="text-sm text-text-tertiary">{seo.subtitle}</p>
                   </div>
-                  <ShareButton getShareUrl={getShareUrl} size="sm" />
+                  <ShareButton getShareUrl={getShareUrl} slug={`unit-converter/${categorySlug}`} size="sm" />
                 </div>
               </div>
 

@@ -9,6 +9,7 @@ import AdSense from '@/components/ads/AdSense';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 
 const TIP_PRESETS = [10, 15, 18, 20, 25];
 
@@ -51,6 +52,7 @@ export default function TipCalculatorPage() {
   const [billAmount, setBillAmount] = useState(85);
   const [tipPercent, setTipPercent] = useState(18);
   const [splitCount, setSplitCount] = useState(1);
+  const [tracked, setTracked] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -74,6 +76,14 @@ export default function TipCalculatorPage() {
     const tipPerPerson = tipAmount / Math.max(splitCount, 1);
     return { tipAmount, total, perPerson, tipPerPerson };
   }, [billAmount, tipPercent, splitCount]);
+
+  useEffect(() => {
+    if (tracked) return;
+    if (Number.isFinite(result.tipAmount) && billAmount > 0 && result.tipAmount > 0) {
+      trackCalculatorUse('tip');
+      setTracked(true);
+    }
+  }, [result.tipAmount, billAmount, tracked]);
 
   const resultItems = [
     {
@@ -122,7 +132,7 @@ export default function TipCalculatorPage() {
             <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
               Tip Calculator
             </h1>
-            <ShareButton getShareUrl={getShareUrl} />
+            <ShareButton getShareUrl={getShareUrl} slug="tip" />
           </div>
           <p className="text-text-secondary text-lg max-w-3xl">
             Calculate the perfect tip and split the bill evenly among friends.

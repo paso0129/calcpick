@@ -8,6 +8,7 @@ import AdSense from '@/components/ads/AdSense';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 
 const DISCOUNT_PRESETS = [10, 15, 20, 25, 30, 50];
 
@@ -50,6 +51,7 @@ export default function DiscountCalculatorPage() {
   const [originalPrice, setOriginalPrice] = useState(80);
   const [discountPercent, setDiscountPercent] = useState(25);
   const [taxPercent, setTaxPercent] = useState(0);
+  const [tracked, setTracked] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -74,6 +76,18 @@ export default function DiscountCalculatorPage() {
     return { savings, salePrice, tax, finalPrice };
   }, [originalPrice, discountPercent, taxPercent]);
 
+  useEffect(() => {
+    if (tracked) return;
+    if (
+      Number.isFinite(result.finalPrice) &&
+      originalPrice > 0 &&
+      result.savings > 0
+    ) {
+      trackCalculatorUse('discount');
+      setTracked(true);
+    }
+  }, [result.finalPrice, result.savings, originalPrice, tracked]);
+
   return (
     <>
       <WebApplicationJsonLd
@@ -92,7 +106,7 @@ export default function DiscountCalculatorPage() {
         <div className="mb-8">
           <div className="flex items-start justify-between gap-4 mb-3">
             <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">Discount Calculator</h1>
-            <ShareButton getShareUrl={getShareUrl} />
+            <ShareButton getShareUrl={getShareUrl} slug="discount" />
           </div>
           <p className="text-text-secondary text-lg max-w-3xl">
             Calculate the sale price, total savings, and after-tax total for any discount.

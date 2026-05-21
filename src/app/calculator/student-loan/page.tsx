@@ -15,6 +15,7 @@ import { calculateStudentLoan, compareStudentLoanPlans } from '@/lib/calculators
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber, getParamString } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 
 type RepaymentPlan = 'standard' | 'extended' | 'graduated';
 
@@ -63,6 +64,7 @@ export default function StudentLoanCalculatorPage() {
   const [loanAmount, setLoanAmount] = useState(35000);
   const [interestRate, setInterestRate] = useState(5.5);
   const [plan, setPlan] = useState<RepaymentPlan>('standard');
+  const [tracked, setTracked] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -83,6 +85,14 @@ export default function StudentLoanCalculatorPage() {
     () => calculateStudentLoan({ loanAmount, interestRate, plan }),
     [loanAmount, interestRate, plan]
   );
+
+  useEffect(() => {
+    if (tracked) return;
+    if (Number.isFinite(result.monthlyPayment) && result.monthlyPayment > 0) {
+      trackCalculatorUse('student-loan');
+      setTracked(true);
+    }
+  }, [result.monthlyPayment, tracked]);
 
   const allPlans = useMemo(
     () => compareStudentLoanPlans(loanAmount, interestRate),
@@ -111,7 +121,7 @@ export default function StudentLoanCalculatorPage() {
         <div className="mt-6 mb-8">
           <div className="flex items-start justify-between gap-4 mb-2">
             <h1 className="text-3xl font-bold text-text-primary">Student Loan Calculator</h1>
-            <ShareButton getShareUrl={getShareUrl} />
+            <ShareButton getShareUrl={getShareUrl} slug="student-loan" />
           </div>
           <p className="text-text-secondary">
             Compare repayment plans and calculate your monthly student loan payments.

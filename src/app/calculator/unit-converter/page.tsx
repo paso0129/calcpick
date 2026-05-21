@@ -10,6 +10,7 @@ import { SITE_URL } from '@/lib/constants';
 import { UNIT_CATEGORIES, convert } from '@/lib/units';
 import { UNIT_SEO } from '@/lib/unit-seo';
 import { buildShareUrl, getParamString, getParamNumber } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -58,6 +59,20 @@ export default function UnitConverterPage() {
   const [toUnitId, setToUnitId] = useState(UNIT_CATEGORIES[0].units[1].id);
   const [fromValue, setFromValue] = useState('');
   const [toValue, setToValue] = useState('');
+  const [tracked, setTracked] = useState(false);
+
+  useEffect(() => {
+    if (tracked) return;
+    if (
+      fromValue !== '' &&
+      toValue !== '' &&
+      Number.isFinite(parseFloat(fromValue)) &&
+      Number.isFinite(parseFloat(toValue))
+    ) {
+      trackCalculatorUse(`unit-converter/${unitCategoryId}`);
+      setTracked(true);
+    }
+  }, [fromValue, toValue, unitCategoryId, tracked]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -168,7 +183,7 @@ export default function UnitConverterPage() {
                       Convert between 100+ units across 17 categories
                     </p>
                   </div>
-                  <ShareButton getShareUrl={getShareUrl} size="sm" />
+                  <ShareButton getShareUrl={getShareUrl} slug="unit-converter" size="sm" />
                 </div>
               </div>
 

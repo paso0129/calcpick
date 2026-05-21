@@ -14,6 +14,7 @@ import { calculateAutoLoan } from '@/lib/calculators/auto-loan';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 
 const LOAN_TERMS = [36, 48, 60, 72, 84];
 
@@ -68,6 +69,7 @@ export default function AutoLoanCalculatorPage() {
   const [tradeInValue, setTradeInValue] = useState(0);
   const [loanTerm, setLoanTerm] = useState(60);
   const [interestRate, setInterestRate] = useState(5.5);
+  const [tracked, setTracked] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -101,6 +103,14 @@ export default function AutoLoanCalculatorPage() {
   }, [vehiclePrice, downPayment, tradeInValue, loanTerm, interestRate]);
 
   const loanAmount = vehiclePrice - downPayment - tradeInValue;
+
+  useEffect(() => {
+    if (tracked) return;
+    if (Number.isFinite(result.monthlyPayment) && result.monthlyPayment > 0 && loanAmount > 0) {
+      trackCalculatorUse('auto-loan');
+      setTracked(true);
+    }
+  }, [result.monthlyPayment, loanAmount, tracked]);
 
   const resultItems = [
     {
@@ -146,7 +156,7 @@ export default function AutoLoanCalculatorPage() {
             <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
               Car Payment Calculator
             </h1>
-            <ShareButton getShareUrl={getShareUrl} />
+            <ShareButton getShareUrl={getShareUrl} slug="auto-loan" />
           </div>
           <p className="text-text-secondary text-lg max-w-3xl">
             Estimate your monthly car payment with trade-in value, down payment, and auto loan terms.

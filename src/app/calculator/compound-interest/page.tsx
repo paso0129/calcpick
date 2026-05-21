@@ -12,6 +12,7 @@ import { calculateCompoundInterest } from '@/lib/calculators/compound-interest';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 import {
   AreaChart,
   Area,
@@ -70,6 +71,7 @@ export default function CompoundInterestCalculator() {
   const [annualRate, setAnnualRate] = useState(7);
   const [years, setYears] = useState(20);
   const [compoundFrequency, setCompoundFrequency] = useState(12);
+  const [tracked, setTracked] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -103,6 +105,14 @@ export default function CompoundInterestCalculator() {
       }),
     [initialInvestment, monthlyContribution, annualRate, years, compoundFrequency]
   );
+
+  useEffect(() => {
+    if (tracked) return;
+    if (Number.isFinite(result.finalBalance) && result.finalBalance > 0) {
+      trackCalculatorUse('compound-interest');
+      setTracked(true);
+    }
+  }, [result.finalBalance, tracked]);
 
   const effectiveAnnualRate = useMemo(() => {
     const r = annualRate / 100;
@@ -166,7 +176,7 @@ export default function CompoundInterestCalculator() {
             <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
               Compound Interest Calculator
             </h1>
-            <ShareButton getShareUrl={getShareUrl} />
+            <ShareButton getShareUrl={getShareUrl} slug="compound-interest" />
           </div>
           <p className="text-text-secondary text-lg">
             See how your investments grow over time with compound interest.

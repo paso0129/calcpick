@@ -7,6 +7,7 @@ import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/
 import AdSense from '@/components/ads/AdSense';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamString, getParamNumber } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -114,6 +115,7 @@ export default function BasicCalculatorPage() {
     } catch { return []; }
   });
   const [copied, setCopied] = useState(false);
+  const [tracked, setTracked] = useState(false);
 
   const displayRef = useRef<HTMLDivElement>(null);
 
@@ -361,6 +363,21 @@ export default function BasicCalculatorPage() {
   const clearLabel = display === '0' && !operator ? 'AC' : 'C';
   const formattedDisplay = formatDisplayNumber(display);
 
+  // ─── Track first meaningful calculation ───────────────────────────────
+  useEffect(() => {
+    if (tracked) return;
+    const numericDisplay = parseFloat(display);
+    if (
+      equation &&
+      equation.includes('=') &&
+      Number.isFinite(numericDisplay) &&
+      display !== 'Error'
+    ) {
+      trackCalculatorUse('basic');
+      setTracked(true);
+    }
+  }, [equation, display, tracked]);
+
   // Dynamic font size for the display
   const displayFontSize = formattedDisplay.length > 14
     ? 'text-2xl'
@@ -403,7 +420,7 @@ export default function BasicCalculatorPage() {
                 <div className="flex items-center justify-between mb-2">
                   <h1 className="text-lg font-semibold text-text-primary">Professional Calculator</h1>
                   <div className="flex items-center gap-2">
-                    <ShareButton getShareUrl={getShareUrl} size="sm" />
+                    <ShareButton getShareUrl={getShareUrl} slug="basic" size="sm" />
                     <button
                       onClick={() => setShowHistory((prev) => !prev)}
                       className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${

@@ -14,6 +14,7 @@ import { calculatePersonalLoan } from '@/lib/calculators/personal-loan';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber } from '@/lib/share';
+import { trackCalculatorUse } from '@/lib/analytics';
 
 const TERM_OPTIONS = [12, 24, 36, 48, 60];
 
@@ -66,6 +67,7 @@ export default function PersonalLoanCalculator() {
   const [loanAmount, setLoanAmount] = useState(15000);
   const [loanTerm, setLoanTerm] = useState(36);
   const [interestRate, setInterestRate] = useState(8.5);
+  const [tracked, setTracked] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -86,6 +88,14 @@ export default function PersonalLoanCalculator() {
     () => calculatePersonalLoan({ loanAmount, loanTerm, interestRate }),
     [loanAmount, loanTerm, interestRate]
   );
+
+  useEffect(() => {
+    if (tracked) return;
+    if (Number.isFinite(result.monthlyPayment) && result.monthlyPayment > 0) {
+      trackCalculatorUse('personal-loan');
+      setTracked(true);
+    }
+  }, [result.monthlyPayment, tracked]);
 
   const resultItems = [
     {
@@ -131,7 +141,7 @@ export default function PersonalLoanCalculator() {
             <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">
               Personal Loan Calculator
             </h1>
-            <ShareButton getShareUrl={getShareUrl} />
+            <ShareButton getShareUrl={getShareUrl} slug="personal-loan" />
           </div>
           <p className="text-text-secondary text-lg max-w-3xl">
             Calculate monthly payments, total interest, and total cost for your personal loan.
