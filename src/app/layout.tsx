@@ -10,6 +10,9 @@ import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from "@/lib/constants";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION;
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -56,11 +59,11 @@ export const metadata: Metadata = {
     'theme-color': '#3b82f6',
     'color-scheme': 'light dark',
   },
-  // GSC 도메인 등록 후 실제 토큰(content="...")으로 교체.
-  // 메타 태그 방식 검증 시 사용. DNS TXT 방식이면 이 필드 삭제 가능.
-  verification: {
-    google: 'PLACEHOLDER-REPLACE-WITH-GSC-TOKEN',
-  },
+  // GSC 검증 토큰은 NEXT_PUBLIC_GSC_VERIFICATION env 변수로 주입.
+  // 미설정 시 verification 필드를 출력하지 않음(DNS TXT 검증 등 메타 태그 외 방식 호환).
+  ...(GSC_VERIFICATION
+    ? { verification: { google: GSC_VERIFICATION } }
+    : {}),
 };
 
 export default function RootLayout({
@@ -76,22 +79,27 @@ export default function RootLayout({
             __html: `(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.className=t;})();`,
           }}
         />
-        {/* Google Consent Mode v2 — default denied. CookieConsent UI에서 사용자 동의 시 update. */}
+        {/* Google Consent Mode v2 — default denied. CookieConsent UI에서 사용자 동의 시 update.
+            GA_ID 유무와 관계없이 항상 dataLayer/gtag shim을 정의해 다른 스크립트가 안전하게 호출 가능하도록 한다. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','wait_for_update':500});`,
           }}
         />
-        {/* Google Analytics GA4 */}
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-4M9GBNY406"
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `gtag('js',new Date());gtag('config','G-4M9GBNY406');`,
-          }}
-        />
+        {/* Google Analytics GA4 — NEXT_PUBLIC_GA_MEASUREMENT_ID 설정 시에만 렌더 */}
+        {GA_ID && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `gtag('js',new Date());gtag('config','${GA_ID}');`,
+              }}
+            />
+          </>
+        )}
         {/* Google AdSense — script loaded by CookieConsent after user consent */}
         <meta name="google-adsense-account" content="ca-pub-7151553772512263" />
         <WebSiteJsonLd />
