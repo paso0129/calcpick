@@ -93,4 +93,28 @@ export const CALCULATORS: CalculatorMeta[] = [
     icon: '🏷️',
     category: 'Utility',
   },
+  {
+    slug: 'sales-tax',
+    title: 'Sales Tax Calculator',
+    shortTitle: 'Sales Tax',
+    description: 'Add or remove sales tax. Includes average combined rates for all 50 US states.',
+    icon: '🧾',
+    category: 'Finance',
+  },
+  {
+    slug: 'roi',
+    title: 'ROI Calculator',
+    shortTitle: 'ROI',
+    description: 'Calculate total return, net profit, and annualized CAGR for any investment.',
+    icon: '📊',
+    category: 'Finance',
+  },
+  {
+    slug: 'inflation',
+    title: 'Inflation Calculator',
+    shortTitle: 'Inflation',
+    description: 'Adjust past dollar amounts with US CPI data, or project future inflation impact.',
+    icon: '💵',
+    category: 'Finance',
+  },
 ];
