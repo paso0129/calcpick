@@ -159,6 +159,7 @@ export default function UnitConverterPage() {
         name="Unit Converter"
         description="Free online unit converter with 17 categories and 100+ units. Convert length, weight, temperature, radiation, frequency, power, and more."
         url={PAGE_URL}
+        applicationCategory="UtilitiesApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_ITEMS} />

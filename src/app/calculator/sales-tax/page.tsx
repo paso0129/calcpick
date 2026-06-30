@@ -5,6 +5,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
+import RelatedCalculators from '@/components/RelatedCalculators';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber } from '@/lib/share';
@@ -186,6 +187,7 @@ export default function SalesTaxCalculatorPage() {
         name="Sales Tax Calculator"
         description="Free US sales tax calculator. Add tax to a pre-tax price or reverse-calculate the pre-tax amount from a total."
         url={`${SITE_URL}/calculator/sales-tax`}
+        applicationCategory="FinanceApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_LD_ITEMS} />
@@ -465,6 +467,8 @@ export default function SalesTaxCalculatorPage() {
             ))}
           </div>
         </div>
+
+        <RelatedCalculators slug="sales-tax" />
 
         <AdSense slot="footer" variant="banner" />
       </div>

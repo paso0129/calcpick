@@ -10,6 +10,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
+import RelatedCalculators from '@/components/RelatedCalculators';
 import { calculatePersonalLoan } from '@/lib/calculators/personal-loan';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
@@ -125,6 +126,7 @@ export default function PersonalLoanCalculator() {
         name="Personal Loan Calculator"
         description="Free personal loan calculator. Estimate monthly payments, total interest, and APR for unsecured personal loans from $1,000 to $100,000. Instant results, no signup."
         url={`${SITE_URL}/calculator/personal-loan`}
+        applicationCategory="FinanceApplication"
       />
       <FAQJsonLd questions={FAQ_DATA} />
       <BreadcrumbJsonLd items={breadcrumbJsonLdItems} />
@@ -307,6 +309,8 @@ export default function PersonalLoanCalculator() {
             ))}
           </div>
         </section>
+
+        <RelatedCalculators slug="personal-loan" />
 
         {/* Bottom Ad */}
         <AdSense slot="footer" variant="banner" />

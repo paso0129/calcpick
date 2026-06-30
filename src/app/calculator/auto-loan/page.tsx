@@ -10,6 +10,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
+import RelatedCalculators from '@/components/RelatedCalculators';
 import { calculateAutoLoan } from '@/lib/calculators/auto-loan';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
@@ -140,6 +141,7 @@ export default function AutoLoanCalculatorPage() {
         name="Car Payment Calculator"
         description="Free car payment calculator. Estimate monthly auto loan payment with down payment, trade-in value, and interest rate. Instant results for new or used cars, no signup."
         url={`${SITE_URL}/calculator/auto-loan`}
+        applicationCategory="FinanceApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_LD_ITEMS} />
@@ -345,6 +347,8 @@ export default function AutoLoanCalculatorPage() {
             ))}
           </div>
         </div>
+
+        <RelatedCalculators slug="auto-loan" />
 
         {/* Bottom Ad */}
         <AdSense slot="footer" variant="banner" />

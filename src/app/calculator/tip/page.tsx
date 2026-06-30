@@ -116,6 +116,7 @@ export default function TipCalculatorPage() {
         name="Tip Calculator"
         description="Quickly calculate how much to tip and split the bill. Simple, fast, and free tip calculator for restaurants, delivery, and services."
         url={`${SITE_URL}/calculator/tip`}
+        applicationCategory="UtilitiesApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_LD_ITEMS} />

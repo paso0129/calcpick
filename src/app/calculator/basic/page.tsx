@@ -397,6 +397,7 @@ export default function BasicCalculatorPage() {
         name="Professional Calculator"
         description="Free online professional calculator with scientific functions, calculation history, and unit converter. Supports keyboard input and high-precision arithmetic."
         url={PAGE_URL}
+        applicationCategory="UtilitiesApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_ITEMS} />

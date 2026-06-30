@@ -138,6 +138,7 @@ export default function PercentageCalculatorPage() {
         name="Percentage Calculator"
         description="Free percentage calculator for finding percentages, percentage of a total, and percentage change."
         url={`${SITE_URL}/calculator/percentage`}
+        applicationCategory="UtilitiesApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_LD_ITEMS} />

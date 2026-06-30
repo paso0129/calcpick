@@ -94,6 +94,7 @@ export default function DiscountCalculatorPage() {
         name="Discount Calculator"
         description="Free discount calculator. Find the final sale price after percent off and optional sales tax."
         url={`${SITE_URL}/calculator/discount`}
+        applicationCategory="UtilitiesApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_LD_ITEMS} />

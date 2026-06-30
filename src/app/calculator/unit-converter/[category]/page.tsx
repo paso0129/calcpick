@@ -51,15 +51,6 @@ export default function UnitCategoryPage() {
   }, [category]);
 
   useEffect(() => {
-    const linkId = 'roboto-mono-font';
-    if (!document.getElementById(linkId)) {
-      const link = document.createElement('link');
-      link.id = linkId;
-      link.rel = 'stylesheet';
-      link.href = 'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&display=swap';
-      document.head.appendChild(link);
-    }
-
     if (category) {
       const urlParams = new URLSearchParams(window.location.search);
       const from = getParamString(urlParams, 'from');
@@ -173,6 +164,7 @@ export default function UnitCategoryPage() {
         name={seo.h1}
         description={seo.description}
         url={PAGE_URL}
+        applicationCategory="UtilitiesApplication"
       />
       <FAQJsonLd questions={seo.faqs} />
       <BreadcrumbJsonLd items={breadcrumbJsonItems} />
@@ -223,7 +215,7 @@ export default function UnitCategoryPage() {
                       onChange={(e) => handleFromValueChange(e.target.value)}
                       placeholder="0"
                       className="w-full h-14 px-4 rounded-xl bg-dark-base border border-dark-border text-text-primary text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/40 transition-all"
-                      style={{ fontFamily: "'Roboto Mono', monospace" }}
+                      style={{ fontFamily: 'var(--font-roboto-mono), monospace' }}
                     />
                   </div>
 
@@ -256,7 +248,7 @@ export default function UnitCategoryPage() {
                       onChange={(e) => handleToValueChange(e.target.value)}
                       placeholder="0"
                       className="w-full h-14 px-4 rounded-xl bg-dark-base border border-dark-border text-text-primary text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/40 transition-all"
-                      style={{ fontFamily: "'Roboto Mono', monospace" }}
+                      style={{ fontFamily: 'var(--font-roboto-mono), monospace' }}
                     />
                   </div>
                 </div>
@@ -264,7 +256,7 @@ export default function UnitCategoryPage() {
                 {/* Conversion result */}
                 {fromValue && toValue && fromUnit && toUnit && (
                   <div className="mt-4 p-3 rounded-lg bg-dark-base border border-dark-border">
-                    <p className="text-xs text-text-tertiary text-center" style={{ fontFamily: "'Roboto Mono', monospace" }}>
+                    <p className="text-xs text-text-tertiary text-center" style={{ fontFamily: 'var(--font-roboto-mono), monospace' }}>
                       {fromValue} {fromUnit.symbol} = {toValue} {toUnit.symbol}
                     </p>
                   </div>
@@ -292,7 +284,7 @@ export default function UnitCategoryPage() {
                           <tr key={u.id} className="border-b border-dark-border/50 hover:bg-dark-elevated/30">
                             <td className="py-2 px-3 text-text-secondary">{u.label}</td>
                             <td className="py-2 px-3 text-text-tertiary">{u.symbol}</td>
-                            <td className="py-2 px-3 text-right text-text-primary" style={{ fontFamily: "'Roboto Mono', monospace" }}>
+                            <td className="py-2 px-3 text-right text-text-primary" style={{ fontFamily: 'var(--font-roboto-mono), monospace' }}>
                               {formatConverted(val)}
                             </td>
                           </tr>
