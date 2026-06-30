@@ -13,9 +13,14 @@ import { trackCalculatorUse } from '@/lib/analytics';
 
 const TIP_PRESETS = [10, 15, 18, 20, 25];
 
-// Static reference for "tip on $X" queries.
-const BILL_AMOUNTS = [20, 30, 40, 50, 75, 100];
-const TIP_RATES = [15, 18, 20];
+// Static reference for "tip on $X" / "N% tip on X" queries.
+const BILL_AMOUNTS = [10, 20, 30, 40, 50, 75, 100, 150];
+const TIP_RATES = [15, 18, 20, 25];
+
+// Static reference for "tip and split" / "split tip" queries (at 18% tip).
+const SPLIT_BILLS = [50, 100, 150];
+const SPLIT_PEOPLE = [2, 3, 4, 5];
+const SPLIT_TIP_RATE = 18;
 
 const FAQ_ITEMS = [
   {
@@ -37,6 +42,16 @@ const FAQ_ITEMS = [
     question: 'Should I tip on takeout orders?',
     answer:
       'While not required, tipping 10-15% on takeout is increasingly common, especially for large or complex orders. During busy times, a small tip is a nice gesture to acknowledge the staff preparing your order.',
+  },
+  {
+    question: 'How much do you tip on a $100 bill?',
+    answer:
+      'On a $100 bill, a 15% tip is $15 (total $115), an 18% tip is $18 (total $118), and a 20% tip is $20 (total $120). For exceptional service, a 25% tip is $25, bringing the total to $125.',
+  },
+  {
+    question: 'How do you calculate a tip for any bill amount?',
+    answer:
+      'Multiply the bill by the tip percentage as a decimal: bill x 0.18 for an 18% tip. For example, a tip on $88 at 18% is $88 x 0.18 = $15.84. Enter any amount above to get the exact tip, total, and per-person split instantly.',
   },
 ];
 
@@ -309,7 +324,7 @@ export default function TipCalculatorPage() {
         <div className="bg-dark-surface border border-dark-border rounded-xl p-6 sm:p-8 mb-8">
           <h2 className="text-2xl font-bold text-text-primary mb-2">Common Tip Amounts</h2>
           <p className="text-text-secondary mb-4">
-            How much to tip on common bill amounts at 15%, 18%, and 20%.
+            How much to tip on common bill amounts at 15%, 18%, 20%, and 25%.
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -343,6 +358,53 @@ export default function TipCalculatorPage() {
             </table>
             <p className="text-xs text-text-tertiary mt-3">
               Each cell shows the tip amount and, after the slash, the total bill including tip.
+            </p>
+          </div>
+        </div>
+
+        {/* Tip and Split (static reference) */}
+        <div className="bg-dark-surface border border-dark-border rounded-xl p-6 sm:p-8 mb-8">
+          <h2 className="text-2xl font-bold text-text-primary mb-2">Tip and Split the Bill</h2>
+          <p className="text-text-secondary mb-4">
+            To split a bill with the tip included, add a {SPLIT_TIP_RATE}% tip to the bill, then
+            divide by the number of people. Here&apos;s what each person pays for common totals.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <caption className="sr-only">
+                Per-person cost by bill amount and group size at {SPLIT_TIP_RATE}% tip
+              </caption>
+              <thead>
+                <tr className="border-b border-dark-border">
+                  <th className="text-left text-text-tertiary font-medium py-2 pr-4">Bill</th>
+                  <th className="text-right text-text-tertiary font-medium py-2 px-3">Total</th>
+                  {SPLIT_PEOPLE.map((people) => (
+                    <th key={people} className="text-right text-text-tertiary font-medium py-2 px-3">
+                      {people} people
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {SPLIT_BILLS.map((bill) => {
+                  const total = bill * (1 + SPLIT_TIP_RATE / 100);
+                  return (
+                    <tr key={bill} className="border-b border-dark-border last:border-0">
+                      <td className="py-2.5 pr-4 font-medium text-text-primary">{formatCurrency(bill)}</td>
+                      <td className="py-2.5 px-3 text-right text-text-secondary">{formatCurrency(total)}</td>
+                      {SPLIT_PEOPLE.map((people) => (
+                        <td key={people} className="py-2.5 px-3 text-right text-text-secondary">
+                          {formatCurrency(total / people)}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <p className="text-xs text-text-tertiary mt-3">
+              Each total includes an {SPLIT_TIP_RATE}% tip. Use the calculator above for any bill,
+              tip percentage, or group size.
             </p>
           </div>
         </div>
