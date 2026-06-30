@@ -8,6 +8,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
+import RelatedCalculators from '@/components/RelatedCalculators';
 import {
   calculateHistoricalInflation,
   calculateProjectedInflation,
@@ -18,15 +19,18 @@ import { formatCurrency, formatPercent } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber, getParamString } from '@/lib/share';
 import { trackCalculatorUse } from '@/lib/analytics';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+import dynamic from 'next/dynamic';
+
+const InflationChart = dynamic(() => import('./Charts'), {
+  ssr: false,
+  loading: () => (
+    <div className="bg-dark-surface border border-dark-border rounded-xl p-6">
+      <div className="h-6 w-64 max-w-full bg-dark-elevated rounded mb-1" />
+      <div className="h-4 w-80 max-w-full bg-dark-elevated rounded mb-4" />
+      <div className="h-[380px] rounded-lg bg-dark-elevated/40 animate-pulse" />
+    </div>
+  ),
+});
 
 const MIN_YEAR = Math.min(...Object.keys(CPI_DATA).map(Number));
 const MAX_YEAR = Math.max(...Object.keys(CPI_DATA).map(Number));
@@ -58,15 +62,6 @@ const FAQ_ITEMS = [
       'Future projections are estimates based on a constant annual inflation rate that you supply. Actual inflation varies year to year — the US historical average is roughly 3–4% per year over the long run, but rates can spike (as in 2021–2022) or stay very low (as in 2015). The projection is a planning tool, not a guarantee. For conservative planning, use a rate slightly above the long-run average.',
   },
 ];
-
-const tooltipStyle = {
-  backgroundColor: 'rgb(15 23 42)',
-  border: '1px solid rgb(51 65 85)',
-  borderRadius: '10px',
-  padding: '10px 14px',
-  color: 'rgb(241 245 249)',
-  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.4)',
-};
 
 export default function InflationCalculator() {
   const [mode, setMode] = useState<InflationMode>('historical');
@@ -147,18 +142,28 @@ export default function InflationCalculator() {
         : `Value in ${toYear} (Deflated)`
       : "Today's Purchasing Power";
 
+  const chartTitle =
+    mode === 'historical'
+      ? 'Purchasing Power Over Time'
+      : 'Projected Purchasing Power Erosion';
+  const chartSubtitle =
+    mode === 'historical'
+      ? `Value of ${formatCurrency(amount)} from ${Math.min(fromYear, toYear)} to ${Math.max(fromYear, toYear)} in today's dollars`
+      : `Real value of ${formatCurrency(amount)} over the next ${projYears} years at ${annualRate}% inflation`;
+
   return (
     <>
       <WebApplicationJsonLd
         name="Inflation Calculator"
         description="Convert past dollar amounts to today's value using US CPI data (1913–present), or project future inflation impact on your money."
         url={pageUrl}
+        applicationCategory="FinanceApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: SITE_URL },
-          { name: 'Finance Calculators', url: `${SITE_URL}/calculator` },
+          { name: 'Calculators', url: `${SITE_URL}/calculator` },
           { name: 'Inflation Calculator', url: pageUrl },
         ]}
       />
@@ -168,7 +173,7 @@ export default function InflationCalculator() {
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
-            { label: 'Finance Calculators', href: '/calculator' },
+            { label: 'Calculators', href: '/calculator' },
             { label: 'Inflation Calculator' },
           ]}
         />
@@ -318,64 +323,14 @@ export default function InflationCalculator() {
           </div>
         </div>
 
-        {/* Chart Section */}
+        {/* Chart Section (recharts lazy-loaded below the fold) */}
         <div className="mt-8">
-          <div className="bg-dark-surface border border-dark-border rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-text-primary mb-1">
-              {mode === 'historical'
-                ? 'Purchasing Power Over Time'
-                : 'Projected Purchasing Power Erosion'}
-            </h3>
-            <p className="text-sm text-text-secondary mb-4">
-              {mode === 'historical'
-                ? `Value of ${formatCurrency(amount)} from ${Math.min(fromYear, toYear)} to ${Math.max(fromYear, toYear)} in today's dollars`
-                : `Real value of ${formatCurrency(amount)} over the next ${projYears} years at ${annualRate}% inflation`}
-            </p>
-            <div
-              className="h-[380px]"
-              role="img"
-              aria-label="Line chart showing year-by-year inflation-adjusted value"
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgb(51 65 85)" opacity={0.5} />
-                  <XAxis
-                    dataKey="year"
-                    tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
-                    tickLine={{ stroke: 'rgb(71 85 105)' }}
-                    axisLine={{ stroke: 'rgb(71 85 105)' }}
-                    interval={tickInterval}
-                  />
-                  <YAxis
-                    tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
-                    tickLine={{ stroke: 'rgb(71 85 105)' }}
-                    axisLine={{ stroke: 'rgb(71 85 105)' }}
-                    tickFormatter={(value) => {
-                      const v = Number(value);
-                      return v >= 1000000
-                        ? `$${(v / 1000000).toFixed(1)}M`
-                        : v >= 1000
-                          ? `$${(v / 1000).toFixed(0)}K`
-                          : `$${v}`;
-                    }}
-                  />
-                  <Tooltip
-                    contentStyle={tooltipStyle}
-                    formatter={(value) => [formatCurrency(Number(value)), 'Value']}
-                    labelStyle={{ color: 'rgb(148 163 184)', marginBottom: 4 }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="Value"
-                    stroke="#3b82f6"
-                    strokeWidth={2}
-                    dot={false}
-                    activeDot={{ r: 4, fill: '#3b82f6' }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
+          <InflationChart
+            title={chartTitle}
+            subtitle={chartSubtitle}
+            chartData={chartData}
+            tickInterval={tickInterval}
+          />
         </div>
 
         {/* In-Article Ad */}
@@ -460,6 +415,8 @@ export default function InflationCalculator() {
             </div>
           </div>
         </div>
+
+        <RelatedCalculators slug="inflation" />
 
         {/* Footer Ad */}
         <div className="mt-8">

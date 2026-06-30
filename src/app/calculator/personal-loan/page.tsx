@@ -10,6 +10,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
+import RelatedCalculators from '@/components/RelatedCalculators';
 import { calculatePersonalLoan } from '@/lib/calculators/personal-loan';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
@@ -42,7 +43,7 @@ const FAQ_DATA = [
   {
     question: 'Should I choose a shorter or longer loan term?',
     answer:
-      'A shorter term means higher monthly payments but significantly less total interest paid. A longer term lowers your monthly payment but increases the total cost of the loan. For example, a $15,000 loan at 8.5% costs about $1,380 in interest over 24 months versus $3,564 over 60 months. Choose a term that balances affordable payments with minimizing total interest.',
+      'A shorter term means higher monthly payments but significantly less total interest paid. A longer term lowers your monthly payment but increases the total cost of the loan. For example, a $15,000 loan at 8.5% costs about $1,364 in interest over 24 months versus $3,465 over 60 months. Choose a term that balances affordable payments with minimizing total interest.',
   },
   {
     question: 'What is an unsecured personal loan?',
@@ -53,15 +54,26 @@ const FAQ_DATA = [
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
-  { label: 'Finance Calculators', href: '/calculator' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Personal Loan Calculator' },
 ];
 
 const breadcrumbJsonLdItems = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Finance Calculators', url: `${SITE_URL}/calculator` },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Personal Loan Calculator', url: `${SITE_URL}/calculator/personal-loan` },
 ];
+
+// Static reference matrix: monthly payment per $10,000 borrowed.
+const REF_TERMS = [24, 36, 48, 60];
+const REF_RATES = [7, 9, 11, 13];
+const PAYMENT_PER_10K = REF_TERMS.map((term) => ({
+  term,
+  payments: REF_RATES.map(
+    (rate) =>
+      calculatePersonalLoan({ loanAmount: 10000, loanTerm: term, interestRate: rate }).monthlyPayment,
+  ),
+}));
 
 export default function PersonalLoanCalculator() {
   const [loanAmount, setLoanAmount] = useState(15000);
@@ -125,6 +137,7 @@ export default function PersonalLoanCalculator() {
         name="Personal Loan Calculator"
         description="Free personal loan calculator. Estimate monthly payments, total interest, and APR for unsecured personal loans from $1,000 to $100,000. Instant results, no signup."
         url={`${SITE_URL}/calculator/personal-loan`}
+        applicationCategory="FinanceApplication"
       />
       <FAQJsonLd questions={FAQ_DATA} />
       <BreadcrumbJsonLd items={breadcrumbJsonLdItems} />
@@ -273,6 +286,67 @@ export default function PersonalLoanCalculator() {
           </div>
         </section>
 
+        {/* Rate Estimator + Reference Table */}
+        <section className="max-w-4xl mx-auto mb-12">
+          <div className="bg-dark-surface border border-dark-border rounded-xl p-6 sm:p-8 space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold text-text-primary mb-2">
+                Personal Loan Rate Estimator: How Rates Affect Your Payment
+              </h3>
+              <p className="text-text-secondary leading-relaxed">
+                After the loan amount, your interest rate is the biggest driver of cost. The table
+                below estimates the monthly payment per $10,000 borrowed across common rates and
+                terms, so you can see at a glance how a few points of APR change what you pay.
+              </p>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <caption className="sr-only">
+                  Monthly payment per $10,000 borrowed by term and APR
+                </caption>
+                <thead>
+                  <tr className="border-b border-dark-border">
+                    <th className="text-left text-text-tertiary font-medium py-2 pr-4">Term</th>
+                    {REF_RATES.map((rate) => (
+                      <th key={rate} className="text-right text-text-tertiary font-medium py-2 px-3">
+                        {rate}% APR
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {PAYMENT_PER_10K.map((row) => (
+                    <tr key={row.term} className="border-b border-dark-border last:border-0">
+                      <td className="py-2.5 pr-4 font-medium text-text-primary">{row.term} months</td>
+                      {row.payments.map((payment, i) => (
+                        <td key={REF_RATES[i]} className="py-2.5 px-3 text-right text-text-secondary">
+                          {formatCurrency(payment)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="text-xs text-text-tertiary mt-3">
+                Monthly payment per $10,000 borrowed. A $25,000 loan at 9% over 48 months is about
+                2.5&times; the matching cell.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-text-primary mb-2">
+                Estimating Your Monthly Payment
+              </h3>
+              <p className="text-text-secondary leading-relaxed">
+                Divide your loan amount by 10,000 and multiply by the matching cell above. A longer
+                term lowers the monthly payment but raises total interest, so weigh the trade-off
+                before choosing a term.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ Section */}
         <section className="max-w-4xl mx-auto mb-12">
           <h2 className="text-2xl font-bold text-text-primary mb-6">
@@ -307,6 +381,8 @@ export default function PersonalLoanCalculator() {
             ))}
           </div>
         </section>
+
+        <RelatedCalculators slug="personal-loan" />
 
         {/* Bottom Ad */}
         <AdSense slot="footer" variant="banner" />

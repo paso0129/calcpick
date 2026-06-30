@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'Debt Avalanche & Snowball Calculator - Compare with Extra Payments (Free)';
+const TITLE = 'Debt Avalanche & Snowball Calculator';
 const DESCRIPTION =
   'Free debt payoff calculator. Compare debt avalanche vs snowball methods with extra payments. See exactly when you will be debt-free and how much total interest you save.';
 const CANONICAL = `${SITE_URL}/calculator/debt-payoff`;

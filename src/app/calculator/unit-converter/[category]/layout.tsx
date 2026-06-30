@@ -1,6 +1,16 @@
 import type { Metadata } from 'next';
+import { Roboto_Mono } from 'next/font/google';
 import { SITE_URL } from '@/lib/constants';
 import { UNIT_SEO } from '@/lib/unit-seo';
+
+// Self-hosted via next/font (no runtime Google Fonts <link>, avoids FOUT/CLS).
+// Exposed as a CSS variable consumed by the converter inputs/result/table.
+const robotoMono = Roboto_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-roboto-mono',
+});
 
 interface CategoryLayoutProps {
   children: React.ReactNode;
@@ -13,7 +23,7 @@ export async function generateMetadata({ params }: CategoryLayoutProps): Promise
 
   if (!seo) {
     return {
-      title: 'Unit Converter | CalcPick',
+      title: { absolute: 'Unit Converter | CalcPick' },
     };
   }
 
@@ -38,5 +48,5 @@ export async function generateMetadata({ params }: CategoryLayoutProps): Promise
 }
 
 export default function UnitCategoryLayout({ children }: CategoryLayoutProps) {
-  return children;
+  return <div className={robotoMono.variable}>{children}</div>;
 }

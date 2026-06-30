@@ -18,13 +18,13 @@ const PAGE_URL = `${SITE_URL}/calculator/unit-converter`;
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Calculators', href: '/' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Unit Converter' },
 ];
 
 const BREADCRUMB_JSON_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Calculators', url: SITE_URL },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Unit Converter', url: PAGE_URL },
 ];
 
@@ -159,6 +159,7 @@ export default function UnitConverterPage() {
         name="Unit Converter"
         description="Free online unit converter with 17 categories and 100+ units. Convert length, weight, temperature, radiation, frequency, power, and more."
         url={PAGE_URL}
+        applicationCategory="UtilitiesApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_ITEMS} />

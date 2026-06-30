@@ -37,13 +37,13 @@ const FAQ_ITEMS = [
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Utility Calculators', href: '/' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Discount Calculator' },
 ];
 
 const BREADCRUMB_JSON_LD_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Utility Calculators', url: SITE_URL },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Discount Calculator', url: `${SITE_URL}/calculator/discount` },
 ];
 
@@ -94,6 +94,7 @@ export default function DiscountCalculatorPage() {
         name="Discount Calculator"
         description="Free discount calculator. Find the final sale price after percent off and optional sales tax."
         url={`${SITE_URL}/calculator/discount`}
+        applicationCategory="UtilitiesApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_LD_ITEMS} />

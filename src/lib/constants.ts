@@ -118,3 +118,17 @@ export const CALCULATORS: CalculatorMeta[] = [
     category: 'Finance',
   },
 ];
+
+// Contextual internal links: slug -> related calculator slugs (3-4 each).
+// Used by <RelatedCalculators> to surface a tight, keyword-rich link row.
+export const RELATED_CALCULATORS: Record<string, string[]> = {
+  mortgage: ['auto-loan', 'personal-loan', 'compound-interest'],
+  'auto-loan': ['personal-loan', 'mortgage', 'sales-tax'],
+  'personal-loan': ['debt-payoff', 'auto-loan', 'mortgage'],
+  'student-loan': ['personal-loan', 'debt-payoff', 'compound-interest'],
+  'compound-interest': ['roi', 'inflation', 'mortgage'],
+  'debt-payoff': ['personal-loan', 'mortgage', 'compound-interest'],
+  'sales-tax': ['discount', 'percentage', 'auto-loan'],
+  roi: ['compound-interest', 'inflation', 'mortgage'],
+  inflation: ['compound-interest', 'roi', 'mortgage'],
+};

@@ -7,22 +7,24 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
+import RelatedCalculators from '@/components/RelatedCalculators';
 import { calculateDebtPayoff } from '@/lib/calculators/debt-payoff';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { DebtItem } from '@/types/calculator';
 import { buildShareUrl, getParamNumber, getParamString, getParamJson } from '@/lib/share';
 import { trackCalculatorUse } from '@/lib/analytics';
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from 'recharts';
+import dynamic from 'next/dynamic';
+
+const DebtPayoffChart = dynamic(() => import('./Charts'), {
+  ssr: false,
+  loading: () => (
+    <div className="bg-dark-surface border border-dark-border rounded-xl p-6 mb-8">
+      <div className="h-7 w-64 bg-dark-elevated rounded mb-4" />
+      <div className="h-80 rounded-lg bg-dark-elevated/40 animate-pulse" />
+    </div>
+  ),
+});
 
 const FAQ_ITEMS = [
   {
@@ -59,13 +61,13 @@ const FAQ_ITEMS = [
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Finance Calculators', href: '/' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Debt Avalanche Calculator' },
 ];
 
 const BREADCRUMB_JSON_LD_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Finance Calculators', url: SITE_URL },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Debt Avalanche Calculator', url: `${SITE_URL}/calculator/debt-payoff` },
 ];
 
@@ -267,6 +269,7 @@ export default function DebtPayoffCalculatorPage() {
         name="Debt Avalanche & Snowball Calculator"
         description="Free debt payoff calculator. Compare debt avalanche vs snowball methods with extra payments. See exactly when you will be debt-free and how much total interest you save."
         url={`${SITE_URL}/calculator/debt-payoff`}
+        applicationCategory="FinanceApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_LD_ITEMS} />
@@ -508,84 +511,8 @@ export default function DebtPayoffCalculatorPage() {
             {/* Ad */}
             <AdSense slot="sidebar" variant="sidebar" format="rectangle" />
 
-            {/* Chart */}
-            <div className="bg-dark-surface border border-dark-border rounded-xl p-6 mb-8">
-              <h3 className="text-lg font-semibold text-text-primary mb-4">
-                Remaining Balance Over Time
-              </h3>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="colorAvalanche" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
-                      </linearGradient>
-                      <linearGradient id="colorSnowball" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgb(51 65 85)" opacity={0.5} />
-                    <XAxis
-                      dataKey="month"
-                      stroke="rgb(51 65 85)"
-                      tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
-                      label={{
-                        value: 'Month',
-                        position: 'insideBottomRight',
-                        offset: -5,
-                        fill: 'rgb(148 163 184)',
-                        fontSize: 12,
-                      }}
-                    />
-                    <YAxis
-                      stroke="rgb(51 65 85)"
-                      tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
-                      tickFormatter={(value) =>
-                        `$${(Number(value) / 1000).toFixed(0)}k`
-                      }
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: 'rgb(15 23 42)',
-                        border: '1px solid rgb(51 65 85)',
-                        borderRadius: '10px',
-                        padding: '10px 14px',
-                        color: '#f9fafb',
-                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.4)',
-                      }}
-                      formatter={(value, name) => [
-                        formatCurrency(Number(value)),
-                        name === 'avalanche' ? 'Avalanche' : 'Snowball',
-                      ]}
-                      labelFormatter={(label) => `Month ${label}`}
-                    />
-                    <Legend
-                      formatter={(value: string) =>
-                        value === 'avalanche' ? 'Avalanche' : 'Snowball'
-                      }
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="avalanche"
-                      stroke="#3b82f6"
-                      strokeWidth={2}
-                      fillOpacity={1}
-                      fill="url(#colorAvalanche)"
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="snowball"
-                      stroke="#f97316"
-                      strokeWidth={2}
-                      fillOpacity={1}
-                      fill="url(#colorSnowball)"
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+            {/* Chart (recharts lazy-loaded below the fold) */}
+            <DebtPayoffChart chartData={chartData} />
           </>
         )}
 
@@ -687,6 +614,8 @@ export default function DebtPayoffCalculatorPage() {
             ))}
           </div>
         </div>
+
+        <RelatedCalculators slug="debt-payoff" />
 
         {/* Bottom Ad */}
         <AdSense slot="footer" variant="banner" />

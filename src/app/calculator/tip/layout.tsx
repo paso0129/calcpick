@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'Tip Calculator with Bill Split (Free, 2026)';
+const TITLE = 'Tip Calculator with Bill Split';
 const DESCRIPTION =
   'Free tip calculator. Calculate tip amount and total per person for any group size. Pick a percentage or enter your own. Works for restaurants, delivery, and rides.';
 const CANONICAL = `${SITE_URL}/calculator/tip`;

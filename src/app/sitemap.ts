@@ -2,17 +2,21 @@ import { MetadataRoute } from 'next';
 import { SITE_URL, CALCULATORS } from '@/lib/constants';
 import { UNIT_CATEGORIES } from '@/lib/units';
 
+// Stable lastmod date — bump intentionally when content meaningfully changes.
+// Using `new Date()` on every build restamps every URL and makes Google distrust lastmod.
+const LAST_MODIFIED = new Date('2026-06-30');
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const calculatorPages = CALCULATORS.map((calc) => ({
     url: `${SITE_URL}/calculator/${calc.slug}`,
-    lastModified: new Date(),
+    lastModified: LAST_MODIFIED,
     changeFrequency: 'monthly' as const,
     priority: 0.9,
   }));
 
   const unitConverterPages = UNIT_CATEGORIES.map((cat) => ({
     url: `${SITE_URL}/calculator/unit-converter/${cat.id}`,
-    lastModified: new Date(),
+    lastModified: LAST_MODIFIED,
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }));
@@ -20,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: SITE_URL,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'weekly',
       priority: 1,
     },
@@ -28,25 +32,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...unitConverterPages,
     {
       url: `${SITE_URL}/about`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
       url: `${SITE_URL}/contact`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
       url: `${SITE_URL}/privacy`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
       url: `${SITE_URL}/terms`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'yearly',
       priority: 0.3,
     },

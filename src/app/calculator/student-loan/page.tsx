@@ -11,6 +11,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
+import RelatedCalculators from '@/components/RelatedCalculators';
 import { calculateStudentLoan, compareStudentLoanPlans } from '@/lib/calculators/student-loan';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
@@ -50,13 +51,13 @@ const FAQ_QUESTIONS = [
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Finance Calculators', href: '/calculator' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Student Loan Calculator' },
 ];
 
 const BREADCRUMB_JSON_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Finance Calculators', url: `${SITE_URL}/calculator` },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Student Loan Calculator', url: `${SITE_URL}/calculator/student-loan` },
 ];
 
@@ -109,6 +110,7 @@ export default function StudentLoanCalculatorPage() {
         name="Student Loan Calculator"
         description="Compare student loan repayment plans and calculate your monthly payments, total interest, and overall cost."
         url={`${SITE_URL}/calculator/student-loan`}
+        applicationCategory="FinanceApplication"
       />
       <FAQJsonLd questions={FAQ_QUESTIONS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_ITEMS} />
@@ -307,6 +309,8 @@ export default function StudentLoanCalculatorPage() {
             </div>
           </div>
         </div>
+
+        <RelatedCalculators slug="student-loan" />
       </div>
     </>
   );

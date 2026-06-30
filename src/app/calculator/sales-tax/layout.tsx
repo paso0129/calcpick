@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'Sales Tax Calculator by State - Add or Remove Tax (Free, 2026)';
+const TITLE = 'Sales Tax Calculator by State';
 const DESCRIPTION =
   'Free US sales tax calculator. Add tax to a pre-tax price or reverse-calculate the pre-tax amount from a total. Includes average rates for all 50 states.';
 const CANONICAL = `${SITE_URL}/calculator/sales-tax`;

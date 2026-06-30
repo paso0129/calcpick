@@ -15,13 +15,13 @@ const PAGE_URL = `${SITE_URL}/calculator/basic`;
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Calculators', href: '/' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Professional Calculator' },
 ];
 
 const BREADCRUMB_JSON_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Calculators', url: SITE_URL },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Professional Calculator', url: PAGE_URL },
 ];
 
@@ -397,6 +397,7 @@ export default function BasicCalculatorPage() {
         name="Professional Calculator"
         description="Free online professional calculator with scientific functions, calculation history, and unit converter. Supports keyboard input and high-precision arithmetic."
         url={PAGE_URL}
+        applicationCategory="UtilitiesApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_ITEMS} />

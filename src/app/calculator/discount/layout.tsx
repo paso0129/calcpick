@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'Discount Calculator - Sale Price, % Off & Final Price (Free, 2026)';
+const TITLE = 'Discount Calculator - Sale Price & % Off';
 const DESCRIPTION =
   'Free discount calculator. Find the final price after a percentage off, calculate the amount you save, and add sales tax. Instant results for any sale, no signup.';
 const CANONICAL = `${SITE_URL}/calculator/discount`;

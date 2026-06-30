@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'Professional Calculator with Scientific Mode (Free, 2026)';
+const TITLE = 'Professional Calculator - Scientific Mode';
 const DESCRIPTION =
   'Free online calculator with standard and scientific modes. Trigonometry, logarithms, exponents, and history. Works in any browser, no signup, no install.';
 const CANONICAL = `${SITE_URL}/calculator/basic`;

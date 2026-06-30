@@ -10,6 +10,7 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
+import RelatedCalculators from '@/components/RelatedCalculators';
 import { calculateMortgage } from '@/lib/calculators/mortgage';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
@@ -53,13 +54,13 @@ const FAQ_ITEMS = [
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Finance Calculators', href: '/' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Mortgage Calculator' },
 ];
 
 const BREADCRUMB_JSON_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Finance Calculators', url: SITE_URL },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Mortgage Calculator', url: PAGE_URL },
 ];
 
@@ -156,6 +157,7 @@ export default function MortgageCalculatorPage() {
         name="Mortgage Calculator"
         description="Free mortgage calculator. Estimate monthly PITI payment including principal, interest, property tax, and homeowners insurance. Compare 15-year vs 30-year terms."
         url={PAGE_URL}
+        applicationCategory="FinanceApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
 
@@ -375,6 +377,8 @@ export default function MortgageCalculatorPage() {
             </div>
           </div>
         </div>
+
+        <RelatedCalculators slug="mortgage" />
       </div>
     </>
   );

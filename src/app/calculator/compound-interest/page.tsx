@@ -8,23 +8,29 @@ import Breadcrumb from '@/components/ui/Breadcrumb';
 import ShareButton from '@/components/ui/ShareButton';
 import { WebApplicationJsonLd, FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import AdSense from '@/components/ads/AdSense';
+import RelatedCalculators from '@/components/RelatedCalculators';
 import { calculateCompoundInterest } from '@/lib/calculators/compound-interest';
 import { formatCurrency } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 import { buildShareUrl, getParamNumber } from '@/lib/share';
 import { trackCalculatorUse } from '@/lib/analytics';
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-  BarChart,
-  Bar,
-} from 'recharts';
+import dynamic from 'next/dynamic';
+
+const CompoundInterestCharts = dynamic(() => import('./Charts'), {
+  ssr: false,
+  loading: () => (
+    <div className="mt-8 space-y-8">
+      <div className="bg-dark-surface border border-dark-border rounded-xl p-6">
+        <div className="h-7 w-60 bg-dark-elevated rounded mb-4" />
+        <div className="h-[400px] rounded-lg bg-dark-elevated/40 animate-pulse" />
+      </div>
+      <div className="bg-dark-surface border border-dark-border rounded-xl p-6">
+        <div className="h-7 w-60 bg-dark-elevated rounded mb-4" />
+        <div className="h-[350px] rounded-lg bg-dark-elevated/40 animate-pulse" />
+      </div>
+    </div>
+  ),
+});
 
 const FREQUENCY_OPTIONS = [
   { label: 'Annually', value: 1 },
@@ -54,16 +60,25 @@ const FAQ_ITEMS = [
     answer:
       'The amount depends on your target balance, time horizon, and expected return. Use this calculator to experiment with different monthly contribution amounts. Generally, starting early with consistent contributions, even small ones, is more effective than investing larger amounts later due to the power of compounding.',
   },
+  {
+    question: 'Is interest compounded monthly better?',
+    answer:
+      'Yes — for the same annual rate, monthly compounding earns slightly more than annual compounding because interest is added to your balance 12 times a year instead of once, so you begin earning interest on that interest sooner. At 7%, monthly compounding gives an effective annual rate of about 7.23% versus 7.00% for annual compounding, and the gap widens over long time horizons.',
+  },
+  {
+    question: 'How much is compound interest on $10,000 over 10 years?',
+    answer:
+      'A one-time $10,000 deposit at 7% compounded annually grows to about $19,672 after 10 years — roughly $9,672 of that is compound interest. At 5% it would reach about $16,289, and at 10% about $25,937. Adding regular monthly contributions increases the total substantially.',
+  },
 ];
 
-const tooltipStyle = {
-  backgroundColor: 'rgb(15 23 42)',
-  border: '1px solid rgb(51 65 85)',
-  borderRadius: '10px',
-  padding: '10px 14px',
-  color: 'rgb(241 245 249)',
-  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.4)',
-};
+// Static lump-sum growth scenarios: a $10,000 deposit at 7% compounded annually.
+const GROWTH_PRINCIPAL = 10000;
+const GROWTH_RATE = 0.07;
+const GROWTH_SCENARIOS = [5, 10, 20, 30].map((years) => ({
+  years,
+  futureValue: GROWTH_PRINCIPAL * Math.pow(1 + GROWTH_RATE, years),
+}));
 
 export default function CompoundInterestCalculator() {
   const [initialInvestment, setInitialInvestment] = useState(10000);
@@ -150,12 +165,13 @@ export default function CompoundInterestCalculator() {
         name="Compound Interest Calculator"
         description="Calculate how your investments grow over time with compound interest. See detailed projections with charts and yearly breakdowns."
         url={pageUrl}
+        applicationCategory="FinanceApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: SITE_URL },
-          { name: 'Finance Calculators', url: `${SITE_URL}/calculator` },
+          { name: 'Calculators', url: `${SITE_URL}/calculator` },
           { name: 'Compound Interest Calculator', url: pageUrl },
         ]}
       />
@@ -165,7 +181,7 @@ export default function CompoundInterestCalculator() {
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
-            { label: 'Finance Calculators', href: '/calculator' },
+            { label: 'Calculators', href: '/calculator' },
             { label: 'Compound Interest Calculator' },
           ]}
         />
@@ -289,110 +305,12 @@ export default function CompoundInterestCalculator() {
           </div>
         </div>
 
-        {/* Charts Section */}
-        <div className="mt-8 space-y-8">
-          {/* Stacked Area Chart - Growth Over Time */}
-          <div className="bg-dark-surface border border-dark-border rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-text-primary mb-4">
-              Investment Growth Over Time
-            </h3>
-            <div className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgb(51 65 85)" opacity={0.5} />
-                  <XAxis
-                    dataKey="year"
-                    tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
-                    tickLine={{ stroke: 'rgb(71 85 105)' }}
-                    axisLine={{ stroke: 'rgb(71 85 105)' }}
-                    interval={Math.max(0, Math.floor(years / 10) - 1)}
-                  />
-                  <YAxis
-                    tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
-                    tickLine={{ stroke: 'rgb(71 85 105)' }}
-                    axisLine={{ stroke: 'rgb(71 85 105)' }}
-                    tickFormatter={(value) => {
-                      const v = Number(value);
-                      return v >= 1000000
-                        ? `$${(v / 1000000).toFixed(1)}M`
-                        : v >= 1000
-                          ? `$${(v / 1000).toFixed(0)}K`
-                          : `$${v}`;
-                    }}
-                  />
-                  <Tooltip
-                    contentStyle={tooltipStyle}
-                    formatter={(value) => formatCurrency(Number(value))}
-                    labelStyle={{ color: 'rgb(148 163 184)', marginBottom: 4 }}
-                  />
-                  <Legend
-                    wrapperStyle={{ paddingTop: 16 }}
-                    iconType="rect"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="Contributions"
-                    stackId="1"
-                    stroke="#3b82f6"
-                    fill="#3b82f6"
-                    fillOpacity={0.6}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="Interest"
-                    stackId="1"
-                    stroke="#22c55e"
-                    fill="#22c55e"
-                    fillOpacity={0.6}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Bar Chart - Interest Earned Per Year */}
-          <div className="bg-dark-surface border border-dark-border rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-text-primary mb-4">
-              Interest Earned Per Year
-            </h3>
-            <div className="h-[350px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={interestPerYearData}
-                  margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgb(51 65 85)" opacity={0.5} />
-                  <XAxis
-                    dataKey="year"
-                    tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
-                    tickLine={{ stroke: 'rgb(71 85 105)' }}
-                    axisLine={{ stroke: 'rgb(71 85 105)' }}
-                    interval={Math.max(0, Math.floor(years / 10) - 1)}
-                  />
-                  <YAxis
-                    tick={{ fill: 'rgb(148 163 184)', fontSize: 12 }}
-                    tickLine={{ stroke: 'rgb(71 85 105)' }}
-                    axisLine={{ stroke: 'rgb(71 85 105)' }}
-                    tickFormatter={(value) => {
-                      const v = Number(value);
-                      return v >= 1000000
-                        ? `$${(v / 1000000).toFixed(1)}M`
-                        : v >= 1000
-                          ? `$${(v / 1000).toFixed(0)}K`
-                          : `$${v}`;
-                    }}
-                  />
-                  <Tooltip
-                    contentStyle={tooltipStyle}
-                    formatter={(value) => formatCurrency(Number(value))}
-                    labelStyle={{ color: 'rgb(148 163 184)', marginBottom: 4 }}
-                  />
-                  <Bar dataKey="Interest Earned" fill="#22c55e" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
+        {/* Charts Section (recharts lazy-loaded below the fold) */}
+        <CompoundInterestCharts
+          chartData={chartData}
+          interestPerYearData={interestPerYearData}
+          years={years}
+        />
 
         {/* In-Article Ad */}
         <div className="mt-8">
@@ -454,6 +372,55 @@ export default function CompoundInterestCalculator() {
             </div>
           </div>
 
+          {/* Monthly vs Annual + $10k Growth Scenarios */}
+          <div className="bg-dark-surface border border-dark-border rounded-xl p-6 sm:p-8">
+            <h3 className="text-xl font-semibold text-text-primary mb-2">
+              Interest Compounded Monthly vs. Annually
+            </h3>
+            <p className="text-text-secondary leading-relaxed mb-6">
+              At your current rate and compounding frequency, each dollar grows at an effective
+              annual rate of {effectiveAnnualRate}%. Compounding monthly beats annually because
+              interest is added 12 times a year instead of once, so you begin earning interest on
+              your interest sooner.
+            </p>
+
+            <h3 className="text-xl font-semibold text-text-primary mb-2">
+              $10,000 Growth Over Time
+            </h3>
+            <p className="text-text-secondary leading-relaxed mb-4">
+              How a one-time $10,000 deposit grows at 7% compounded annually with no extra
+              contributions. Over 10 years it reaches about{' '}
+              {formatCurrency(GROWTH_SCENARIOS[1].futureValue)}.
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <caption className="sr-only">
+                  Future value of a $10,000 deposit at 7% compounded annually
+                </caption>
+                <thead>
+                  <tr className="border-b border-dark-border">
+                    <th className="text-left text-text-tertiary font-medium py-2 pr-4">Years</th>
+                    <th className="text-right text-text-tertiary font-medium py-2 px-3">Future Value</th>
+                    <th className="text-right text-text-tertiary font-medium py-2 px-3">Interest Earned</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {GROWTH_SCENARIOS.map((s) => (
+                    <tr key={s.years} className="border-b border-dark-border last:border-0">
+                      <td className="py-2.5 pr-4 font-medium text-text-primary">{s.years} years</td>
+                      <td className="py-2.5 px-3 text-right text-text-secondary">
+                        {formatCurrency(s.futureValue)}
+                      </td>
+                      <td className="py-2.5 px-3 text-right text-text-secondary">
+                        {formatCurrency(s.futureValue - GROWTH_PRINCIPAL)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           {/* FAQ Section */}
           <div className="bg-dark-surface border border-dark-border rounded-xl p-6 sm:p-8">
             <h2 className="text-2xl font-bold text-text-primary mb-6">
@@ -469,6 +436,8 @@ export default function CompoundInterestCalculator() {
             </div>
           </div>
         </div>
+
+        <RelatedCalculators slug="compound-interest" />
 
         {/* Footer Ad */}
         <div className="mt-8">

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'Unit Converter - 17 Categories, 100+ Units (Free, 2026)';
+const TITLE = 'Unit Converter - 100+ Units, 17 Categories';
 const DESCRIPTION =
   'Free online unit converter for length, weight, volume, temperature, area, speed, time, energy, and 10 more categories. Instant conversions, 100+ units, no signup.';
 const CANONICAL = `${SITE_URL}/calculator/unit-converter`;

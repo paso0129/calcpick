@@ -42,13 +42,13 @@ const FAQ_ITEMS = [
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Utility Calculators', href: '/' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Percentage Calculator' },
 ];
 
 const BREADCRUMB_JSON_LD_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Utility Calculators', url: SITE_URL },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Percentage Calculator', url: `${SITE_URL}/calculator/percentage` },
 ];
 
@@ -138,6 +138,7 @@ export default function PercentageCalculatorPage() {
         name="Percentage Calculator"
         description="Free percentage calculator for finding percentages, percentage of a total, and percentage change."
         url={`${SITE_URL}/calculator/percentage`}
+        applicationCategory="UtilitiesApplication"
       />
       <FAQJsonLd questions={FAQ_ITEMS} />
       <BreadcrumbJsonLd items={BREADCRUMB_JSON_LD_ITEMS} />

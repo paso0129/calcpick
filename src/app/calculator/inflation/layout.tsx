@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'Inflation Calculator – US CPI & Future Projection (2026)';
+const TITLE = 'Inflation Calculator - US CPI & Projection';
 const DESCRIPTION =
   "Free inflation calculator. Convert past dollar amounts to today's value using US CPI data (1913–present), or project future inflation impact on your money.";
 const CANONICAL = `${SITE_URL}/calculator/inflation`;

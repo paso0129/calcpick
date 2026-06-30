@@ -33,10 +33,12 @@ export function WebApplicationJsonLd({
   name,
   description,
   url,
+  applicationCategory,
 }: {
   name: string;
   description: string;
   url: string;
+  applicationCategory: 'FinanceApplication' | 'UtilitiesApplication';
 }) {
   const schema = {
     '@context': 'https://schema.org',
@@ -44,7 +46,7 @@ export function WebApplicationJsonLd({
     name,
     description,
     url,
-    applicationCategory: 'FinanceApplication',
+    applicationCategory,
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     provider: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
