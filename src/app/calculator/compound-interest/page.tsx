@@ -60,7 +60,25 @@ const FAQ_ITEMS = [
     answer:
       'The amount depends on your target balance, time horizon, and expected return. Use this calculator to experiment with different monthly contribution amounts. Generally, starting early with consistent contributions, even small ones, is more effective than investing larger amounts later due to the power of compounding.',
   },
+  {
+    question: 'Is interest compounded monthly better?',
+    answer:
+      'Yes — for the same annual rate, monthly compounding earns slightly more than annual compounding because interest is added to your balance 12 times a year instead of once, so you begin earning interest on that interest sooner. At 7%, monthly compounding gives an effective annual rate of about 7.23% versus 7.00% for annual compounding, and the gap widens over long time horizons.',
+  },
+  {
+    question: 'How much is compound interest on $10,000 over 10 years?',
+    answer:
+      'A one-time $10,000 deposit at 7% compounded annually grows to about $19,672 after 10 years — roughly $9,672 of that is compound interest. At 5% it would reach about $16,289, and at 10% about $25,937. Adding regular monthly contributions increases the total substantially.',
+  },
 ];
+
+// Static lump-sum growth scenarios: a $10,000 deposit at 7% compounded annually.
+const GROWTH_PRINCIPAL = 10000;
+const GROWTH_RATE = 0.07;
+const GROWTH_SCENARIOS = [5, 10, 20, 30].map((years) => ({
+  years,
+  futureValue: GROWTH_PRINCIPAL * Math.pow(1 + GROWTH_RATE, years),
+}));
 
 export default function CompoundInterestCalculator() {
   const [initialInvestment, setInitialInvestment] = useState(10000);
@@ -351,6 +369,55 @@ export default function CompoundInterestCalculator() {
                 the more time compound interest has to work in your favor. Even small monthly
                 contributions can grow into substantial wealth over decades.
               </p>
+            </div>
+          </div>
+
+          {/* Monthly vs Annual + $10k Growth Scenarios */}
+          <div className="bg-dark-surface border border-dark-border rounded-xl p-6 sm:p-8">
+            <h3 className="text-xl font-semibold text-text-primary mb-2">
+              Interest Compounded Monthly vs. Annually
+            </h3>
+            <p className="text-text-secondary leading-relaxed mb-6">
+              At your current rate and compounding frequency, each dollar grows at an effective
+              annual rate of {effectiveAnnualRate}%. Compounding monthly beats annually because
+              interest is added 12 times a year instead of once, so you begin earning interest on
+              your interest sooner.
+            </p>
+
+            <h3 className="text-xl font-semibold text-text-primary mb-2">
+              $10,000 Growth Over Time
+            </h3>
+            <p className="text-text-secondary leading-relaxed mb-4">
+              How a one-time $10,000 deposit grows at 7% compounded annually with no extra
+              contributions. Over 10 years it reaches about{' '}
+              {formatCurrency(GROWTH_SCENARIOS[1].futureValue)}.
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <caption className="sr-only">
+                  Future value of a $10,000 deposit at 7% compounded annually
+                </caption>
+                <thead>
+                  <tr className="border-b border-dark-border">
+                    <th className="text-left text-text-tertiary font-medium py-2 pr-4">Years</th>
+                    <th className="text-right text-text-tertiary font-medium py-2 px-3">Future Value</th>
+                    <th className="text-right text-text-tertiary font-medium py-2 px-3">Interest Earned</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {GROWTH_SCENARIOS.map((s) => (
+                    <tr key={s.years} className="border-b border-dark-border last:border-0">
+                      <td className="py-2.5 pr-4 font-medium text-text-primary">{s.years} years</td>
+                      <td className="py-2.5 px-3 text-right text-text-secondary">
+                        {formatCurrency(s.futureValue)}
+                      </td>
+                      <td className="py-2.5 px-3 text-right text-text-secondary">
+                        {formatCurrency(s.futureValue - GROWTH_PRINCIPAL)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
 

@@ -64,6 +64,17 @@ const breadcrumbJsonLdItems = [
   { name: 'Personal Loan Calculator', url: `${SITE_URL}/calculator/personal-loan` },
 ];
 
+// Static reference matrix: monthly payment per $10,000 borrowed.
+const REF_TERMS = [24, 36, 48, 60];
+const REF_RATES = [7, 9, 11, 13];
+const PAYMENT_PER_10K = REF_TERMS.map((term) => ({
+  term,
+  payments: REF_RATES.map(
+    (rate) =>
+      calculatePersonalLoan({ loanAmount: 10000, loanTerm: term, interestRate: rate }).monthlyPayment,
+  ),
+}));
+
 export default function PersonalLoanCalculator() {
   const [loanAmount, setLoanAmount] = useState(15000);
   const [loanTerm, setLoanTerm] = useState(36);
@@ -270,6 +281,67 @@ export default function PersonalLoanCalculator() {
                 different interest rates to understand the impact on your monthly budget. The
                 amortization schedule and payment charts give you a complete picture of your loan
                 over time.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Rate Estimator + Reference Table */}
+        <section className="max-w-4xl mx-auto mb-12">
+          <div className="bg-dark-surface border border-dark-border rounded-xl p-6 sm:p-8 space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold text-text-primary mb-2">
+                Personal Loan Rate Estimator: How Rates Affect Your Payment
+              </h3>
+              <p className="text-text-secondary leading-relaxed">
+                After the loan amount, your interest rate is the biggest driver of cost. The table
+                below estimates the monthly payment per $10,000 borrowed across common rates and
+                terms, so you can see at a glance how a few points of APR change what you pay.
+              </p>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <caption className="sr-only">
+                  Monthly payment per $10,000 borrowed by term and APR
+                </caption>
+                <thead>
+                  <tr className="border-b border-dark-border">
+                    <th className="text-left text-text-tertiary font-medium py-2 pr-4">Term</th>
+                    {REF_RATES.map((rate) => (
+                      <th key={rate} className="text-right text-text-tertiary font-medium py-2 px-3">
+                        {rate}% APR
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {PAYMENT_PER_10K.map((row) => (
+                    <tr key={row.term} className="border-b border-dark-border last:border-0">
+                      <td className="py-2.5 pr-4 font-medium text-text-primary">{row.term} months</td>
+                      {row.payments.map((payment, i) => (
+                        <td key={REF_RATES[i]} className="py-2.5 px-3 text-right text-text-secondary">
+                          {formatCurrency(payment)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="text-xs text-text-tertiary mt-3">
+                Monthly payment per $10,000 borrowed. A $25,000 loan at 9% over 48 months is about
+                2.5&times; the matching cell.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-text-primary mb-2">
+                Estimating Your Monthly Payment
+              </h3>
+              <p className="text-text-secondary leading-relaxed">
+                Divide your loan amount by 10,000 and multiply by the matching cell above. A longer
+                term lowers the monthly payment but raises total interest, so weigh the trade-off
+                before choosing a term.
               </p>
             </div>
           </div>

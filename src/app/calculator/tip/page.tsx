@@ -13,6 +13,10 @@ import { trackCalculatorUse } from '@/lib/analytics';
 
 const TIP_PRESETS = [10, 15, 18, 20, 25];
 
+// Static reference for "tip on $X" queries.
+const BILL_AMOUNTS = [20, 30, 40, 50, 75, 100];
+const TIP_RATES = [15, 18, 20];
+
 const FAQ_ITEMS = [
   {
     question: 'How much should I tip at a restaurant?',
@@ -298,6 +302,48 @@ export default function TipCalculatorPage() {
             <div className="mt-6">
               <AdSense slot="sidebar" variant="sidebar" format="rectangle" />
             </div>
+          </div>
+        </div>
+
+        {/* Common Tip Amounts (static reference) */}
+        <div className="bg-dark-surface border border-dark-border rounded-xl p-6 sm:p-8 mb-8">
+          <h2 className="text-2xl font-bold text-text-primary mb-2">Common Tip Amounts</h2>
+          <p className="text-text-secondary mb-4">
+            How much to tip on common bill amounts at 15%, 18%, and 20%.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <caption className="sr-only">Tip and total by bill amount and tip percentage</caption>
+              <thead>
+                <tr className="border-b border-dark-border">
+                  <th className="text-left text-text-tertiary font-medium py-2 pr-4">Bill</th>
+                  {TIP_RATES.map((rate) => (
+                    <th key={rate} className="text-right text-text-tertiary font-medium py-2 px-3">
+                      {rate}% tip
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {BILL_AMOUNTS.map((bill) => (
+                  <tr key={bill} className="border-b border-dark-border last:border-0">
+                    <td className="py-2.5 pr-4 font-medium text-text-primary">{formatCurrency(bill)}</td>
+                    {TIP_RATES.map((rate) => {
+                      const tip = (bill * rate) / 100;
+                      return (
+                        <td key={rate} className="py-2.5 px-3 text-right text-text-secondary">
+                          {formatCurrency(tip)}{' '}
+                          <span className="text-text-tertiary">/ {formatCurrency(bill + tip)}</span>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="text-xs text-text-tertiary mt-3">
+              Each cell shows the tip amount and, after the slash, the total bill including tip.
+            </p>
           </div>
         </div>
 
