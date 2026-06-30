@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: CategoryLayoutProps): Promise
 
   if (!seo) {
     return {
-      title: 'Unit Converter | CalcPick',
+      title: { absolute: 'Unit Converter | CalcPick' },
     };
   }
 

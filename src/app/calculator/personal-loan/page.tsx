@@ -43,7 +43,7 @@ const FAQ_DATA = [
   {
     question: 'Should I choose a shorter or longer loan term?',
     answer:
-      'A shorter term means higher monthly payments but significantly less total interest paid. A longer term lowers your monthly payment but increases the total cost of the loan. For example, a $15,000 loan at 8.5% costs about $1,380 in interest over 24 months versus $3,564 over 60 months. Choose a term that balances affordable payments with minimizing total interest.',
+      'A shorter term means higher monthly payments but significantly less total interest paid. A longer term lowers your monthly payment but increases the total cost of the loan. For example, a $15,000 loan at 8.5% costs about $1,364 in interest over 24 months versus $3,465 over 60 months. Choose a term that balances affordable payments with minimizing total interest.',
   },
   {
     question: 'What is an unsecured personal loan?',
