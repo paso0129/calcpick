@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'Student Loan Calculator - Compare Repayment Plans (Free, 2026)';
+const TITLE = 'Student Loan Calculator - Repayment Plans';
 const DESCRIPTION =
   'Free student loan calculator. Compare standard, graduated, and income-driven repayment plans. Estimate monthly payment, total interest, and payoff date.';
 const CANONICAL = `${SITE_URL}/calculator/student-loan`;

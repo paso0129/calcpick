@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'Percentage Calculator - Find %, % of Total, % Change (Free, 2026)';
+const TITLE = 'Percentage Calculator - Find % of a Number';
 const DESCRIPTION =
   'Free percentage calculator. Solve "what is X% of Y", "X is what % of Y", and percentage increase or decrease. Instant answers, no signup.';
 const CANONICAL = `${SITE_URL}/calculator/percentage`;

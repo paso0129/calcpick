@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'Compound Interest Calculator - Investment Growth Over Time (Free, 2026)';
+const TITLE = 'Compound Interest Calculator - Growth Over Time';
 const DESCRIPTION =
   'Free compound interest calculator. Project investment growth with monthly contributions, custom rate, and any compounding frequency. See year-by-year breakdown.';
 const CANONICAL = `${SITE_URL}/calculator/compound-interest`;

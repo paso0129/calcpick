@@ -15,13 +15,13 @@ const PAGE_URL = `${SITE_URL}/calculator/basic`;
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Calculators', href: '/' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Professional Calculator' },
 ];
 
 const BREADCRUMB_JSON_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Calculators', url: SITE_URL },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Professional Calculator', url: PAGE_URL },
 ];
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'ROI Calculator – Return on Investment & CAGR (Free, 2026)';
+const TITLE = 'ROI Calculator - Return on Investment & CAGR';
 const DESCRIPTION =
   'Free ROI calculator. Calculate total return, net profit, and annualized return (CAGR) for any investment. Visualize growth year by year.';
 const CANONICAL = `${SITE_URL}/calculator/roi`;

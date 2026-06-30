@@ -18,13 +18,13 @@ const PAGE_URL = `${SITE_URL}/calculator/unit-converter`;
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Calculators', href: '/' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Unit Converter' },
 ];
 
 const BREADCRUMB_JSON_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Calculators', url: SITE_URL },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Unit Converter', url: PAGE_URL },
 ];
 

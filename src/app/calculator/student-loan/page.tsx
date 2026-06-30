@@ -50,13 +50,13 @@ const FAQ_QUESTIONS = [
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Finance Calculators', href: '/calculator' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Student Loan Calculator' },
 ];
 
 const BREADCRUMB_JSON_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Finance Calculators', url: `${SITE_URL}/calculator` },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Student Loan Calculator', url: `${SITE_URL}/calculator/student-loan` },
 ];
 

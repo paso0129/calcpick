@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 
-const TITLE = 'Mortgage Calculator with Taxes, Insurance & PMI (2026)';
+const TITLE = 'Mortgage Calculator - Taxes, Insurance, PMI';
 const DESCRIPTION =
   'Free mortgage calculator. Estimate monthly PITI payment including principal, interest, property tax, and homeowners insurance. Compare 15-year vs 30-year terms.';
 const CANONICAL = `${SITE_URL}/calculator/mortgage`;

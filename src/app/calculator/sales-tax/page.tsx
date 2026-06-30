@@ -101,13 +101,13 @@ const FAQ_ITEMS = [
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Finance Calculators', href: '/calculator' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Sales Tax Calculator' },
 ];
 
 const BREADCRUMB_JSON_LD_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Finance Calculators', url: `${SITE_URL}/calculator` },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Sales Tax Calculator', url: `${SITE_URL}/calculator/sales-tax` },
 ];
 

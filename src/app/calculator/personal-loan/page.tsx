@@ -53,13 +53,13 @@ const FAQ_DATA = [
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
-  { label: 'Finance Calculators', href: '/calculator' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Personal Loan Calculator' },
 ];
 
 const breadcrumbJsonLdItems = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Finance Calculators', url: `${SITE_URL}/calculator` },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Personal Loan Calculator', url: `${SITE_URL}/calculator/personal-loan` },
 ];
 

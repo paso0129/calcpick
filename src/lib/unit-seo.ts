@@ -15,7 +15,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   length: {
     slug: 'length',
     title: 'Length',
-    pageTitle: 'Length Unit Converter - Meters, Feet, Miles, Kilometers | CalcPick',
+    pageTitle: 'Length Unit Converter - Meters, Feet, Miles',
     description: 'Free online length converter. Convert between meters, kilometers, miles, feet, inches, yards, centimeters, and millimeters instantly.',
     h1: 'Length Unit Converter',
     subtitle: 'Convert between metric and imperial length units',
@@ -54,7 +54,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   weight: {
     slug: 'weight',
     title: 'Weight',
-    pageTitle: 'Weight & Mass Converter - Kilograms, Pounds, Ounces, Grams | CalcPick',
+    pageTitle: 'Weight & Mass Converter - kg, lb, oz, g',
     description: 'Free online weight converter. Convert between kilograms, pounds, ounces, grams, milligrams, and metric tons instantly.',
     h1: 'Weight & Mass Converter',
     subtitle: 'Convert between metric and imperial weight units',
@@ -93,7 +93,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   temperature: {
     slug: 'temperature',
     title: 'Temperature',
-    pageTitle: 'Temperature Converter - Celsius, Fahrenheit, Kelvin | CalcPick',
+    pageTitle: 'Temperature Converter - Celsius to Fahrenheit',
     description: 'Free online temperature converter. Convert between Celsius, Fahrenheit, and Kelvin with accurate non-linear formulas.',
     h1: 'Temperature Converter',
     subtitle: 'Convert between Celsius, Fahrenheit, and Kelvin scales',
@@ -132,7 +132,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   area: {
     slug: 'area',
     title: 'Area',
-    pageTitle: 'Area Unit Converter - Square Meters, Acres, Hectares, Square Feet | CalcPick',
+    pageTitle: 'Area Unit Converter - Acres, Hectares, sq ft',
     description: 'Free online area converter. Convert between square meters, square feet, acres, hectares, square kilometers, and more.',
     h1: 'Area Unit Converter',
     subtitle: 'Convert between metric and imperial area units',
@@ -160,7 +160,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   volume: {
     slug: 'volume',
     title: 'Volume',
-    pageTitle: 'Volume Unit Converter - Liters, Gallons, Cups, Milliliters | CalcPick',
+    pageTitle: 'Volume Converter - Liters, Gallons, Cups, mL',
     description: 'Free online volume converter. Convert between liters, gallons, cups, milliliters, fluid ounces, tablespoons, and teaspoons.',
     h1: 'Volume Unit Converter',
     subtitle: 'Convert between metric and US customary volume units',
@@ -188,7 +188,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   speed: {
     slug: 'speed',
     title: 'Speed',
-    pageTitle: 'Speed Unit Converter - km/h, mph, m/s, Knots | CalcPick',
+    pageTitle: 'Speed Unit Converter - km/h, mph, m/s, Knots',
     description: 'Free online speed converter. Convert between kilometers per hour, miles per hour, meters per second, knots, and feet per second.',
     h1: 'Speed Unit Converter',
     subtitle: 'Convert between common speed and velocity units',
@@ -216,7 +216,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   time: {
     slug: 'time',
     title: 'Time',
-    pageTitle: 'Time Unit Converter - Seconds, Minutes, Hours, Days, Weeks | CalcPick',
+    pageTitle: 'Time Converter - Seconds, Minutes, Hours, Days',
     description: 'Free online time converter. Convert between seconds, minutes, hours, days, weeks, months, and years instantly.',
     h1: 'Time Unit Converter',
     subtitle: 'Convert between time duration units',
@@ -244,7 +244,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   digital: {
     slug: 'digital',
     title: 'Digital Storage',
-    pageTitle: 'Digital Storage Converter - Bytes, KB, MB, GB, TB, PB | CalcPick',
+    pageTitle: 'Digital Storage Converter - KB, MB, GB, TB',
     description: 'Free online digital storage converter. Convert between bytes, kilobytes, megabytes, gigabytes, terabytes, and petabytes using binary prefixes.',
     h1: 'Digital Storage Converter',
     subtitle: 'Convert between digital storage units (binary prefixes)',
@@ -272,7 +272,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   pressure: {
     slug: 'pressure',
     title: 'Pressure',
-    pageTitle: 'Pressure Unit Converter - Pascal, Bar, PSI, ATM, mmHg | CalcPick',
+    pageTitle: 'Pressure Unit Converter - PSI, Bar, Pascal, ATM',
     description: 'Free online pressure converter. Convert between Pascal, kilopascal, bar, PSI, atmospheres, and mmHg instantly.',
     h1: 'Pressure Unit Converter',
     subtitle: 'Convert between pressure and stress units',
@@ -300,7 +300,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   energy: {
     slug: 'energy',
     title: 'Energy',
-    pageTitle: 'Energy Unit Converter - Joules, Calories, kWh, BTU | CalcPick',
+    pageTitle: 'Energy Converter - Joules, Calories, kWh, BTU',
     description: 'Free online energy converter. Convert between joules, kilojoules, calories, kilocalories, watt-hours, kilowatt-hours, and BTU.',
     h1: 'Energy Unit Converter',
     subtitle: 'Convert between energy and work units',
@@ -328,7 +328,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   radiation: {
     slug: 'radiation',
     title: 'Radiation',
-    pageTitle: 'Radiation Unit Converter - Sievert, Rem, Gray, Rad, Roentgen | CalcPick',
+    pageTitle: 'Radiation Converter - Sievert, Gray, Rad, Rem',
     description: 'Free online radiation dose converter. Convert between sieverts, millisieverts, microsieverts, rem, millirem, grays, rads, and roentgens.',
     h1: 'Radiation Dose Converter',
     subtitle: 'Convert between radiation dose and exposure units',
@@ -371,7 +371,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   frequency: {
     slug: 'frequency',
     title: 'Frequency',
-    pageTitle: 'Frequency Unit Converter - Hz, kHz, MHz, GHz, RPM | CalcPick',
+    pageTitle: 'Frequency Unit Converter - Hz, kHz, MHz, GHz',
     description: 'Free online frequency converter. Convert between hertz, kilohertz, megahertz, gigahertz, and RPM instantly.',
     h1: 'Frequency Unit Converter',
     subtitle: 'Convert between frequency and rotation units',
@@ -399,7 +399,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   power: {
     slug: 'power',
     title: 'Power',
-    pageTitle: 'Power Unit Converter - Watts, Kilowatts, Horsepower, BTU/h | CalcPick',
+    pageTitle: 'Power Unit Converter - Watts, kW, Horsepower',
     description: 'Free online power converter. Convert between watts, kilowatts, megawatts, horsepower, and BTU per hour.',
     h1: 'Power Unit Converter',
     subtitle: 'Convert between power and energy rate units',
@@ -427,7 +427,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   angle: {
     slug: 'angle',
     title: 'Angle',
-    pageTitle: 'Angle Unit Converter - Degrees, Radians, Gradians | CalcPick',
+    pageTitle: 'Angle Converter - Degrees, Radians, Gradians',
     description: 'Free online angle converter. Convert between degrees, radians, gradians, arcminutes, arcseconds, and turns.',
     h1: 'Angle Unit Converter',
     subtitle: 'Convert between angular measurement units',
@@ -455,7 +455,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   force: {
     slug: 'force',
     title: 'Force',
-    pageTitle: 'Force Unit Converter - Newtons, Pound-force, Kilogram-force, Dynes | CalcPick',
+    pageTitle: 'Force Unit Converter - Newtons, lbf, Dynes',
     description: 'Free online force converter. Convert between newtons, kilonewtons, pound-force, kilogram-force, and dynes.',
     h1: 'Force Unit Converter',
     subtitle: 'Convert between force measurement units',
@@ -483,7 +483,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   data_rate: {
     slug: 'data_rate',
     title: 'Data Rate',
-    pageTitle: 'Data Rate Converter - Mbps, Gbps, MB/s, Kbps | CalcPick',
+    pageTitle: 'Data Rate Converter - Mbps, Gbps, MB/s, Kbps',
     description: 'Free online data transfer rate converter. Convert between bits per second, kilobits, megabits, gigabits, bytes per second, and megabytes per second.',
     h1: 'Data Transfer Rate Converter',
     subtitle: 'Convert between network and data transfer speed units',
@@ -511,7 +511,7 @@ export const UNIT_SEO: Record<string, UnitCategorySEO> = {
   fuel_economy: {
     slug: 'fuel_economy',
     title: 'Fuel Economy',
-    pageTitle: 'Fuel Economy Converter - MPG, km/L, L/100km | CalcPick',
+    pageTitle: 'Fuel Economy Converter - MPG, km/L, L/100km',
     description: 'Free online fuel economy converter. Convert between miles per gallon (US/UK), kilometers per liter, and liters per 100 kilometers.',
     h1: 'Fuel Economy Converter',
     subtitle: 'Convert between fuel efficiency measurement units',

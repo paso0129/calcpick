@@ -155,7 +155,7 @@ export default function CompoundInterestCalculator() {
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: SITE_URL },
-          { name: 'Finance Calculators', url: `${SITE_URL}/calculator` },
+          { name: 'Calculators', url: `${SITE_URL}/calculator` },
           { name: 'Compound Interest Calculator', url: pageUrl },
         ]}
       />
@@ -165,7 +165,7 @@ export default function CompoundInterestCalculator() {
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
-            { label: 'Finance Calculators', href: '/calculator' },
+            { label: 'Calculators', href: '/calculator' },
             { label: 'Compound Interest Calculator' },
           ]}
         />

@@ -152,14 +152,14 @@ export default function UnitCategoryPage() {
 
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
-    { label: 'Calculators', href: '/' },
+    { label: 'Calculators', href: '/calculator' },
     { label: 'Unit Converter', href: '/calculator/unit-converter' },
     { label: seo.h1 },
   ];
 
   const breadcrumbJsonItems = [
     { name: 'Home', url: SITE_URL },
-    { name: 'Calculators', url: SITE_URL },
+    { name: 'Calculators', url: `${SITE_URL}/calculator` },
     { name: 'Unit Converter', url: `${SITE_URL}/calculator/unit-converter` },
     { name: seo.h1, url: PAGE_URL },
   ];

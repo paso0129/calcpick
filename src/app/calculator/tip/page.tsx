@@ -38,13 +38,13 @@ const FAQ_ITEMS = [
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Utility Calculators', href: '/' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Tip Calculator' },
 ];
 
 const BREADCRUMB_JSON_LD_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Utility Calculators', url: SITE_URL },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Tip Calculator', url: `${SITE_URL}/calculator/tip` },
 ];
 

@@ -53,13 +53,13 @@ const FAQ_ITEMS = [
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Finance Calculators', href: '/' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Mortgage Calculator' },
 ];
 
 const BREADCRUMB_JSON_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Finance Calculators', url: SITE_URL },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Mortgage Calculator', url: PAGE_URL },
 ];
 

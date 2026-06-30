@@ -149,7 +149,7 @@ export default function ROICalculator() {
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: SITE_URL },
-          { name: 'Finance Calculators', url: `${SITE_URL}/calculator` },
+          { name: 'Calculators', url: `${SITE_URL}/calculator` },
           { name: 'ROI Calculator', url: pageUrl },
         ]}
       />
@@ -159,7 +159,7 @@ export default function ROICalculator() {
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
-            { label: 'Finance Calculators', href: '/calculator' },
+            { label: 'Calculators', href: '/calculator' },
             { label: 'ROI Calculator' },
           ]}
         />

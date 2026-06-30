@@ -59,13 +59,13 @@ const FAQ_ITEMS = [
 
 const BREADCRUMB_ITEMS = [
   { label: 'Home', href: '/' },
-  { label: 'Finance Calculators', href: '/' },
+  { label: 'Calculators', href: '/calculator' },
   { label: 'Debt Avalanche Calculator' },
 ];
 
 const BREADCRUMB_JSON_LD_ITEMS = [
   { name: 'Home', url: SITE_URL },
-  { name: 'Finance Calculators', url: SITE_URL },
+  { name: 'Calculators', url: `${SITE_URL}/calculator` },
   { name: 'Debt Avalanche Calculator', url: `${SITE_URL}/calculator/debt-payoff` },
 ];
 
